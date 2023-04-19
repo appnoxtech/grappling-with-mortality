@@ -1,0 +1,27 @@
+import { responsiveFontSize } from "react-native-responsive-dimensions";
+export const colorPrimary = '#5c7716';
+export const colorSecondary = '#c3da70';
+export const colorGrey = '#8391A1';
+export const drawerIconSize=responsiveFontSize(23);
+export const iconSize=responsiveFontSize(25);
+export const grey='#727272';
+export const systemGrey= '#F8F9F7';
+export const systemGreyBg = '#F8F9F7';
+export const danger='#008F45';
+export const mainColor='#008F45';
+export const white='#ffff';
+export const dark='#000';
+export const denimBlue = '#1260CC'
+export const green='green';
+export const lightFont='NunitoSans-Regular';
+export const regularFont='NunitoSans-Regular';
+export const mediumFont='NunitoSans-Regular';
+export const semiBoldFont='DancingFont-SemiBold';
+export const boldFont='DancingFont-SemiBold';
+export const headingText=responsiveFontSize(17);
+export const mainHeadingText = responsiveFontSize(30);   
+export const h4=responsiveFontSize(12);
+export const mediumText=responsiveFontSize(14);
+export const normalText=responsiveFontSize(13);
+export const samllText=responsiveFontSize(12);
+export const addIcon=responsiveFontSize(45);
