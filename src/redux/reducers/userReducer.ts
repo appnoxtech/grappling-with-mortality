@@ -53,7 +53,7 @@ export const updateUserData = (isLogin: boolean): UpdateAction => {
   };
 };
 
-export const updateUserDetails = (data: user): updateUserDetails => {
+export const updateUserDetails = (data: any): updateUserDetails => {
    return {
      type: 'UPDATE_USER_DETAILS',
      payload: data,

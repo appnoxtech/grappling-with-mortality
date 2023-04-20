@@ -1,13 +1,24 @@
-import {Image, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {Alert} from 'react-native';
 import {
   responsiveFontSize,
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
+import {
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager,
+  LoginManager,
+} from 'react-native-fbsdk-next';
 import {colorGrey, colorPrimary, colorSecondary, white} from '../../../../assests/Styles/GlobalTheme';
+import { useDispatch } from 'react-redux';
+import useSocialAuthHook from '../../../hooks/AuthHooks/SocialLoginHook';
+import { ssoData } from '../../../interfaces/auth/authServiceInterface';
+import { SsoService } from '../../../services/auth/AuthService';
 
 interface props {
   label: string;
@@ -15,14 +26,97 @@ interface props {
 }
 
 const SocialLoginBtn: React.FC<props> = ({label, type}) => {
-  const handlePress = () => {
+  const dispatch = useDispatch();
+  const SocialAuthenticationServiceHandler = useSocialAuthHook();
+
+
+  const handlePress = async() => {
     if (type === 'facebook') {
-      console.log('pressed');
-      //loginFacebook();
+      loginFacebook();
     } else {
-      //   googleSignIn();
+       if(Platform.OS === 'ios') {
+        googleSignIn();
+       }else{
+         await googleSignIn();
+         console.log(`Data {"SSO": "GOOGLE", "email": "shudhanshu.appnox@gmail.com", "fullName": "Shudhanshu Choudhary", "googleId": 116883255948173340000, "image": "https://lh3.googleusercontent.com/a/AGNmyxYMVlZy2jsZapufF9z7r5kX8bdL7wIGL6XfXdWn=s120"}`)
+       }
+       
     }
   };
+
+  const loginFacebook = () => {
+    LoginManager.logInWithPermissions(['public_profile']).then(
+      function (result: any) {
+        if (result.isCancelled) {
+          console.log('Login cancelled');
+        } else {
+          AccessToken.getCurrentAccessToken().then((data: any) => {
+            let accessToken = data.accessToken;
+            console.log(accessToken.toString());
+  
+            const responseInfoCallback = (error: any, result: any) => {
+              if (error) {
+                console.log('Error fetching data: ' + error.toString());
+              } else {
+                const FB_USER_CRED = {
+                  SSO: 'FACEBOOK',
+                  name: result.name as string,
+                  userName: result.first_name as string,
+                  facebookId: parseInt(result.id, 10) as number,
+                };
+                // SocialAuthenticationServiceHandler(FB_USER_CRED);
+              }
+            };
+  
+            const infoRequest = new GraphRequest(
+              '/me',
+              {
+                accessToken: accessToken,
+                parameters: {
+                  fields: {
+                    string: 'email,name,first_name,middle_name,last_name',
+                  },
+                },
+              },
+              responseInfoCallback,
+            );
+  
+            // Start the graph request.
+            new GraphRequestManager().addRequest(infoRequest).start();
+          });
+        }
+      },
+      function (error: any) {
+        console.log('Login fail with error: ' + error);
+      },
+    );
+  };
+
+
+  const googleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signOut();
+      const userInfo = await GoogleSignin.signIn();
+      console.log('userInfo', userInfo);
+      const data = {
+        email: userInfo.user.email,
+        SSO: 'GOOGLE',
+        googleId: parseInt(userInfo.user.id, 10),
+        fullName: userInfo.user.name,
+        image: userInfo.user.photo,
+      };
+      SocialAuthenticationServiceHandler(data);
+    } catch (error: any) {
+      // console.log('Message', error.message);
+    }
+  };
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: '895805790628-fcslugmusggib4ofbrqulg16jpf4ojvl.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+    });
+  }, []);
 
   return (
     <View style={styles.container}>

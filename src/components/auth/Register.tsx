@@ -1,13 +1,9 @@
 import React, {useState} from 'react';
 import {
   Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -16,6 +12,7 @@ import {
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   colorGrey,
   colorPrimary,
@@ -27,118 +24,144 @@ import {
   RegisterInitialState,
 } from '../../utils/constants/authConstant';
 import InputwithIconComponent from '../common/Inputs/InputwithIconComponent';
-import LoadIcon from '../common/LoadIcons';
 import ButtonPrimary from '../common/buttons/ButtonPrimary';
 import SocialLoginBtn from '../common/buttons/SocialLoginBtn';
+import {EMAIL_REGEX} from '../../utils/constants/common';
 
 const Register = () => {
   const [inputs, setInputs] = useState(RegisterInitialState);
+  const [inputsError, setInputsError] = useState(RegisterInitialState);
+
   const HandleInputsTextChange = (text: string, id: string) => {
     setInputs({
       ...inputs,
       [id]: text,
     });
   };
+
+  const validation = () => {
+    const error = RegisterInitialState;
+    if (inputs.fullName === '') {
+      setInputsError({
+        ...RegisterInitialState,
+        fullName: 'Required !',
+      });
+      return false;
+    } else if (inputs.email === '') {
+      setInputsError({
+        ...RegisterInitialState,
+        email: 'Email is required !',
+      });
+      return false;
+    } else if (!EMAIL_REGEX.test(inputs.email)) {
+      setInputsError({
+        ...RegisterInitialState,
+        email: 'Please enter a valid email.',
+      });
+      return false;
+    } else if (inputs.password === '') {
+      setInputsError({
+        ...RegisterInitialState,
+        password: 'Passowrd is required !',
+      });
+      return false;
+    } else if (inputs.password.length <= 5) {
+      error.password = 'Password length must be of 6 characters.';
+      return false;
+    } else if (inputs.confirmPassowrd !== inputs.password) {
+      error.confirmPassowrd = 'Password not match.';
+      return false;
+    }else {
+
+    }
+  };
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
-      >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView style={styles.container}>
-          <Text style={styles.primaryHeading}>
-            {RegisterHeading.primaryHeading}
-          </Text>
-          <View style={styles.inputContainer}>
-            <InputwithIconComponent
-              id="fullName"
-              handelTextChange={HandleInputsTextChange}
-              iconColor={colorPrimary}
-              iconFamily="FontAwesome5"
-              iconName="user-circle"
-              iconSize={20}
-              iconStyle={{}}
-              placeholder="Full Name"
-              value={inputs.fullName}
-            />
-            <InputwithIconComponent
-              id="email"
-              handelTextChange={HandleInputsTextChange}
-              iconColor={colorPrimary}
-              iconFamily="MaterialCommunityIcons"
-              iconName="email"
-              iconSize={20}
-              iconStyle={{}}
-              placeholder="Email"
-              value={inputs.email}
-            />
-            <InputwithIconComponent
-              id="number"
-              handelTextChange={HandleInputsTextChange}
-              iconColor={colorPrimary}
-              iconFamily="FontAwesome"
-              iconName="mobile"
-              iconSize={22}
-              iconStyle={{}}
-              placeholder="Mobile Number"
-              value={inputs.number}
-            />
-            <InputwithIconComponent
-              id="password"
-              handelTextChange={HandleInputsTextChange}
-              iconColor={colorPrimary}
-              iconFamily="FontAwesome"
-              iconName="lock"
-              iconSize={20}
-              iconStyle={{}}
-              placeholder="Password"
-              value={inputs.password}
-            />
-            <InputwithIconComponent
-              id="confirmPassowrd"
-              handelTextChange={HandleInputsTextChange}
-              iconColor={colorPrimary}
-              iconFamily="FontAwesome"
-              iconName="lock"
-              iconSize={20}
-              iconStyle={{}}
-              placeholder="Confirm Password"
-              value={inputs.confirmPassowrd}
-            />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAwareScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}>
+        <Text style={styles.primaryHeading}>
+          {RegisterHeading.primaryHeading}
+        </Text>
+        <View style={styles.inputContainer}>
+          <InputwithIconComponent
+            id="fullName"
+            handelTextChange={HandleInputsTextChange}
+            iconColor={colorPrimary}
+            iconFamily="FontAwesome5"
+            iconName="user-circle"
+            iconSize={20}
+            iconStyle={{}}
+            placeholder="Full Name"
+            value={inputs.fullName}
+          />
+          <InputwithIconComponent
+            id="email"
+            handelTextChange={HandleInputsTextChange}
+            iconColor={colorPrimary}
+            iconFamily="MaterialCommunityIcons"
+            iconName="email"
+            iconSize={20}
+            iconStyle={{}}
+            placeholder="Email"
+            value={inputs.email}
+          />
+          <InputwithIconComponent
+            id="password"
+            handelTextChange={HandleInputsTextChange}
+            iconColor={colorPrimary}
+            iconFamily="FontAwesome"
+            iconName="lock"
+            iconSize={20}
+            iconStyle={{}}
+            placeholder="Password"
+            value={inputs.password}
+          />
+          <InputwithIconComponent
+            id="confirmPassowrd"
+            handelTextChange={HandleInputsTextChange}
+            iconColor={colorPrimary}
+            iconFamily="FontAwesome"
+            iconName="lock"
+            iconSize={20}
+            iconStyle={{}}
+            placeholder="Confirm Password"
+            value={inputs.confirmPassowrd}
+          />
+        </View>
+        <View style={styles.btnsContainer}>
+          <View style={styles.primaryBtnContainer}>
+            <ButtonPrimary label="Register" />
           </View>
-          <View style={styles.btnsContainer}>
-            <View style={styles.primaryBtnContainer}>
-              <ButtonPrimary label="Register" />
-            </View>
-            <View style={styles.loginOptionsContainer}>
-              <View style={styles.line}>
-                <View style={styles.loginOptionsTextContainer}>
-                  <Text style={styles.loginOptionsText}>
-                    {RegisterHeading.orRegisterWith}
-                  </Text>
-                </View>
+          <View style={styles.loginOptionsContainer}>
+            <View style={styles.line}>
+              <View style={styles.loginOptionsTextContainer}>
+                <Text style={styles.loginOptionsText}>
+                  {RegisterHeading.orRegisterWith}
+                </Text>
               </View>
-            </View>
-            <View style={[styles.mt_2]}>
-              <View style={styles.socialBtnContainer}>
-                <SocialLoginBtn label="Google" type="google" />
-              </View>
-              <View style={styles.socialBtnContainer}>
-                <SocialLoginBtn label="Facebook" type="facebook" />
-              </View>
-            </View>
-            <View style={styles.footer}>
-              <Text style={styles.footerTextSuggestion}>
-                {"Don't have an account? "}
-              </Text>
-              <Pressable>
-                <Text style={styles.navText}>Login Now</Text>
-              </Pressable>
             </View>
           </View>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+          <View style={[styles.mt_2]}>
+            <View style={styles.socialBtnContainer}>
+              <SocialLoginBtn label="Google" type="google" />
+            </View>
+            <View style={styles.socialBtnContainer}>
+              <SocialLoginBtn label="Facebook" type="facebook" />
+            </View>
+          </View>
+          <View style={styles.footer}>
+            <Text style={styles.footerTextSuggestion}>
+              {"Don't have an account? "}
+            </Text>
+            <Pressable>
+              <Text style={styles.navText}>Login Now</Text>
+            </Pressable>
+          </View>
+        </View>
+      </KeyboardAwareScrollView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -146,13 +169,16 @@ export default Register;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1
+    flex: 1,
+    backgroundColor: white,
   },
   container: {
     flex: 1,
     backgroundColor: white,
     paddingTop: responsiveScreenHeight(2),
-    paddingBottom: 50
+  },
+  contentContainer: {
+    paddingBottom: responsiveScreenHeight(2),
   },
   primaryHeading: {
     fontSize: responsiveFontSize(2.5),

@@ -1,8 +1,8 @@
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {Platform, StyleSheet, TextInput, View} from 'react-native';
 import React, { useState } from 'react';
 import LoadIcon from '../LoadIcons';
 import {InputsWithIconComponentProps} from '../../../interfaces/components/inputs/InputswithIconComponentInterface';
-import {colorGrey, colorSecondary, grey} from '../../../../assests/Styles/GlobalTheme';
+import {colorSecondary} from '../../../../assests/Styles/GlobalTheme';
 import {
     responsiveFontSize,
   responsiveScreenHeight,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     borderColor: '#F6F6F6',
     flexDirection: 'row',
     paddingHorizontal: responsiveScreenWidth(3),
-    paddingVertical: responsiveScreenHeight(1.5),
+    paddingVertical: Platform.OS === 'ios' ? responsiveScreenHeight(1.5) : responsiveScreenHeight(1),
     borderRadius: responsiveScreenWidth(2),
     marginTop: responsiveScreenHeight(2)
   },
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     borderColor: colorSecondary,
     flexDirection: 'row',
     paddingHorizontal: responsiveScreenWidth(3),
-    paddingVertical: responsiveScreenHeight(1.8),
+    paddingVertical:  Platform.OS === 'ios' ? responsiveScreenHeight(1.5) : responsiveScreenHeight(1),
     borderRadius: responsiveScreenWidth(2),
     marginTop: responsiveScreenHeight(2)
   },

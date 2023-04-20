@@ -26,7 +26,6 @@ export const LoginInputsInitialState = {
 export const RegisterInitialState = {
     fullName: '',
     email: '',
-    number: '',
     password: '',
     confirmPassowrd: ''
 }
