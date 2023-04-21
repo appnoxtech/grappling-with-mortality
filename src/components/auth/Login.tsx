@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {
-    Keyboard,
+  Keyboard,
   Pressable,
   StyleSheet,
   Text,
@@ -19,21 +19,97 @@ import {
   colorSecondary,
   white,
 } from '../../../assests/Styles/GlobalTheme';
-import {LoginHeading} from '../../utils/constants/authConstant';
+import {ErrorMessage, LoginHeading} from '../../utils/constants/authConstant';
 import InputwithIconComponent from '../common/Inputs/InputwithIconComponent';
 import {LoginInputsInitialState} from '../../utils/constants/authConstant';
 import LoadIcon from '../common/LoadIcons';
 import ButtonPrimary from '../common/buttons/ButtonPrimary';
 import SocialLoginBtn from '../common/buttons/SocialLoginBtn';
+import {EMAIL_REGEX} from '../../utils/constants/common';
+import useLoginHook from '../../hooks/AuthHooks/LoginHook';
 
 const Login = () => {
   const [inputs, setInputs] = useState(LoginInputsInitialState);
+  const [errors, setErrors] = useState(LoginInputsInitialState);
+  const LoginServiceHandler = useLoginHook();
+
   const HandleInputsTextChange = (text: string, id: string) => {
     setInputs({
       ...inputs,
       [id]: text,
     });
+    OnTextChangeVerificaation(id, text);
   };
+
+  const Validation = () => {
+    if (inputs.email === '') {
+      setErrors({
+        ...LoginInputsInitialState,
+        email: 'Required !',
+      });
+      return false;
+    } else if (!EMAIL_REGEX.test(inputs.email)) {
+      setErrors({
+        ...LoginInputsInitialState,
+        email: 'Please enter a valid email.',
+      });
+      return false;
+    } else if (inputs.password === '') {
+      setErrors({
+        ...LoginInputsInitialState,
+        password: 'Required !',
+      });
+      return false;
+    } else if (inputs.password.length <= 5) {
+      setErrors({
+        ...LoginInputsInitialState,
+        password: 'Password must contain 6 characters.',
+      });
+      return false;
+    } else {
+      setErrors(LoginInputsInitialState);
+      return true;
+    }
+  };
+
+  const OnTextChangeVerificaation = (id: string, value: string) => {
+    if (id === 'email' && value === '') {
+      setErrors({
+        ...LoginInputsInitialState,
+        email: ErrorMessage.REQ,
+      });
+      return false;
+    } else if (id === 'email' && !EMAIL_REGEX.test(value)) {
+      setErrors({
+        ...LoginInputsInitialState,
+        email: ErrorMessage.INVD_EMAIL,
+      });
+      return false;
+    } else if (id === 'password' && value === '') {
+      setErrors({
+        ...LoginInputsInitialState,
+        password: ErrorMessage.REQ,
+      });
+      return false;
+    } else if (id === 'password' && value.length <= 5) {
+      setErrors({
+        ...LoginInputsInitialState,
+        password: ErrorMessage.PSWD_LENGTH,
+      });
+      return false;
+    } else {
+      setErrors(LoginInputsInitialState);
+      return true;
+    }
+  };
+
+  const handleLoginBtnPress = () => {
+    const isValid = Validation();
+    if(isValid) {
+      LoginServiceHandler(inputs);
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -83,7 +159,7 @@ const Login = () => {
         </View>
         <View style={styles.btnsContainer}>
           <View style={styles.primaryBtnContainer}>
-            <ButtonPrimary label="Login" />
+            <ButtonPrimary handleBtnPress={handleLoginBtnPress} label="Login" />
           </View>
           <View style={styles.loginOptionsContainer}>
             <View style={styles.line}>

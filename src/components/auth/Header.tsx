@@ -8,13 +8,14 @@ import {
 } from 'react-native-responsive-dimensions';
 import {LandingPageBtnLabels} from '../../utils/constants/authConstant';
 import {LoginHeaderProps} from '../../interfaces/auth/headerInterface';
+import CommonHeader from '../common/headers/CommonHeader';
 
 const LandingPageHeader: React.FC<LoginHeaderProps> = ({
   activeLabel,
   handleLabelClick,
 }) => {
   return (
-    <View style={styles.container}>
+    <CommonHeader>
       <View style={styles.btnContainer}>
         <TouchableOpacity
           onPress={() => handleLabelClick(LandingPageBtnLabels.Login)}>
@@ -27,16 +28,13 @@ const LandingPageHeader: React.FC<LoginHeaderProps> = ({
       <View style={styles.btnContainer}>
         <TouchableOpacity
           onPress={() => handleLabelClick(LandingPageBtnLabels.Register)}>
-          <Text
-            style={styles.btnLabel}>
-            {LandingPageBtnLabels.Register}
-          </Text>
+          <Text style={styles.btnLabel}>{LandingPageBtnLabels.Register}</Text>
           {activeLabel === LandingPageBtnLabels.Register ? (
             <View style={styles.registerUnderLine} />
           ) : null}
         </TouchableOpacity>
       </View>
-    </View>
+    </CommonHeader>
   );
 };
 

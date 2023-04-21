@@ -10,7 +10,9 @@ const useLoginHook = () => {
         try {
             const res = await LoginServices(data);
             const userInfo = res.data.data;
-            dispatch(updateUserDetails(userInfo));
+            // dispatch(updateUserDetails(userInfo));
+            console.log('userInfo', userInfo);
+            
         } catch (error: any) {
             Alert.alert('Error', error.response.data.errors[0].message);
         }

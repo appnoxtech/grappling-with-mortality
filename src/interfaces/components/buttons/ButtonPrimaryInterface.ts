@@ -1,3 +1,5 @@
 export interface ButtonPrimaryProps {
-    label: string
+    label: string,
+    handleBtnPress(): void,
+    isActive?: boolean
 }

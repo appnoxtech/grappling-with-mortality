@@ -2,11 +2,11 @@ import { StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-nativ
 import React from 'react'
 import { ButtonPrimaryProps } from '../../../interfaces/components/buttons/ButtonPrimaryInterface'
 import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
-import { colorPrimary, white } from '../../../../assests/Styles/GlobalTheme'
+import { colorPrimary, colorSecondary, white } from '../../../../assests/Styles/GlobalTheme'
 
-const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({label}) => {
+const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({label, handleBtnPress, isActive=true}) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={isActive ? styles.container : styles.inActiveContainer} onPress={handleBtnPress}>
         <Text style={styles.btnText}>{label}</Text>
     </TouchableOpacity>
   )
@@ -21,6 +21,13 @@ const styles = StyleSheet.create({
        paddingHorizontal: responsiveScreenWidth(3),
        paddingVertical: responsiveScreenHeight(2),
        borderRadius: responsiveScreenWidth(2)
+    },
+    inActiveContainer: {
+      width: '100%',
+      backgroundColor: 'rgba(92, 119, 22, 0.5)',
+      paddingHorizontal: responsiveScreenWidth(3),
+      paddingVertical: responsiveScreenHeight(2),
+      borderRadius: responsiveScreenWidth(2)
     },
     btnText: {
         fontSize: responsiveFontSize(2.5),

@@ -15,6 +15,7 @@ export const RegisterHeading = {
     remember: 'Remember Password',
     forget: 'Forget Password?',
     orRegisterWith: 'or Register with',
+
 }
 
 
@@ -28,4 +29,17 @@ export const RegisterInitialState = {
     email: '',
     password: '',
     confirmPassowrd: ''
+}
+
+export const ErrorMessage = {
+    PSWD_NOT_MATCH: 'Password not match.',
+    PSWD_LENGTH: 'Password length must be greater then 5.',
+    PSWD_REQ: 'Passowrd is required !',
+    INVD_EMAIL: 'Please enter a valid email.',
+    EMAIL_REQ: 'Email is required !',
+    REQ: 'Required !'
+}
+
+export const SuccessMessage = {
+    signUp: 'SuccessFully Sign up'
 }
