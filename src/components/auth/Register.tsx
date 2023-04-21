@@ -30,43 +30,17 @@ import ButtonPrimary from '../common/buttons/ButtonPrimary';
 import SocialLoginBtn from '../common/buttons/SocialLoginBtn';
 import {EMAIL_REGEX} from '../../utils/constants/common';
 import useRegisterHook from '../../hooks/AuthHooks/RegisterHook';
+import { inputsConstant } from '../../utils/constants/authConstant';
 
 const labels = {
    findAccount: "Don't have an account? ",
    login: 'Login Now',
    register: "Register",
+   Google: "Google",
+   google: "google",
+   Facebook: 'Facebook',
+   facebook: 'facebook',
 };
-
-const inputsConstant = {
-  fullName: {
-    id: "fullName",
-    iconFamily: "FontAwesome5",
-    iconName: "user-circle",
-    iconSize: 20,
-    placeholder: "Full Name"
-  },
-   email: {
-     id: "email",
-     iconFamily: "MaterialCommunityIcons",
-     iconName: "email",
-     placeHolder: "Email",
-     iconSize: 20
-   },
-   password: {
-     id: "password",
-     iconFamily: "FontAwesome",
-     iconName: "lock",
-     placeHolder: "Password",
-     iconSize: 20
-   },
-   confirmPassword: {
-      id: "confirmPassowrd",
-      iconFamily: 'FontAwesome',
-      iconName: 'lock',
-      iconSize: 20,
-      placeholder: 'Confirm Password'
-   }
-}
 
 const Register = () => {
   const navigation = useNavigation();
@@ -250,10 +224,10 @@ const Register = () => {
           </View>
           <View style={[styles.mt_2]}>
             <View style={styles.socialBtnContainer}>
-              <SocialLoginBtn label="Google" type="google" />
+              <SocialLoginBtn label={labels.Google} type={labels.google} />
             </View>
             <View style={styles.socialBtnContainer}>
-              <SocialLoginBtn label="Facebook" type="facebook" />
+              <SocialLoginBtn label={labels.Facebook} type={labels.facebook} />
             </View>
           </View>
           <View style={styles.footer}>

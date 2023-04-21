@@ -2,6 +2,7 @@ import {Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-n
 import React, {useEffect} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { GOOGLE_CLIENT_ID } from '@env';
 import {Alert} from 'react-native';
 import {
   responsiveFontSize,
@@ -25,6 +26,8 @@ interface props {
   type: string;
 }
 
+const path = '../../../../assests/images/google.png'
+
 const SocialLoginBtn: React.FC<props> = ({label, type}) => {
   const dispatch = useDispatch();
   const SocialAuthenticationServiceHandler = useSocialAuthHook();
@@ -34,13 +37,7 @@ const SocialLoginBtn: React.FC<props> = ({label, type}) => {
     if (type === 'facebook') {
       loginFacebook();
     } else {
-       if(Platform.OS === 'ios') {
-        googleSignIn();
-       }else{
-         await googleSignIn();
-         console.log(`Data {"SSO": "GOOGLE", "email": "shudhanshu.appnox@gmail.com", "fullName": "Shudhanshu Choudhary", "googleId": 116883255948173340000, "image": "https://lh3.googleusercontent.com/a/AGNmyxYMVlZy2jsZapufF9z7r5kX8bdL7wIGL6XfXdWn=s120"}`)
-       }
-       
+      googleSignIn();
     }
   };
 
@@ -108,13 +105,13 @@ const SocialLoginBtn: React.FC<props> = ({label, type}) => {
       };
       SocialAuthenticationServiceHandler(data);
     } catch (error: any) {
-      // console.log('Message', error.message);
+      console.log('Message', error.message);
     }
   };
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: '895805790628-fcslugmusggib4ofbrqulg16jpf4ojvl.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      webClientId: GOOGLE_CLIENT_ID, // client ID of type WEB for your server (needed to verify user ID and offline access)
     });
   }, []);
 
@@ -125,7 +122,7 @@ const SocialLoginBtn: React.FC<props> = ({label, type}) => {
           <View style={styles.btnImageContainer}>
             {type === 'google' ? (
               <Image
-                source={require('../../../../assests/images/google.png')}
+                source={require(path)}
                 style={styles.image}
                 resizeMode="contain"
               />

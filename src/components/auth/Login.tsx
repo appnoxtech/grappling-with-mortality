@@ -27,6 +27,20 @@ import ButtonPrimary from '../common/buttons/ButtonPrimary';
 import SocialLoginBtn from '../common/buttons/SocialLoginBtn';
 import {EMAIL_REGEX} from '../../utils/constants/common';
 import useLoginHook from '../../hooks/AuthHooks/LoginHook';
+import { inputsConstant } from '../../utils/constants/authConstant';
+
+const labels = {
+   login: "Login",
+   noAccount: "Don't have an account? ",
+   register: 'Register Now',
+   Google: "Google",
+   google: "google",
+   Facebook: 'Facebook',
+   facebook: 'facebook',
+   mtIconFamily: "MaterialIcons",
+   mtIconName: "check-box-outline-blank",
+   mtIconSize: 20
+}
 
 const Login = () => {
   const [inputs, setInputs] = useState(LoginInputsInitialState);
@@ -45,25 +59,25 @@ const Login = () => {
     if (inputs.email === '') {
       setErrors({
         ...LoginInputsInitialState,
-        email: 'Required !',
+        email: ErrorMessage.REQ,
       });
       return false;
     } else if (!EMAIL_REGEX.test(inputs.email)) {
       setErrors({
         ...LoginInputsInitialState,
-        email: 'Please enter a valid email.',
+        email: ErrorMessage.INVD_EMAIL,
       });
       return false;
     } else if (inputs.password === '') {
       setErrors({
         ...LoginInputsInitialState,
-        password: 'Required !',
+        password: ErrorMessage.REQ,
       });
       return false;
     } else if (inputs.password.length <= 5) {
       setErrors({
         ...LoginInputsInitialState,
-        password: 'Password must contain 6 characters.',
+        password: ErrorMessage.PSWD_LENGTH,
       });
       return false;
     } else {
@@ -116,26 +130,28 @@ const Login = () => {
         <Text style={styles.primaryHeading}>{LoginHeading.primaryHeading}</Text>
         <View style={styles.inputContainer}>
           <InputwithIconComponent
-            id="email"
+            id={inputsConstant.email.id}
             handelTextChange={HandleInputsTextChange}
             iconColor={colorPrimary}
-            iconFamily="MaterialCommunityIcons"
-            iconName="email"
-            iconSize={25}
+            iconFamily={inputsConstant.email.iconFamily}
+            iconName={inputsConstant.email.iconName}
+            iconSize={inputsConstant.email.iconSize}
             iconStyle={{}}
-            placeholder="Email"
+            placeholder={inputsConstant.email.placeHolder}
             value={inputs.email}
+            errorString={errors.email}
           />
           <InputwithIconComponent
-            id="password"
+            id={inputsConstant.password.id}
             handelTextChange={HandleInputsTextChange}
             iconColor={colorPrimary}
-            iconFamily="FontAwesome"
-            iconName="lock"
-            iconSize={25}
+            iconFamily={inputsConstant.password.iconFamily}
+            iconName={inputsConstant.password.iconName}
+            iconSize={inputsConstant.password.iconSize}
             iconStyle={{}}
-            placeholder="Password"
+            placeholder={inputsConstant.password.placeHolder}
             value={inputs.password}
+            errorString={errors.password}
           />
         </View>
         <View style={styles.othersOptionsContainer}>
@@ -143,9 +159,9 @@ const Login = () => {
             <View style={styles.iconContainer}>
               <LoadIcon
                 style={{}}
-                iconFamily="MaterialIcons"
-                iconName="check-box-outline-blank"
-                size={20}
+                iconFamily={labels.mtIconFamily}
+                iconName={labels.mtIconName}
+                size={labels.mtIconSize}
                 color={colorSecondary}
               />
             </View>
@@ -159,7 +175,7 @@ const Login = () => {
         </View>
         <View style={styles.btnsContainer}>
           <View style={styles.primaryBtnContainer}>
-            <ButtonPrimary handleBtnPress={handleLoginBtnPress} label="Login" />
+            <ButtonPrimary handleBtnPress={handleLoginBtnPress} label={labels.login} />
           </View>
           <View style={styles.loginOptionsContainer}>
             <View style={styles.line}>
@@ -172,18 +188,18 @@ const Login = () => {
           </View>
           <View style={[styles.mt_2]}>
             <View style={styles.socialBtnContainer}>
-              <SocialLoginBtn label="Google" type="google" />
+              <SocialLoginBtn label={labels.Google} type={labels.google} />
             </View>
             <View style={styles.socialBtnContainer}>
-              <SocialLoginBtn label="Facebook" type="facebook" />
+              <SocialLoginBtn label={labels.Facebook} type={labels.facebook} />
             </View>
           </View>
           <View style={styles.footer}>
             <Text style={styles.footerTextSuggestion}>
-              {"Don't have an account? "}
+              {labels.noAccount}
             </Text>
             <Pressable>
-              <Text style={styles.navText}>Register Now</Text>
+              <Text style={styles.navText}>{labels.register}</Text>
             </Pressable>
           </View>
         </View>
