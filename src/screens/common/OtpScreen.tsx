@@ -1,5 +1,12 @@
 //@ts-ignore
-import {View, StyleSheet, TextInput, Pressable, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Text,
+  Keyboard,
+} from 'react-native';
 import React, {LegacyRef, RefObject, useEffect, useRef, useState} from 'react';
 import {Alert} from 'react-native';
 import {
@@ -20,11 +27,15 @@ import {useNavigation} from '@react-navigation/native';
 import {OtpScreenLabels} from '../../utils/constants/OtpScreenConst';
 import HeaderWithBackBtn from '../../components/common/headers/HeaderWithBackBtn';
 import ButtonPrimary from '../../components/common/buttons/ButtonPrimary';
-import { confirmOTPService } from '../../services/common/OtpService';
-import { SuccessMessage } from '../../utils/constants/authConstant';
+import {
+  confirmOTPService,
+  generateOTPService,
+} from '../../services/common/OtpService';
+import {SuccessMessage} from '../../utils/constants/authConstant';
+
 type otpInterface = {
-    [key: string]: string
-}
+  [key: string]: string;
+};
 const initialState: otpInterface = {
   pin1: '',
   pin2: '',
@@ -46,13 +57,14 @@ interface params {
 }
 
 const labels = {
-    notRecieveCode: 'Didn’t received code? ',
-    resend: 'Resend',
-    verify: 'Verify'
-}
+  notRecieveCode: 'Didn’t received code? ',
+  resend: 'Resend',
+  verify: 'Verify',
+};
 
 const OTP: React.FC<any> = ({route}) => {
   const {email, type, flow} = route.params;
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(59);
   const [show, setShow] = useState(false);
@@ -74,8 +86,8 @@ const OTP: React.FC<any> = ({route}) => {
         otp: parseInt(otp, 10),
         type,
       };
-      
-     const res = await confirmOTPService(data);
+
+      const res = await confirmOTPService(data);
       setOtp(initialState);
       if (flow === 'Signup') {
         Alert.alert(SuccessMessage.signUp);
@@ -84,7 +96,7 @@ const OTP: React.FC<any> = ({route}) => {
           routes: [{name: 'LandingPage'} as any],
         });
       } else if (flow === 'passwordForget') {
-        navigation.navigate('ConfirmPassword' as never, {email, otp} as never);
+        navigation.navigate('ChangePassword' as never, {email, otp} as never);
       }
     } catch (error: any) {
       Alert.alert('Notification', error.response.data.errors[0].message);
@@ -126,9 +138,14 @@ const OTP: React.FC<any> = ({route}) => {
     }
   }, [otp]);
 
-  const clickHandler = () => {
+  const clickHandler = async () => {
     setShow(false);
     setTimer(59);
+    const data = {
+      email: email,
+      type: 'GENERATE',
+    };
+    generateOTPService(data);
   };
 
   useEffect(() => {
@@ -147,6 +164,29 @@ const OTP: React.FC<any> = ({route}) => {
     };
   }, [timer]);
 
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      _keyboardDidShow,
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      _keyboardDidHide,
+    );
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  const _keyboardDidShow = () => {
+    setIsKeyboardVisible(true);
+  };
+
+  const _keyboardDidHide = () => {
+    setIsKeyboardVisible(false);
+  };
+
   return (
     <View style={styles.mainContainer}>
       <HeaderWithBackBtn />
@@ -154,7 +194,9 @@ const OTP: React.FC<any> = ({route}) => {
         {
           <View style={styles.container}>
             <View>
-              <Text style={styles.primaryText}>{OtpScreenLabels.primaryText}</Text>
+              <Text style={styles.primaryText}>
+                {OtpScreenLabels.primaryText}
+              </Text>
               <Text style={styles.secondaryHeading}>
                 {OtpScreenLabels.subText}
               </Text>
@@ -289,23 +331,27 @@ const OTP: React.FC<any> = ({route}) => {
                   maxLength={1}
                   onChangeText={val => {
                     handleChange({val, key: 'pin4'});
-                    if(pin4Ref.current){
-                        pin4Ref.current.focus();
-                        setActivePin('pin4');
+                    if (pin4Ref.current) {
+                      pin4Ref.current.focus();
+                      setActivePin('pin4');
                     }
-                    
                   }}
                   style={styles.otpInput}
                 />
               </View>
             </View>
             <View style={styles.btnContainer}>
-              <ButtonPrimary isActive={isActiveBtn} label={labels.verify} handleBtnPress={handleOTPVerification} />
+              <ButtonPrimary
+                isActive={isActiveBtn}
+                label={labels.verify}
+                handleBtnPress={handleOTPVerification}
+              />
             </View>
           </View>
         }
       </View>
-      <View style={styles.resendOtp}>
+      {isKeyboardVisible ? null : (
+        <View style={styles.resendOtp}>
           <Text style={styles.message}>{labels.notRecieveCode}</Text>
           {show ? (
             <Pressable onPress={clickHandler}>
@@ -317,6 +363,7 @@ const OTP: React.FC<any> = ({route}) => {
             </Text>
           )}
         </View>
+      )}
     </View>
   );
 };
@@ -329,13 +376,13 @@ const styles = StyleSheet.create({
     marginBottom: responsiveScreenHeight(3),
     textAlign: 'center',
     color: colorSecondary,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   secondaryHeading: {
     fontSize: responsiveFontSize(2),
     color: colorGrey,
     textAlign: 'center',
-    fontWeight: '600'
+    fontWeight: '600',
   },
   body: {
     marginTop: responsiveScreenHeight(3),
@@ -404,13 +451,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   message: {
-    fontSize: responsiveFontSize(2)},
+    fontSize: responsiveFontSize(2),
+  },
   linkMessage: {
     fontSize: responsiveFontSize(2),
     color: colorPrimary,
   },
   backBtnContainer: {
     width: responsiveScreenWidth(15),
-    paddingHorizontal: responsiveScreenWidth(2)
-  }
+    paddingHorizontal: responsiveScreenWidth(2),
+  },
 });

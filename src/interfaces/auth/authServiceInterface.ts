@@ -16,6 +16,7 @@ export interface ssoData {
     fullName: string,
     email: string,
     password: string,
+    userType: 'AUTHOR' | 'CUSTOMER'
   }
   export interface resetPassword {
     email: string;

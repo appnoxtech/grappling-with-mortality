@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Keyboard,
   Pressable,
@@ -30,23 +30,28 @@ import ButtonPrimary from '../common/buttons/ButtonPrimary';
 import SocialLoginBtn from '../common/buttons/SocialLoginBtn';
 import {EMAIL_REGEX} from '../../utils/constants/common';
 import useRegisterHook from '../../hooks/AuthHooks/RegisterHook';
-import { inputsConstant } from '../../utils/constants/authConstant';
+import {inputsConstant} from '../../utils/constants/authConstant';
 
 const labels = {
-   findAccount: "Don't have an account? ",
-   login: 'Login Now',
-   register: "Register",
-   Google: "Google",
-   google: "google",
-   Facebook: 'Facebook',
-   facebook: 'facebook',
+  findAccount: "Don't have an account? ",
+  login: 'Login Now',
+  register: 'Register',
+  Google: 'Google',
+  google: 'google',
+  Facebook: 'Facebook',
+  facebook: 'facebook',
 };
 
-const Register = () => {
+interface props {
+  handleLabelClick(label: string): void;
+}
+
+const Register: React.FC<props> = ({handleLabelClick}) => {
   const navigation = useNavigation();
   const handleRegisterService = useRegisterHook();
   const [inputs, setInputs] = useState(RegisterInitialState);
   const [inputsError, setInputsError] = useState(RegisterInitialState);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   const HandleInputsTextChange = (text: string, id: string) => {
     setInputs({
@@ -54,6 +59,10 @@ const Register = () => {
       [id]: text,
     });
     OnTextChangeValidation(id, text);
+  };
+
+  const handleLoginNowClick = () => {
+    handleLabelClick('Login');
   };
 
   const validation = () => {
@@ -93,7 +102,7 @@ const Register = () => {
         confirmPassowrd: ErrorMessage.PSWD_NOT_MATCH,
       });
       return false;
-    }else {
+    } else {
       setInputsError(RegisterInitialState);
       return true;
     }
@@ -130,90 +139,118 @@ const Register = () => {
         password: ErrorMessage.PSWD_LENGTH,
       });
       return false;
-    } else if (id === 'confirmPassowrd' &&  value !== inputs.password) {
+    } else if (id === 'confirmPassowrd' && value !== inputs.password) {
       setInputsError({
         ...RegisterInitialState,
         confirmPassowrd: ErrorMessage.PSWD_NOT_MATCH,
       });
       return false;
-    }else {
+    } else {
       setInputsError(RegisterInitialState);
       return true;
     }
-  }
+  };
 
-  const handleRegisterBtnClick = async() => {
-     const isValid = validation();
-     if(isValid) {
-        // login service api call
-        const {fullName, email, password} = inputs;
-        handleRegisterService({fullName, email, password});
-     }
-  }
-  
+  const handleRegisterBtnClick = async () => {
+    const isValid = validation();
+    if (isValid) {
+      // login service api call
+      const {fullName, email, password} = inputs;
+      const userType = 'CUSTOMER';
+      handleRegisterService({fullName, email, password, userType});
+    }
+  };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      _keyboardDidShow,
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      _keyboardDidHide,
+    );
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  const _keyboardDidShow = () => {
+    setIsKeyboardVisible(true);
+  };
+
+  const _keyboardDidHide = () => {
+    setIsKeyboardVisible(false);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAwareScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.primaryHeading}>
-          {RegisterHeading.primaryHeading}
-        </Text>
-        <View style={styles.inputContainer}>
-          <InputwithIconComponent
-            id={inputsConstant.fullName.id}
-            handelTextChange={HandleInputsTextChange}
-            iconColor={colorPrimary}
-            iconFamily={inputsConstant.fullName.iconFamily}
-            iconName={inputsConstant.fullName.iconName}
-            iconSize={inputsConstant.fullName.iconSize}
-            iconStyle={{}}
-            placeholder={inputsConstant.fullName.placeholder}
-            value={inputs.fullName}
-            errorString={inputsError.fullName}
-          />
-          <InputwithIconComponent
-            id={inputsConstant.email.id}
-            handelTextChange={HandleInputsTextChange}
-            iconColor={colorPrimary}
-            iconFamily={inputsConstant.email.iconFamily}
-            iconName={inputsConstant.email.iconName}
-            iconSize={inputsConstant.email.iconSize}
-            iconStyle={{}}
-            placeholder={inputsConstant.email.placeHolder}
-            value={inputs.email}
-            errorString={inputsError.email}
-          />
-          <InputwithIconComponent
-            id={inputsConstant.password.id}
-            handelTextChange={HandleInputsTextChange}
-            iconColor={colorPrimary}
-            iconFamily={inputsConstant.password.iconFamily}
-            iconName={inputsConstant.password.iconName}
-            iconSize={inputsConstant.password.iconSize}
-            iconStyle={{}}
-            placeholder={inputsConstant.password.placeHolder}
-            value={inputs.password}
-            errorString={inputsError.password}
-          />
-          <InputwithIconComponent
-            id={inputsConstant.confirmPassword.id}
-            handelTextChange={HandleInputsTextChange}
-            iconColor={colorPrimary}
-            iconFamily={inputsConstant.confirmPassword.iconFamily}
-            iconName={inputsConstant.confirmPassword.iconName}
-            iconSize={inputsConstant.confirmPassword.iconSize}
-            iconStyle={{}}
-            placeholder={inputsConstant.confirmPassword.placeholder}
-            value={inputs.confirmPassowrd}
-            errorString={inputsError.confirmPassowrd}
-          />
-        </View>
-        <View style={styles.btnsContainer}>
-          <View style={styles.primaryBtnContainer}>
-            <ButtonPrimary handleBtnPress={handleRegisterBtnClick} label={labels.register} />
+      <View style={styles.container}>
+        <KeyboardAwareScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}>
+          <Text style={styles.primaryHeading}>
+            {RegisterHeading.primaryHeading}
+          </Text>
+          <View style={styles.inputContainer}>
+            <InputwithIconComponent
+              id={inputsConstant.fullName.id}
+              handelTextChange={HandleInputsTextChange}
+              iconColor={colorPrimary}
+              iconFamily={inputsConstant.fullName.iconFamily}
+              iconName={inputsConstant.fullName.iconName}
+              iconSize={inputsConstant.fullName.iconSize}
+              iconStyle={{}}
+              placeholder={inputsConstant.fullName.placeholder}
+              value={inputs.fullName}
+              errorString={inputsError.fullName}
+            />
+            <InputwithIconComponent
+              id={inputsConstant.email.id}
+              handelTextChange={HandleInputsTextChange}
+              iconColor={colorPrimary}
+              iconFamily={inputsConstant.email.iconFamily}
+              iconName={inputsConstant.email.iconName}
+              iconSize={inputsConstant.email.iconSize}
+              iconStyle={{}}
+              placeholder={inputsConstant.email.placeHolder}
+              value={inputs.email}
+              errorString={inputsError.email}
+            />
+            <InputwithIconComponent
+              id={inputsConstant.password.id}
+              handelTextChange={HandleInputsTextChange}
+              iconColor={colorPrimary}
+              iconFamily={inputsConstant.password.iconFamily}
+              iconName={inputsConstant.password.iconName}
+              iconSize={inputsConstant.password.iconSize}
+              iconStyle={{}}
+              placeholder={inputsConstant.password.placeHolder}
+              value={inputs.password}
+              errorString={inputsError.password}
+            />
+            <InputwithIconComponent
+              id={inputsConstant.confirmPassword.id}
+              handelTextChange={HandleInputsTextChange}
+              iconColor={colorPrimary}
+              iconFamily={inputsConstant.confirmPassword.iconFamily}
+              iconName={inputsConstant.confirmPassword.iconName}
+              iconSize={inputsConstant.confirmPassword.iconSize}
+              iconStyle={{}}
+              placeholder={inputsConstant.confirmPassword.placeholder}
+              value={inputs.confirmPassowrd}
+              errorString={inputsError.confirmPassowrd}
+            />
           </View>
-          <View style={styles.loginOptionsContainer}>
+          <View style={styles.btnsContainer}>
+            <View style={styles.primaryBtnContainer}>
+              <ButtonPrimary
+                handleBtnPress={handleRegisterBtnClick}
+                label={labels.register}
+              />
+            </View>
+            {/* <View style={styles.loginOptionsContainer}>
             <View style={styles.line}>
               <View style={styles.loginOptionsTextContainer}>
                 <Text style={styles.loginOptionsText}>
@@ -229,17 +266,20 @@ const Register = () => {
             <View style={styles.socialBtnContainer}>
               <SocialLoginBtn label={labels.Facebook} type={labels.facebook} />
             </View>
+          </View> */}
           </View>
+        </KeyboardAwareScrollView>
+        {isKeyboardVisible ? null : (
           <View style={styles.footer}>
             <Text style={styles.footerTextSuggestion}>
               {labels.findAccount}
             </Text>
-            <Pressable>
+            <Pressable onPress={handleLoginNowClick}>
               <Text style={styles.navText}>{labels.login}</Text>
             </Pressable>
           </View>
-        </View>
-      </KeyboardAwareScrollView>
+        )}
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -267,6 +307,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     paddingHorizontal: responsiveScreenWidth(3),
+    marginTop: responsiveScreenHeight(2),
   },
   othersOptionsContainer: {
     paddingHorizontal: responsiveScreenWidth(4.5),
@@ -340,7 +381,7 @@ const styles = StyleSheet.create({
     paddingVertical: responsiveScreenHeight(1),
   },
   footer: {
-    paddingTop: responsiveScreenHeight(2),
+    paddingVertical: responsiveScreenHeight(3),
     flexDirection: 'row',
     justifyContent: 'center',
   },

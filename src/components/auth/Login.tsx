@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Keyboard,
   Pressable,
@@ -13,6 +13,7 @@ import {
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
+import {useNavigation} from '@react-navigation/native';
 import {
   colorGrey,
   colorPrimary,
@@ -27,24 +28,34 @@ import ButtonPrimary from '../common/buttons/ButtonPrimary';
 import SocialLoginBtn from '../common/buttons/SocialLoginBtn';
 import {EMAIL_REGEX} from '../../utils/constants/common';
 import useLoginHook from '../../hooks/AuthHooks/LoginHook';
-import { inputsConstant } from '../../utils/constants/authConstant';
+import {inputsConstant} from '../../utils/constants/authConstant';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const labels = {
-   login: "Login",
-   noAccount: "Don't have an account? ",
-   register: 'Register Now',
-   Google: "Google",
-   google: "google",
-   Facebook: 'Facebook',
-   facebook: 'facebook',
-   mtIconFamily: "MaterialIcons",
-   mtIconName: "check-box-outline-blank",
-   mtIconSize: 20
+  login: 'Login',
+  noAccount: "Don't have an account? ",
+  register: 'Register Now',
+  Google: 'Google',
+  google: 'google',
+  Facebook: 'Facebook',
+  facebook: 'facebook',
+  mtIconFamily: 'MaterialIcons',
+  mtIconName: 'check-box-outline-blank',
+  mtCheckedIconName: 'check-box',
+  mtIconSize: 20,
+};
+
+interface props {
+  handleLabelClick(label: string): void;
 }
 
-const Login = () => {
+const Login: React.FC<props> = ({handleLabelClick}) => {
   const [inputs, setInputs] = useState(LoginInputsInitialState);
   const [errors, setErrors] = useState(LoginInputsInitialState);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [rememberPswd, setRememberPswd] = useState(false);
+  const navigation = useNavigation();
+
   const LoginServiceHandler = useLoginHook();
 
   const HandleInputsTextChange = (text: string, id: string) => {
@@ -53,6 +64,10 @@ const Login = () => {
       [id]: text,
     });
     OnTextChangeVerificaation(id, text);
+  };
+
+  const handleRegisterNowClick = () => {
+    handleLabelClick('Register');
   };
 
   const Validation = () => {
@@ -119,65 +134,102 @@ const Login = () => {
 
   const handleLoginBtnPress = () => {
     const isValid = Validation();
-    if(isValid) {
+    if (isValid) {
       LoginServiceHandler(inputs);
     }
-  }
+  };
+
+  const handleForgetPasswordClick = () => {
+    navigation.navigate('ResetPassword' as never);
+  };
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      _keyboardDidShow,
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      _keyboardDidHide,
+    );
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
+  const _keyboardDidShow = () => {
+    setIsKeyboardVisible(true);
+  };
+
+  const _keyboardDidHide = () => {
+    setIsKeyboardVisible(false);
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <Text style={styles.primaryHeading}>{LoginHeading.primaryHeading}</Text>
-        <View style={styles.inputContainer}>
-          <InputwithIconComponent
-            id={inputsConstant.email.id}
-            handelTextChange={HandleInputsTextChange}
-            iconColor={colorPrimary}
-            iconFamily={inputsConstant.email.iconFamily}
-            iconName={inputsConstant.email.iconName}
-            iconSize={inputsConstant.email.iconSize}
-            iconStyle={{}}
-            placeholder={inputsConstant.email.placeHolder}
-            value={inputs.email}
-            errorString={errors.email}
-          />
-          <InputwithIconComponent
-            id={inputsConstant.password.id}
-            handelTextChange={HandleInputsTextChange}
-            iconColor={colorPrimary}
-            iconFamily={inputsConstant.password.iconFamily}
-            iconName={inputsConstant.password.iconName}
-            iconSize={inputsConstant.password.iconSize}
-            iconStyle={{}}
-            placeholder={inputsConstant.password.placeHolder}
-            value={inputs.password}
-            errorString={errors.password}
-          />
-        </View>
-        <View style={styles.othersOptionsContainer}>
-          <View style={styles.rememberContainer}>
-            <View style={styles.iconContainer}>
-              <LoadIcon
-                style={{}}
-                iconFamily={labels.mtIconFamily}
-                iconName={labels.mtIconName}
-                size={labels.mtIconSize}
-                color={colorSecondary}
+      <SafeAreaProvider style={styles.container}>
+        <View style={styles.container}>
+          <Text style={styles.primaryHeading}>
+            {LoginHeading.primaryHeading}
+          </Text>
+          <View style={styles.inputContainer}>
+            <InputwithIconComponent
+              id={inputsConstant.email.id}
+              handelTextChange={HandleInputsTextChange}
+              iconColor={colorSecondary}
+              iconFamily={inputsConstant.email.iconFamily}
+              iconName={inputsConstant.email.iconName}
+              iconSize={inputsConstant.email.iconSize}
+              iconStyle={{}}
+              placeholder={inputsConstant.email.placeHolder}
+              value={inputs.email}
+              errorString={errors.email}
+            />
+            <InputwithIconComponent
+              id={inputsConstant.password.id}
+              handelTextChange={HandleInputsTextChange}
+              iconColor={colorSecondary}
+              iconFamily={inputsConstant.password.iconFamily}
+              iconName={inputsConstant.password.iconName}
+              iconSize={inputsConstant.password.iconSize}
+              iconStyle={{}}
+              placeholder={inputsConstant.password.placeHolder}
+              value={inputs.password}
+              errorString={errors.password}
+            />
+          </View>
+          <View style={styles.othersOptionsContainer}>
+            <Pressable
+              onPress={() => setRememberPswd(!rememberPswd)}
+              style={styles.rememberContainer}>
+              <View style={styles.iconContainer}>
+                <LoadIcon
+                  style={{}}
+                  iconFamily={labels.mtIconFamily}
+                  iconName={
+                    rememberPswd ? labels.mtCheckedIconName : labels.mtIconName
+                  }
+                  size={labels.mtIconSize}
+                  color={colorSecondary}
+                />
+              </View>
+              <Text style={styles.rememberText}>{LoginHeading.remember}</Text>
+            </Pressable>
+            <View style={styles.forgetPswdContainer}>
+              <TouchableOpacity onPress={handleForgetPasswordClick}>
+                <Text style={styles.forgetPswdText}>{LoginHeading.forget}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.btnsContainer}>
+            <View style={styles.primaryBtnContainer}>
+              <ButtonPrimary
+                handleBtnPress={handleLoginBtnPress}
+                label={labels.login}
               />
             </View>
-            <Text style={styles.rememberText}>{LoginHeading.remember}</Text>
-          </View>
-          <View style={styles.forgetPswdContainer}>
-            <TouchableOpacity>
-              <Text style={styles.forgetPswdText}>{LoginHeading.forget}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.btnsContainer}>
-          <View style={styles.primaryBtnContainer}>
-            <ButtonPrimary handleBtnPress={handleLoginBtnPress} label={labels.login} />
-          </View>
-          <View style={styles.loginOptionsContainer}>
+            {/* <View style={styles.loginOptionsContainer}>
             <View style={styles.line}>
               <View style={styles.loginOptionsTextContainer}>
                 <Text style={styles.loginOptionsText}>
@@ -193,17 +245,18 @@ const Login = () => {
             <View style={styles.socialBtnContainer}>
               <SocialLoginBtn label={labels.Facebook} type={labels.facebook} />
             </View>
+          </View> */}
           </View>
+        </View>
+        {isKeyboardVisible ? null : (
           <View style={styles.footer}>
-            <Text style={styles.footerTextSuggestion}>
-              {labels.noAccount}
-            </Text>
-            <Pressable>
+            <Text style={styles.footerTextSuggestion}>{labels.noAccount}</Text>
+            <Pressable onPress={handleRegisterNowClick}>
               <Text style={styles.navText}>{labels.register}</Text>
             </Pressable>
           </View>
-        </View>
-      </View>
+        )}
+      </SafeAreaProvider>
     </TouchableWithoutFeedback>
   );
 };
@@ -251,7 +304,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   rememberText: {
-    fontSize: responsiveFontSize(1.8),
+    fontSize: responsiveFontSize(1.95),
     color: colorSecondary,
     fontWeight: 'bold',
   },
@@ -298,7 +351,7 @@ const styles = StyleSheet.create({
     paddingVertical: responsiveScreenHeight(1),
   },
   footer: {
-    paddingTop: responsiveScreenHeight(2),
+    paddingVertical: responsiveScreenHeight(3),
     flexDirection: 'row',
     justifyContent: 'center',
   },

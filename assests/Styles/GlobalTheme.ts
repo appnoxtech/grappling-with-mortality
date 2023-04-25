@@ -1,6 +1,6 @@
 import { responsiveFontSize } from "react-native-responsive-dimensions";
-export const colorPrimary = '#5c7716';
-export const colorSecondary = '#c3da70';
+export const colorPrimary = '#50C878';
+export const colorSecondary = 'rgba(80, 200, 120, 0.8)';
 export const colorGrey = '#8391A1';
 export const drawerIconSize=responsiveFontSize(23);
 export const iconSize=responsiveFontSize(25);

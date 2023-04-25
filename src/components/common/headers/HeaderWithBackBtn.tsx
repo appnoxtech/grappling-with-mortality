@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import { responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
@@ -6,8 +6,11 @@ import CommonHeader from './CommonHeader'
 import LoadIcon from '../LoadIcons'
 import { white } from '../../../../assests/Styles/GlobalTheme'
 
+interface props {
+    children?: ReactNode
+}
 
-const HeaderWithBackBtn = () => {
+const HeaderWithBackBtn:React.FC<props> = ({children}) => {
   const navigation = useNavigation();
 
   const handleBackBtnPress = () => {
@@ -18,6 +21,7 @@ const HeaderWithBackBtn = () => {
         <TouchableOpacity onPress={handleBackBtnPress} style={styles.btnContainer}>
             <LoadIcon iconName='arrow-back' iconFamily='Ionicons' style={{}} color={white} size={30} />
         </TouchableOpacity>
+        {children}
     </CommonHeader>
   )
 }

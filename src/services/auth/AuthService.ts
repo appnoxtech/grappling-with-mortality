@@ -33,6 +33,8 @@ import { loginData, resetPassword, signupData, ssoData } from '../../interfaces/
   };
   
   export const ResetPasswordServices = async (data: resetPassword) => {
-    const url = `${URL}access/oauth/forgot-password`;
+    const url = `${URL}account/reset-password`;
+    console.log('data', data);
+    
     return axios.post(url, data);
   };

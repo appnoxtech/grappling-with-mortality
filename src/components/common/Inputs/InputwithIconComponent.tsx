@@ -51,7 +51,7 @@ const InputwithIconComponent: React.FC<InputsWithIconComponentProps> = ({
           ? ( 
              <TouchableOpacity onPress={() => setShowPswd(!showPswd)} style={styles.eyeIconContainer}>
                 {
-                  <LoadIcon iconFamily='Ionicons' iconName={showPswd ? 'eye-off' : 'eye'} size={iconSize} style={{}} color={colorPrimary} />
+                  <LoadIcon iconFamily='Ionicons' iconName={showPswd ? 'eye-off' : 'eye'} size={iconSize} style={{}} color={colorSecondary} />
                 }
              </TouchableOpacity> 
             )

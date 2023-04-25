@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import {colorPrimary, white} from '../../../assests/Styles/GlobalTheme';
 import {
@@ -16,6 +16,12 @@ const LandingPageHeader: React.FC<LoginHeaderProps> = ({
 }) => {
   return (
     <CommonHeader>
+      <StatusBar
+        animated={true}
+        backgroundColor={colorPrimary}
+        barStyle={'default'}
+        showHideTransition={'slide'}
+      />
       <View style={styles.btnContainer}>
         <TouchableOpacity
           onPress={() => handleLabelClick(LandingPageBtnLabels.Login)}>

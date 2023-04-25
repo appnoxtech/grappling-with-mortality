@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     },
     inActiveContainer: {
       width: '100%',
-      backgroundColor: 'rgba(92, 119, 22, 0.5)',
+      backgroundColor: colorSecondary,
       paddingHorizontal: responsiveScreenWidth(3),
       paddingVertical: responsiveScreenHeight(2),
       borderRadius: responsiveScreenWidth(2)
