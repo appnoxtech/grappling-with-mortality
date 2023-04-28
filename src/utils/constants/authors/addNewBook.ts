@@ -1,4 +1,7 @@
-export const initialState = {
+type pair = {
+    [key: string]: string | number | any
+}
+export const initialState:pair = {
     bookName: '',
     bookImage: '',
     description: '',
@@ -6,6 +9,5 @@ export const initialState = {
     authorImage: '',
     noOfPages: '',
     bookLink: '',
-    chapters: '',
     authorId: '',
 };

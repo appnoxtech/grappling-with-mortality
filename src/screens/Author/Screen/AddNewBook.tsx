@@ -1,4 +1,5 @@
 import {
+  Alert,
   Keyboard,
   ScrollView,
   StyleSheet,
@@ -22,6 +23,9 @@ import ButtonPrimary from '../../../components/common/buttons/ButtonPrimary';
 import useKeyboardVisibleListener from '../../../hooks/CommonHooks/isKeyboardVisibleHook';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {white} from '../../../../assests/Styles/GlobalTheme';
+import { useDispatch, useSelector } from 'react-redux';
+import { UpdateNewBookDetails } from '../../../redux/reducers/authorReducer';
+import { NewBookUpdateKey } from '../../../interfaces/author/book.interface';
 
 const placeHolder = {
   BookName: 'Book Name',
@@ -49,20 +53,54 @@ const imagePickerInputContant = {
 };
 
 const AddNewBook = () => {
-  const [inputs, setInputs] = useState(initialState);
+  const dispatch = useDispatch();
+  const {newBook} = useSelector((state: any) => state.author);
   const [errors, setErrors] = useState(initialState);
   const Navigation = useNavigation();
   const isKeyboardVisible = useKeyboardVisibleListener();
-  const onChangeHandler = (text: string, id: string) => {
-    return {
-      ...inputs,
-      [id]: text,
-    };
+
+  const onChangeHandler = (text: string, id: NewBookUpdateKey) => {
+    dispatch(UpdateNewBookDetails({key: id, value: text}))
   };
 
   const handelBtnPress = () => {
-    Navigation.navigate('AddAuthorDetails' as never)
+    const isValid = validation();
+    if(isValid) {
+      Navigation.navigate('AddAuthorDetails' as never)
+    }
   };
+
+  const validation = () => {
+    if(!newBook.bookImage){
+      setErrors({
+        ...initialState,
+        bookImage: 'Required !'
+      });
+      return false;
+    } else if(!newBook.bookName) {
+      setErrors({
+        ...initialState,
+        bookName: 'Required !'
+      });
+      return false;
+    } else if(!newBook.noOfPages) {
+      setErrors({
+        ...initialState,
+        noOfPages: 'Required !'
+      });
+      return false;
+    } else if(!newBook.description) {
+      setErrors({
+        ...initialState,
+        description: 'Required !'
+      });
+      return false;
+    } else {
+      setErrors(initialState);
+      return true;
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -78,14 +116,14 @@ const AddNewBook = () => {
               iconColor={imagePickerInputContant.color}
               iconStyle={imagePickerInputContant.iconStyle}
               iconSize={imagePickerInputContant.iconSize}
-              value={inputs.bookImage}
+              value={newBook.bookImage}
               error={errors.bookImage}
-              id={inputsId.bookImage}
+              id={'bookImage'}
               setValue={onChangeHandler}
             />
             <InputComponent
               placeholder={placeHolder.BookName}
-              value={inputs.bookName}
+              value={newBook.bookName}
               error={errors.bookName}
               containerStyle={styles.inputContainer}
               id={inputsId.bookName}
@@ -93,7 +131,7 @@ const AddNewBook = () => {
             />
             <InputComponent
               placeholder={placeHolder.nmbrofPages}
-              value={inputs.noOfPages}
+              value={newBook.noOfPages}
               error={errors.noOfPages}
               containerStyle={styles.inputContainer}
               id={inputsId.nmbrofPages}
@@ -102,7 +140,7 @@ const AddNewBook = () => {
             />
             <InputComponent
               placeholder={placeHolder.description}
-              value={inputs.description}
+              value={newBook.description}
               error={errors.description}
               containerStyle={styles.inputContainer}
               id={inputsId.descr}

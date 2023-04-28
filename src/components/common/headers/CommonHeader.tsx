@@ -5,11 +5,12 @@ import { responsiveScreenHeight, responsiveScreenWidth } from 'react-native-resp
 
 interface props {
     children: ReactNode,
+    paddingTop?:number
 }
 
-const CommonHeader:React.FC<props> = ({children}) => {
+const CommonHeader:React.FC<props> = ({children, paddingTop = 15}) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {paddingTop: responsiveScreenHeight(paddingTop)}]}>
       {children}
     </View>
   )
@@ -21,7 +22,6 @@ const styles = StyleSheet.create({
     container: {
         position: 'relative',
         backgroundColor: colorPrimary,
-        paddingTop: responsiveScreenHeight(15),
         flexDirection: 'row',
         alignItems: 'center',
         borderBottomLeftRadius: responsiveScreenWidth(5.5),

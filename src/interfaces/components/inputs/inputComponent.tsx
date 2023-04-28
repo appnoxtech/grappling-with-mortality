@@ -8,5 +8,5 @@ export interface inputComponentProps {
    error?: string,
    allowMultiLine?: boolean,
    keyboardType?: InputModeOptions | undefined,
-   onChangeHandler(text: string, id: string): void,
+   onChangeHandler(text: string | number, id: string): void,
 }

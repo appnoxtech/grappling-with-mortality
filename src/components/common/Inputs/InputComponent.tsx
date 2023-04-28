@@ -27,7 +27,14 @@ const InputComponent: React.FC<inputComponentProps> = ({
           onBlur={() => setIsActive(false)}
           multiline={allowMultiLine}
           inputMode={keyboardType}
-          onChangeText={text => onChangeHandler(text, id)}
+          onChangeText={text => {
+            if(keyboardType === 'numeric'){
+              onChangeHandler(parseInt(text, 10), id)
+            }else {
+              onChangeHandler(text, id)
+            }
+            
+          }}
         />
       {error ? (
         <View style={styles.errorStringContainer}>
@@ -58,6 +65,7 @@ const styles = StyleSheet.create({
     borderColor: 'red',
   },
   errorStringContainer: {
+    width: '100%',
     justifyContent:'flex-end',
     alignItems: 'flex-end'
   },

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Keyboard,
   Pressable,
@@ -30,6 +30,8 @@ import {EMAIL_REGEX} from '../../utils/constants/common';
 import useLoginHook from '../../hooks/AuthHooks/LoginHook';
 import {inputsConstant} from '../../utils/constants/authConstant';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import LoadingScreen from '../../screens/common/LoadingScreen';
+import { useDispatch } from 'react-redux';
 
 const labels = {
   login: 'Login',
@@ -50,10 +52,12 @@ interface props {
 }
 
 const Login: React.FC<props> = ({handleLabelClick}) => {
+  const dispatch = useDispatch();
   const [inputs, setInputs] = useState(LoginInputsInitialState);
   const [errors, setErrors] = useState(LoginInputsInitialState);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [rememberPswd, setRememberPswd] = useState(false);
+
   const navigation = useNavigation();
 
   const LoginServiceHandler = useLoginHook();
@@ -144,6 +148,7 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
   };
 
   useEffect(() => {
+    // dispatch(SetIsLoadingState(false))
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       _keyboardDidShow,
@@ -167,69 +172,74 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaProvider style={styles.container}>
-        <View style={styles.container}>
-          <Text style={styles.primaryHeading}>
-            {LoginHeading.primaryHeading}
-          </Text>
-          <View style={styles.inputContainer}>
-            <InputwithIconComponent
-              id={inputsConstant.email.id}
-              handelTextChange={HandleInputsTextChange}
-              iconColor={colorSecondary}
-              iconFamily={inputsConstant.email.iconFamily}
-              iconName={inputsConstant.email.iconName}
-              iconSize={inputsConstant.email.iconSize}
-              iconStyle={{}}
-              placeholder={inputsConstant.email.placeHolder}
-              value={inputs.email}
-              errorString={errors.email}
-            />
-            <InputwithIconComponent
-              id={inputsConstant.password.id}
-              handelTextChange={HandleInputsTextChange}
-              iconColor={colorSecondary}
-              iconFamily={inputsConstant.password.iconFamily}
-              iconName={inputsConstant.password.iconName}
-              iconSize={inputsConstant.password.iconSize}
-              iconStyle={{}}
-              placeholder={inputsConstant.password.placeHolder}
-              value={inputs.password}
-              errorString={errors.password}
-            />
-          </View>
-          <View style={styles.othersOptionsContainer}>
-            <Pressable
-              onPress={() => setRememberPswd(!rememberPswd)}
-              style={styles.rememberContainer}>
-              <View style={styles.iconContainer}>
-                <LoadIcon
-                  style={{}}
-                  iconFamily={labels.mtIconFamily}
-                  iconName={
-                    rememberPswd ? labels.mtCheckedIconName : labels.mtIconName
-                  }
-                  size={labels.mtIconSize}
-                  color={colorSecondary}
-                />
-              </View>
-              <Text style={styles.rememberText}>{LoginHeading.remember}</Text>
-            </Pressable>
-            <View style={styles.forgetPswdContainer}>
-              <TouchableOpacity onPress={handleForgetPasswordClick}>
-                <Text style={styles.forgetPswdText}>{LoginHeading.forget}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.btnsContainer}>
-            <View style={styles.primaryBtnContainer}>
-              <ButtonPrimary
-                handleBtnPress={handleLoginBtnPress}
-                label={labels.login}
+    <LoadingScreen>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaProvider style={styles.container}>
+          <View style={styles.container}>
+            <Text style={styles.primaryHeading}>
+              {LoginHeading.primaryHeading}
+            </Text>
+            <View style={styles.inputContainer}>
+              <InputwithIconComponent
+                id={inputsConstant.email.id}
+                handelTextChange={HandleInputsTextChange}
+                iconColor={colorSecondary}
+                iconFamily={inputsConstant.email.iconFamily}
+                iconName={inputsConstant.email.iconName}
+                iconSize={inputsConstant.email.iconSize}
+                iconStyle={{}}
+                placeholder={inputsConstant.email.placeHolder}
+                value={inputs.email}
+                errorString={errors.email}
+              />
+              <InputwithIconComponent
+                id={inputsConstant.password.id}
+                handelTextChange={HandleInputsTextChange}
+                iconColor={colorSecondary}
+                iconFamily={inputsConstant.password.iconFamily}
+                iconName={inputsConstant.password.iconName}
+                iconSize={inputsConstant.password.iconSize}
+                iconStyle={{}}
+                placeholder={inputsConstant.password.placeHolder}
+                value={inputs.password}
+                errorString={errors.password}
               />
             </View>
-            {/* <View style={styles.loginOptionsContainer}>
+            <View style={styles.othersOptionsContainer}>
+              <Pressable
+                onPress={() => setRememberPswd(!rememberPswd)}
+                style={styles.rememberContainer}>
+                <View style={styles.iconContainer}>
+                  <LoadIcon
+                    style={{}}
+                    iconFamily={labels.mtIconFamily}
+                    iconName={
+                      rememberPswd
+                        ? labels.mtCheckedIconName
+                        : labels.mtIconName
+                    }
+                    size={labels.mtIconSize}
+                    color={colorSecondary}
+                  />
+                </View>
+                <Text style={styles.rememberText}>{LoginHeading.remember}</Text>
+              </Pressable>
+              <View style={styles.forgetPswdContainer}>
+                <TouchableOpacity onPress={handleForgetPasswordClick}>
+                  <Text style={styles.forgetPswdText}>
+                    {LoginHeading.forget}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.btnsContainer}>
+              <View style={styles.primaryBtnContainer}>
+                <ButtonPrimary
+                  handleBtnPress={handleLoginBtnPress}
+                  label={labels.login}
+                />
+              </View>
+              {/* <View style={styles.loginOptionsContainer}>
             <View style={styles.line}>
               <View style={styles.loginOptionsTextContainer}>
                 <Text style={styles.loginOptionsText}>
@@ -246,18 +256,21 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
               <SocialLoginBtn label={labels.Facebook} type={labels.facebook} />
             </View>
           </View> */}
+            </View>
           </View>
-        </View>
-        {isKeyboardVisible ? null : (
-          <View style={styles.footer}>
-            <Text style={styles.footerTextSuggestion}>{labels.noAccount}</Text>
-            <Pressable onPress={handleRegisterNowClick}>
-              <Text style={styles.navText}>{labels.register}</Text>
-            </Pressable>
-          </View>
-        )}
-      </SafeAreaProvider>
-    </TouchableWithoutFeedback>
+          {isKeyboardVisible ? null : (
+            <View style={styles.footer}>
+              <Text style={styles.footerTextSuggestion}>
+                {labels.noAccount}
+              </Text>
+              <Pressable onPress={handleRegisterNowClick}>
+                <Text style={styles.navText}>{labels.register}</Text>
+              </Pressable>
+            </View>
+          )}
+        </SafeAreaProvider>
+      </TouchableWithoutFeedback>
+    </LoadingScreen>
   );
 };
 

@@ -1,4 +1,5 @@
 import { StyleProp, TextInput, TextStyle } from "react-native";
+import { NewBookUpdateKey } from "../../author/book.interface";
 
 export interface ImagePickerProps {
    error: string,
@@ -10,5 +11,5 @@ export interface ImagePickerProps {
    iconColor: string,
    value: string,
    setValue(value: string, id:string): void,
-   id: string
+   id: NewBookUpdateKey
 }

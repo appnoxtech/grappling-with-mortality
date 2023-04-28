@@ -1,7 +1,17 @@
-import { action, book, UPDATE_AUTHOR_BOOK_LIST, UpdateBookList } from "../../interfaces/author/book.interface";
+import { action, book, NewBookData, UPDATE_AUTHOR_BOOK_LIST, UPDATE_NEW_BOOK_DETAILS, UpdateBookList, updateNewBookDetails } from "../../interfaces/author/book.interface";
 
 const initialState = {
-    bookList: []
+    bookList: [],
+    newBook: {
+        bookName: '',
+        bookImage: '',
+        description: '',
+        authorName: '',
+        authorImage: '',
+        noOfPages: '',
+        bookLink: '',
+    },
+    selectedBook: {}
 }
 
 const AuthorReducer = (state = initialState, action: action) => {
@@ -10,6 +20,38 @@ const AuthorReducer = (state = initialState, action: action) => {
             return {
                 ...state,
                 bookList: [...action.payload]
+            }
+        }
+
+        case UPDATE_NEW_BOOK_DETAILS: {
+            return {
+               ...state,
+               newBook: {
+                 ...state.newBook,
+                 [action.payload.key]: action.payload.value
+               }
+            }
+        }
+
+        case 'CLEAR_NEW_BOOK_DETAILS': {
+            return {
+                ...state,
+                newBook: {
+                    bookName: '',
+                    bookImage: '',
+                    description: '',
+                    authorName: '',
+                    authorImage: '',
+                    noOfPages: '',
+                    bookLink: '',
+                }
+            }
+        }
+
+        case 'UPDATE_SELECTED_BOOK': {
+            return {
+                ...state,
+                selectedBook: action.payload
             }
         }
     
@@ -26,3 +68,23 @@ export const UpdateAuthorBookList = (BookList: Array<book>): UpdateBookList => {
        payload: BookList
    }
 };
+
+export const UpdateNewBookDetails = (bookData: NewBookData): updateNewBookDetails => {
+   return {
+     type: 'UPDATE_NEW_BOOK_DETAILS',
+     payload: bookData
+   }
+}
+
+export const ClearNewBookDetails = () => {
+    return {
+        type: 'CLEAR_NEW_BOOK_DETAILS'
+    }
+}
+
+export const UpdateSelectedBook = (bookData: any) => {
+    return {
+        type: 'UPDATE_SELECTED_BOOK',
+        payload: bookData
+    }
+}

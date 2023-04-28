@@ -9,6 +9,8 @@ import * as ImagePicker from 'react-native-image-picker';
 import LoadIcon from '../LoadIcons';
 import {ImagePickerProps} from '../../../interfaces/components/inputs/ImagePickerProps';
 import {ImageUploadService} from '../../../services/common/ImageUploadService';
+import { useDispatch } from 'react-redux';
+import { UpdateNewBookDetails } from '../../../redux/reducers/authorReducer';
 
 export const ImagePickerComponent: React.FC<ImagePickerProps> = ({
   iconFamily,
@@ -22,6 +24,7 @@ export const ImagePickerComponent: React.FC<ImagePickerProps> = ({
   setValue,
   id,
 }) => {
+  const dispatch = useDispatch();
   const [imgUrl, setImgUrl] = useState('');
   const handlePickerPress = async () => {
     await ImagePicker.launchImageLibrary({mediaType: 'photo'}, response => {
@@ -47,7 +50,7 @@ export const ImagePickerComponent: React.FC<ImagePickerProps> = ({
       console.log('data', data);
       
       const imageUrl = data.baseUrl + data.imagePath;
-      setValue(imageUrl, id);
+      dispatch(UpdateNewBookDetails({key: id, value: imageUrl}))
       setImgUrl(imageUrl);
     } catch (error: any) {
       Alert.alert('Error', error.response.data.msg);
@@ -56,14 +59,14 @@ export const ImagePickerComponent: React.FC<ImagePickerProps> = ({
 
   return (
     <View>
-      {imgUrl ? (
+      {value ? (
         <View style={styles.imageContainer}>
-            <Image style={styles.image} source={{uri: imgUrl}} alt='book' />
+            <Image style={styles.image} source={{uri: value}} alt='book' />
         </View>
       ) : (
         <TouchableOpacity
           onPress={handlePickerPress}
-          style={[styles.container, {borderColor: 'rgba(128,128,128,0.5)'}]}>
+          style={[styles.container, {borderColor: error ? 'red' : 'rgba(128,128,128,0.5)'}]}>
           <LoadIcon
             iconFamily={iconFamily}
             iconName={iconName}

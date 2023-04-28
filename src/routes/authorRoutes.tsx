@@ -4,6 +4,7 @@ import Homepages from '../screens/Author/Homepage/index';
 import AddNewBook from '../screens/Author/Screen/AddNewBook';
 import AddAuthorDetails from '../screens/Author/Screen/AddAuthorsDetail';
 import AddBookDocs from '../screens/Author/Screen/UploadPdf';
+import BookDetails from '../screens/Author/Screen/BookDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,11 @@ const AuthorRoutes = () => {
       <Stack.Screen
         name="AddBookDocs"
         component={AddBookDocs}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="BookDetails"
+        component={BookDetails}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
     </Stack.Navigator>
