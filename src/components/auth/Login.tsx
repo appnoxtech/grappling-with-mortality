@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Keyboard,
   Pressable,
@@ -16,7 +16,6 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {
   colorGrey,
-  colorPrimary,
   colorSecondary,
   white,
 } from '../../../assests/Styles/GlobalTheme';
@@ -25,7 +24,6 @@ import InputwithIconComponent from '../common/Inputs/InputwithIconComponent';
 import {LoginInputsInitialState} from '../../utils/constants/authConstant';
 import LoadIcon from '../common/LoadIcons';
 import ButtonPrimary from '../common/buttons/ButtonPrimary';
-import SocialLoginBtn from '../common/buttons/SocialLoginBtn';
 import {EMAIL_REGEX} from '../../utils/constants/common';
 import useLoginHook from '../../hooks/AuthHooks/LoginHook';
 import {inputsConstant} from '../../utils/constants/authConstant';
@@ -148,7 +146,6 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
   };
 
   useEffect(() => {
-    // dispatch(SetIsLoadingState(false))
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       _keyboardDidShow,
@@ -239,23 +236,6 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
                   label={labels.login}
                 />
               </View>
-              {/* <View style={styles.loginOptionsContainer}>
-            <View style={styles.line}>
-              <View style={styles.loginOptionsTextContainer}>
-                <Text style={styles.loginOptionsText}>
-                  {LoginHeading.orLoginWith}
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View style={[styles.mt_2]}>
-            <View style={styles.socialBtnContainer}>
-              <SocialLoginBtn label={labels.Google} type={labels.google} />
-            </View>
-            <View style={styles.socialBtnContainer}>
-              <SocialLoginBtn label={labels.Facebook} type={labels.facebook} />
-            </View>
-          </View> */}
             </View>
           </View>
           {isKeyboardVisible ? null : (
