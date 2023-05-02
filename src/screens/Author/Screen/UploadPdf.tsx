@@ -19,9 +19,9 @@ import {initialState} from '../../../utils/constants/authors/addNewBook';
 import ButtonPrimary from '../../../components/common/buttons/ButtonPrimary';
 import useKeyboardVisibleListener from '../../../hooks/CommonHooks/isKeyboardVisibleHook';
 import DocumentPicker from '../../../interfaces/components/inputs/DocumentPicker';
-import {AddNewBookService} from '../../../services/author/BooksServices';
+import {AddNewBookService, UpdateBookService} from '../../../services/author/BooksServices';
 import useGetBookList from '../../../hooks/AuthorHooks/GetBookListHooks';
-import { ClearNewBookDetails } from '../../../redux/reducers/authorReducer';
+import {ClearNewBookDetails} from '../../../redux/reducers/authorReducer';
 
 const placeHolder = {
   description: 'Description',
@@ -39,8 +39,13 @@ const AddBookDocs = () => {
 
   const handelBtnPress = () => {
     if (newBook.bookLink) {
-      UploadNewBookServiceHandler();
-    }else {
+      if (newBook._id) {
+        console.log('Book Edit ');
+        EditNewBookServiceHandler();
+      } else {
+        UploadNewBookServiceHandler();
+      }
+    } else {
       Alert.alert('Error', 'You forgot to upload the book!');
     }
   };
@@ -51,6 +56,40 @@ const AddBookDocs = () => {
       await GetAuthorBookListServiceHandler();
       dispatch(ClearNewBookDetails());
       Alert.alert('Congratulations!', 'Your Book uploaded successfully!');
+      setTimeout(() => {
+        navigation.navigate('Homepage' as never);
+      }, 1000);
+    } catch (error: any) {
+      Alert.alert('Error', error.response.data.errors[0].message);
+    }
+  };
+
+  const EditNewBookServiceHandler = async () => {
+    try {
+      const {
+        bookName,
+        bookImage,
+        description,
+        authorName,
+        authorImage,
+        noOfPages,
+        bookLink,
+      } = newBook;
+
+      await UpdateBookService({
+        bookId: newBook._id,
+        bookName,
+        bookImage,
+        description,
+        authorName,
+        authorImage,
+        noOfPages,
+        bookLink,
+      });
+
+      await GetAuthorBookListServiceHandler();
+      dispatch(ClearNewBookDetails());
+      Alert.alert('Congratulations!', 'Your Book Updated successfully!');
       setTimeout(() => {
         navigation.navigate('Homepage' as never);
       }, 1000);

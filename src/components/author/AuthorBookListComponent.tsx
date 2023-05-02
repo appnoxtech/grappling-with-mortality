@@ -13,10 +13,16 @@ import {
 import CommonHeader from '../common/headers/CommonHeader';
 import LoadIcon from '../common/LoadIcons';
 import { TouchableOpacity } from 'react-native';
-import { UpdateSelectedBook } from '../../redux/reducers/authorReducer';
+import { ClearNewBookDetails, UpdateSelectedBook } from '../../redux/reducers/authorReducer';
 
 interface ItemProps {
   book: book;
+}
+
+const constant = {
+   iconFamily: 'FontAwesome5',
+   iconName: 'plus',
+   size: 30
 }
 
 const RenderItem: React.FC<ItemProps> = ({book}) => {
@@ -42,10 +48,13 @@ const RenderItem: React.FC<ItemProps> = ({book}) => {
 };
 const AuthorBookListComponent = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {bookList} = useSelector((state: any) => state.author);
   const handlePress = () => {
-    navigation.navigate('AddNewBook' as never)
-  }
+    dispatch(ClearNewBookDetails());
+    navigation.navigate('AddNewBook' as never);
+  };
+
   return (
     <View style={styles.container}>
       <CommonHeader paddingTop={5}>
@@ -60,7 +69,7 @@ const AuthorBookListComponent = () => {
         renderItem={(item: any) => <RenderItem book={item.item} />}
       />
       <TouchableOpacity onPress={handlePress} style={styles.btnContainer}>
-          <LoadIcon iconFamily='FontAwesome5' iconName='plus' color='white' style={{}} size={30} />
+          <LoadIcon iconFamily={constant.iconFamily} iconName={constant.iconName} color={white} style={{}} size={constant.size} />
       </TouchableOpacity>
     </View>
   );

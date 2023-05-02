@@ -52,7 +52,7 @@ const imagePickerInputContant = {
   iconSize: responsiveScreenHeight(10),
 };
 
-const AddNewBook = () => {
+const AddNewBook:React.FC<any> = () => {
   const dispatch = useDispatch();
   const {newBook} = useSelector((state: any) => state.author);
   const [errors, setErrors] = useState(initialState);
@@ -148,8 +148,7 @@ const AddNewBook = () => {
               onChangeHandler={onChangeHandler}
             />
           </View>
-        </KeyboardAwareScrollView>
-        {!isKeyboardVisible ? (
+          {!isKeyboardVisible ? (
           <View style={styles.btnContainer}>
             <ButtonPrimary
               label={placeHolder.btn}
@@ -157,6 +156,8 @@ const AddNewBook = () => {
             />
           </View>
         ) : null}
+        </KeyboardAwareScrollView>
+       
       </View>
     </TouchableWithoutFeedback>
   );
