@@ -22,7 +22,7 @@ const HeaderWithBackBtn: React.FC<props> = ({children}) => {
   };
 
   return (
-    <CommonHeader paddingTop={10}>
+    <CommonHeader paddingTop={13}>
       <StatusBar
         animated={true}
         backgroundColor={colorPrimary}
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   btnContainer: {
     position: 'absolute',
     width: responsiveScreenWidth(10),
-    top: responsiveScreenHeight(3),
+    top: responsiveScreenHeight(6),
     left: responsiveScreenWidth(4),
   },
 });

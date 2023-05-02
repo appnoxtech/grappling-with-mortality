@@ -18,6 +18,7 @@ const InputComponent: React.FC<inputComponentProps> = ({
   keyboardType = 'text'
 }) => {
   const [isActive, setIsActive] = useState(false);
+  
   return (
     <React.Fragment>
       <TextInput
@@ -25,6 +26,7 @@ const InputComponent: React.FC<inputComponentProps> = ({
           placeholder={placeholder}
           onFocus={() => setIsActive(true)}
           onBlur={() => setIsActive(false)}
+          value={value?.toString()}
           multiline={allowMultiLine}
           inputMode={keyboardType}
           onChangeText={text => {
@@ -33,7 +35,6 @@ const InputComponent: React.FC<inputComponentProps> = ({
             }else {
               onChangeHandler(text, id)
             }
-            
           }}
         />
       {error ? (

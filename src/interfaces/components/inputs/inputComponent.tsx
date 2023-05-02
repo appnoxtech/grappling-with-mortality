@@ -4,7 +4,7 @@ export interface inputComponentProps {
    containerStyle: StyleProp<ViewStyle>,
    id: string,
    placeholder: string,
-   value: string,
+   value: string | number,
    error?: string,
    allowMultiLine?: boolean,
    keyboardType?: InputModeOptions | undefined,

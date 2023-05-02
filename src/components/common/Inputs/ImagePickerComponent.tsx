@@ -11,6 +11,7 @@ import {ImagePickerProps} from '../../../interfaces/components/inputs/ImagePicke
 import {ImageUploadService} from '../../../services/common/ImageUploadService';
 import { useDispatch } from 'react-redux';
 import { UpdateNewBookDetails } from '../../../redux/reducers/authorReducer';
+import { colorPrimary } from '../../../../assests/Styles/GlobalTheme';
 
 export const ImagePickerComponent: React.FC<ImagePickerProps> = ({
   iconFamily,
@@ -60,9 +61,9 @@ export const ImagePickerComponent: React.FC<ImagePickerProps> = ({
   return (
     <View>
       {value ? (
-        <View style={styles.imageContainer}>
+        <TouchableOpacity onPress={handlePickerPress} style={styles.imageContainer}>
             <Image style={styles.image} source={{uri: value}} alt='book' />
-        </View>
+        </TouchableOpacity>
       ) : (
         <TouchableOpacity
           onPress={handlePickerPress}
@@ -103,10 +104,22 @@ const styles = StyleSheet.create({
     height: responsiveScreenHeight(30),
     width: responsiveScreenWidth(50),
     borderRadius: responsiveScreenWidth(2),
+    position: 'relative',
   },
   image: {
     width: '100%',
     height: '100%',
     resizeMode: 'contain'
+  },
+  editIconContainer: {
+     position: 'absolute',
+     top: responsiveScreenHeight(1),
+     left: responsiveScreenWidth(4),
+     backgroundColor: 'white',
+     width: responsiveScreenWidth(8),
+     height: responsiveScreenWidth(8),
+     borderRadius: responsiveScreenWidth(5),
+     justifyContent: 'center',
+     alignItems: 'center'
   }
 });
