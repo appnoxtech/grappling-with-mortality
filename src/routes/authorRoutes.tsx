@@ -5,13 +5,15 @@ import AddNewBook from '../screens/Author/Screen/AddNewBook';
 import AddAuthorDetails from '../screens/Author/Screen/AddAuthorsDetail';
 import AddBookDocs from '../screens/Author/Screen/UploadPdf';
 import BookDetails from '../screens/Author/Screen/BookDetails';
+import AddChaptersForm from '../screens/Author/Screen/AddChaptersForm';
+import AddAudioChaptersForm from '../screens/Author/Screen/AddAudioChaptersForm';
 
 const Stack = createNativeStackNavigator();
 
 const AuthorRoutes = () => {
   return (
     <Stack.Navigator>
-       <Stack.Screen
+      <Stack.Screen
         name="Homepage"
         component={Homepages}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
@@ -34,6 +36,16 @@ const AuthorRoutes = () => {
       <Stack.Screen
         name="BookDetails"
         component={BookDetails}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="AddChaptersForm"
+        component={AddChaptersForm}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="AddAudioChaptersForm"
+        component={AddAudioChaptersForm}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
     </Stack.Navigator>
