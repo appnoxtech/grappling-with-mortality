@@ -25,3 +25,4 @@ export const mediumText=responsiveFontSize(14);
 export const normalText=responsiveFontSize(13);
 export const samllText=responsiveFontSize(12);
 export const addIcon=responsiveFontSize(45);
+export const ColorGrey='rgba(0,0,0,0.3)'
