@@ -1,57 +1,40 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {colorGrey, white} from '../../../../assests/Styles/GlobalTheme';
-import BookDetailsHeaderComponent from '../../../components/author/BookDetailsHeader';
+import BookDetailsHeaderComponent from '../../../components/author/BookDetails/BookDetailsHeader';
 import {useSelector} from 'react-redux';
 import {
   responsiveFontSize,
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
+import BookDetailsNavigation from '../../../components/author/BookDetails/BookDetailsNavigation';
+import useGetSelectedBookDetails from '../../../hooks/AuthorHooks/GetSelectedBookDetailsHook';
 
 const BookDetails = () => {
+  const GetSelectedBookDetailsServiceHandler = useGetSelectedBookDetails();
   const {selectedBook} = useSelector((state: any) => state.author);
-  const [selectedNavItem, setSelectedNavItem] = useState('About');
-
+  
+  useEffect(() => {
+    GetSelectedBookDetailsServiceHandler(selectedBook._id);
+  }, []);
+  
   return (
     <View style={styles.container}>
       <BookDetailsHeaderComponent />
       <View style={styles.body}>
         <View style={styles.bookSection}>
-          <Image
-            style={styles.image}
-            source={{uri: selectedBook.bookImage}}
-            alt="book"
-          />
+          <View style={styles.imageContainer}>
+            <Image
+              style={styles.image}
+              source={{uri: selectedBook.bookImage}}
+              alt="book"
+            />
+          </View>
           <Text style={styles.bookName}>{selectedBook.bookName}</Text>
           <Text style={styles.authorName}>{selectedBook.authorName}</Text>
         </View>
-        <View style={styles.navigation}>
-          <View
-            style={
-              selectedNavItem === 'About'
-                ? styles.selectedNavItem
-                : styles.navItem
-            }>
-            <Text style={styles.navText}>About</Text>
-          </View>
-          <View
-            style={
-              selectedNavItem === 'Chapters'
-                ? styles.selectedNavItem
-                : styles.navItem
-            }>
-            <Text>Chapters</Text>
-          </View>
-          <View
-            style={
-              selectedNavItem === 'Reviews'
-                ? styles.selectedNavItem
-                : styles.navItem
-            }>
-            <Text>Reviews</Text>
-          </View>
-        </View>
+        <BookDetailsNavigation />
       </View>
     </View>
   );
@@ -75,11 +58,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 3,
   },
-  image: {
+  imageContainer:{
     width: responsiveScreenHeight(15),
-    height: responsiveScreenHeight(19),
-    borderRadius: 10,
+    height: responsiveScreenHeight(20),
+    borderRadius: responsiveScreenHeight(2),
     marginBottom: responsiveScreenHeight(2),
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+    borderRadius: responsiveScreenHeight(1),
   },
   bookName: {
     textAlign: 'center',
@@ -90,42 +79,10 @@ const styles = StyleSheet.create({
   },
   authorName: {
     textAlign: 'center',
-    fontSize: responsiveFontSize(2.8),
+    fontSize: responsiveFontSize(2.5),
     fontWeight: '500',
-    color: 'rgba(0,0,0,0.5)',
+    color: 'rgba(0,0,0,0.3)',
     letterSpacing: 0.2,
   },
-  navigation: {
-    marginTop: responsiveScreenHeight(2),
-    width: responsiveScreenWidth(90),
-    borderWidth: 1.5,
-    borderColor: 'rgba(128,128,128,0.5)',
-    borderRadius: responsiveFontSize(1),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 3,
-    alignItems: 'center',
-    backgroundColor: 'rgba(128,128,128,0.5)',
-    padding: responsiveScreenHeight(0.2),
-  },
-  selectedNavItem: {
-    flex: 1,
-    backgroundColor: white,
-    borderRadius: 10,
-    paddingVertical: responsiveScreenHeight(1.4),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  navItem: {
-    flex: 1,
-    borderRadius: 10,
-    paddingVertical: responsiveScreenHeight(1.4),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  navText: {
-    fontSize: responsiveFontSize(2),
-    fontWeight: '500',
-    color: 'black'
-  }
+
 });

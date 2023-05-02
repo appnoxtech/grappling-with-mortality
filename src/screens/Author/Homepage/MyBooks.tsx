@@ -13,8 +13,6 @@ const MyBooks = () => {
   useEffect(() => {
      GetAuthorBookListServiceHandler();
   }, []);
- 
-  console.log('bookList',bookList);
   
   return (
     <View style={styles.container}>

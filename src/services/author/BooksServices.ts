@@ -5,9 +5,6 @@ import { getUserDataFromLocalStorage } from '../../utils/helperFunctions/auth';
 export const AddNewBookService = async (data: any) => {
     const url = `${URL}book/add-book`;
     const user = await getUserDataFromLocalStorage();
-    console.log('url', url);
-    console.log('data', data);
-    
     return axios.post(url, data, {
       headers: {
         'x-auth-token': user.token,
@@ -37,6 +34,16 @@ export const GetBookListService = async() => {
   });
 };
 
+export const GetBookDetailsByIdService = async(bookId: string) => {
+  const url = `${URL}book/get-book-details/${bookId}`;
+  const user = await getUserDataFromLocalStorage();
+  return axios.get(url, {
+    headers: {
+      'x-auth-token': user.token,
+    },
+  });
+};
+
 export const UpdateBookService = async(newData: any) => {
   const url = `${URL}book/update-book`;
   const user = await getUserDataFromLocalStorage();
@@ -51,6 +58,18 @@ export const DeleteBooksService = async(bookId: string) => {
   const url = `${URL}account/delete-book/${bookId}`;
   const user = await getUserDataFromLocalStorage();
   return axios.delete(url, {
+    headers: {
+      'x-auth-token': user.token,
+    },
+  });
+};
+
+export const UpdateChaptersService = async(data: any) => {
+  const url = `${URL}book/update-chapter`;
+  const user = await getUserDataFromLocalStorage();
+  console.log('url', url);
+  console.log('data', data);
+  return axios.put(url, data, {
     headers: {
       'x-auth-token': user.token,
     },
