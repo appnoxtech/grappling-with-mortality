@@ -10,5 +10,5 @@ export interface InputsWithIconComponentProps {
     iconColor: string,
     iconFamily: string,
     iconSize: number,
-    iconStyle?:  StyleProp<TextStyle>
+    iconStyle?:  StyleProp<TextStyle>,
 }

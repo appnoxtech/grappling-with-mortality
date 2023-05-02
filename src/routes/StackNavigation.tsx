@@ -2,11 +2,12 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {updateUserData} from '../redux/reducers/userReducer';
 import { getUserDataFromLocalStorage } from '../utils/helperFunctions/auth';
-import AuthRoutes from './authRoutes';
 import UnAuthRoutes from './unAuthRoutes';
+import UserRoutes from './userRoutes';
+import AuthorRoutes from './authorRoutes';
 
 const StackNavigation = () => {
-  const {isLogin} = useSelector((state: any) => state.user);
+  const {isLogin, userDetails} = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
   const handleIsLoginState = async () => {
@@ -23,7 +24,11 @@ const StackNavigation = () => {
   }, []);
 
   if (isLogin) {
-    return <AuthRoutes />;
+    if(userDetails.userType === 'CUSTOMER') {
+      return <UserRoutes />;
+    }else {
+      return <AuthorRoutes />;
+    }
   } else {
     return <UnAuthRoutes />;
   }

@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
-import LandingPageHeader from '../../components/auth/Header'
-import { LandingPageBtnLabels } from '../../utils/constants/authConstant'
-import Login from '../../components/auth/Login'
-import Register from '../../components/auth/Register'
+import {StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import LandingPageHeader from '../../components/auth/Header';
+import {LandingPageBtnLabels} from '../../utils/constants/authConstant';
+import Login from '../../components/auth/Login';
+import Register from '../../components/auth/Register';
 const LandingPage = () => {
   const [activeLabel, setActiveLabel] = useState(LandingPageBtnLabels.Login);
   const handleLabelClick = (label: string) => {
@@ -11,18 +11,23 @@ const LandingPage = () => {
   };
   return (
     <View style={styles.container}>
-       <LandingPageHeader activeLabel={activeLabel} handleLabelClick={handleLabelClick} />
-       {
-          activeLabel === LandingPageBtnLabels.Login ? <Login /> : <Register />
-       }
+      <LandingPageHeader
+        activeLabel={activeLabel}
+        handleLabelClick={handleLabelClick}
+      />
+      {activeLabel === LandingPageBtnLabels.Login ? (
+        <Login handleLabelClick={handleLabelClick} />
+      ) : (
+        <Register handleLabelClick={handleLabelClick} />
+      )}
     </View>
-  )
-}
+  );
+};
 
-export default LandingPage
+export default LandingPage;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    }
-})
+  container: {
+    flex: 1,
+  },
+});

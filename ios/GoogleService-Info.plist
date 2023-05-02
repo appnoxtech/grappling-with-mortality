@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>895805790628-j3b8s7v0279hgj76es85t75isf7lsmoc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.895805790628-j3b8s7v0279hgj76es85t75isf7lsmoc</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>895805790628-m03q6t5pp92b4b33qd3ij2tsdot5puod.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCkGkH6xye_BMT2hT56WC5oiTt3SH0vjBc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>895805790628</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>grappling-with-mortality</string>
+	<key>PROJECT_ID</key>
+	<string>grapling-with-mortality</string>
+	<key>STORAGE_BUCKET</key>
+	<string>grapling-with-mortality.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:895805790628:ios:5bf5f30724248333d28931</string>
+</dict>
+</plist>
