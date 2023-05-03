@@ -6,7 +6,9 @@ import { useSelector } from "react-redux";
 import { Chapter } from "../../interfaces/author/chapter.interface";
 import { store } from "../../interfaces/reducer/state";
 
-const SucessMsg = "Congratulations !', 'New Chapter Added Successfully.";
+const congrats = 'Congratulations !';
+const SucessMsg = "New Chapter Added Successfully.";
+const SuccessUpdate = "Chapter Updated Successfully.";
 
 const useUpdateChaptersHook = () => {
     const GetSelectedBookDetailsServiceHandler = useGetSelectedBookDetails();
@@ -26,7 +28,7 @@ const useUpdateChaptersHook = () => {
             await UpdateChaptersService(newChapterList);
             if(selectedBookDetails._id){
               await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
-              Alert.alert(SucessMsg);
+              Alert.alert(congrats, SucessMsg);
               setTimeout(() => {
                   navigation.goBack();
               }, 1000);
@@ -37,22 +39,23 @@ const useUpdateChaptersHook = () => {
         }
     }
 
-    const UpdateSingleChapterServiceHandler = async (chapter: Chapter) => {
+    const UpdateSingleChapterServiceHandler = async (chapter: Chapter, chapterId: string) => {
         try {
             const NewChapterList = [...selectedBookDetails.chapters];
-            const index = NewChapterList.findIndex((item: Chapter) => item._id === chapter._id);
-            NewChapterList[index] = {
-                ...chapter
-            }
+            const index = NewChapterList.findIndex((item: Chapter) => item._id === chapterId);
+            NewChapterList[index] = chapter;
             const newChapterObj = {
                 chapters: [...NewChapterList],
                 bookId: selectedBookDetails._id
             };
+            console.log('index', index);
+            console.log('chapter', chapter);
+            console.log('newChapterObj', newChapterObj);
             
             await UpdateChaptersService(newChapterObj);
             if(selectedBookDetails._id){
                 await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
-                Alert.alert(SucessMsg);
+                Alert.alert(congrats, SuccessUpdate);
                 setTimeout(() => {
                     navigation.goBack();
                 }, 1000);

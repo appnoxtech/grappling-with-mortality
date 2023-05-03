@@ -1,4 +1,4 @@
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -12,7 +12,7 @@ import {
   colorSecondary,
 } from '../../../../assests/Styles/GlobalTheme';
 import LoadIcon from '../../common/LoadIcons';
-import { EditChapter, UpdateChapterDetails } from '../../../redux/reducers/chaptersReducer';
+import { EditChapter, ResetChapterDetails, UpdateChapterDetails } from '../../../redux/reducers/chaptersReducer';
 
 interface chapter {
   _id: string;
@@ -58,8 +58,10 @@ const RenderChapter: React.FC<chapterProps> = ({chapter}) => {
 
 const ChaptersListComponent = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {selectedBookDetails} = useSelector((state: any) => state.author);
   const handlePress = () => {
+    dispatch(ResetChapterDetails());
     navigation.navigate('AddChaptersForm' as never);
   };
 
@@ -128,8 +130,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    right: responsiveScreenWidth(10),
-    bottom: responsiveScreenHeight(10),
+    right: Platform.OS === 'android' ? responsiveScreenWidth(9) : responsiveScreenWidth(10),
+    bottom: Platform.OS === 'android' ? responsiveScreenHeight(8) : responsiveScreenHeight(10),
   },
   actionContainer: {
     flexDirection: 'row',

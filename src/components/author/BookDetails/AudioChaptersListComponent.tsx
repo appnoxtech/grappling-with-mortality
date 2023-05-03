@@ -1,10 +1,11 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react';
 import {useNavigation} from '@react-navigation/core';
 import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { colorPrimary, colorSecondary } from '../../../../assests/Styles/GlobalTheme';
 import LoadIcon from '../../common/LoadIcons';
+import { EditEbook, ResetAudioEbookFormInput } from '../../../redux/reducers/audioEbookReducer';
 
 interface audio {
     _id: string;
@@ -17,7 +18,13 @@ interface chapterProps {
 }
 
 const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
-    const handleEditPress = () => {};
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
+
+    const handleEditPress = () => {
+      dispatch(EditEbook(chapter));
+      navigation.navigate('AddAudioChaptersForm' as never);
+    };
     return (
       <View style={styles.chapter}>
         <Text style={styles.chapterNo}>{`${index+1}.`}</Text>
@@ -26,8 +33,8 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
           <View style={styles.actionContainer}>
             <TouchableOpacity onPress={handleEditPress}>
               <LoadIcon
-                iconFamily="FontAwesome5"
-                iconName="play-circle"
+                iconFamily="MaterialCommunityIcons"
+                iconName="circle-edit-outline"
                 style={{}}
                 size={25}
                 color={colorSecondary}
@@ -40,9 +47,11 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
 };
 
 export default function AudioChaptersListComponent() { 
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const {selectedBookDetails} = useSelector((state: any) => state.author);
   const handlePress = () => {
+    dispatch(ResetAudioEbookFormInput());
     navigation.navigate('AddAudioChaptersForm' as never);
   };
   
@@ -88,6 +97,7 @@ const styles = StyleSheet.create({
       flex: 1,
       marginLeft: responsiveScreenWidth(2),
       flexDirection: 'row',
+      alignItems: 'center',
       justifyContent: 'space-between',
     },
     chapterName: {
@@ -106,8 +116,8 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      right: 10,
-      bottom: responsiveScreenHeight(10),
+      right: Platform.OS === 'android' ? responsiveScreenWidth(1) : 10,
+      bottom: Platform.OS === 'android' ? responsiveScreenHeight(8) : responsiveScreenHeight(10),
     },
     actionContainer: {
       flexDirection: 'row',

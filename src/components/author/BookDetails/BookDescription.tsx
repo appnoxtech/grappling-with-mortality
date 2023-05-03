@@ -1,4 +1,4 @@
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { useSelector } from 'react-redux';
 import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
@@ -11,15 +11,15 @@ const BookDescription = () => {
       <Text style={styles.textPrimary}>Description</Text>
       <ScrollView style={styles.bookDescriptionContainer}>
          <Text style={styles.bookDescription}>
-            {selectedBookDetails.description}
+            {selectedBookDetails?.description}
          </Text>
       </ScrollView>
-      <View style={styles.authorDetailsContainer}>
+      <View style={ Platform.OS === 'android' ? styles.androidAuthorDetailsContainer : styles.authorDetailsContainer}>
         <Text style={styles.textPrimary}>Author Info</Text>
         <View style={styles.authorDetails}>
              <View style={styles.leftContainer}>
                  <Image style={styles.authorImage} source={{uri: selectedBookDetails.authorImage}} />
-                 <Text style={styles.authorName}>{selectedBookDetails.authorName}</Text>
+                 <Text style={styles.authorName}>{selectedBookDetails?.authorName}</Text>
              </View>
              <TouchableOpacity style={styles.btnTextContainer}>
                <Text style={styles.btnText}>View Profile</Text>
@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
     textPrimary: {
         fontSize: responsiveFontSize(2.4),
         fontWeight: 'bold',
-        letterSpacing: 0.3
+        letterSpacing: 0.3,
+        color: 'black'
     },
     bookDescriptionContainer: {
         flex: 1,
@@ -54,6 +55,10 @@ const styles = StyleSheet.create({
     authorDetailsContainer: {
         marginBottom: responsiveScreenHeight(10),
         marginTop: responsiveScreenHeight(1),
+    },
+    androidAuthorDetailsContainer: {
+        marginBottom: responsiveScreenHeight(7),
+        marginTop: responsiveScreenHeight(0),
     },
     authorDetails: {
         flexDirection: 'row',

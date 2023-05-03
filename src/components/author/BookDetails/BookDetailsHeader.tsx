@@ -1,4 +1,4 @@
-import {StatusBar, StyleSheet, View} from 'react-native';
+import {Platform, StatusBar, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {
   responsiveFontSize,
@@ -28,7 +28,7 @@ const BookDetailsHeaderComponent = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={Platform.OS === 'android' ? styles.androidContainer : styles.container}>
       <StatusBar
         animated={true}
         backgroundColor={'#f1f9ec'}
@@ -78,6 +78,14 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: responsiveScreenWidth(6),
     height: responsiveScreenHeight(15),
     paddingTop: responsiveScreenHeight(3),
+    justifyContent: 'center',
+    backgroundColor: '#f1f9ec',
+  },
+  androidContainer: {
+    borderBottomLeftRadius: responsiveScreenWidth(6),
+    borderBottomRightRadius: responsiveScreenWidth(6),
+    height: responsiveScreenHeight(8),
+    paddingTop: responsiveScreenHeight(1),
     justifyContent: 'center',
     backgroundColor: '#f1f9ec',
   },

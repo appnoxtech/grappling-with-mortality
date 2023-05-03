@@ -3,8 +3,11 @@ import {useNavigation} from '@react-navigation/core';
 import {AddAudioChapterService} from '../../services/author/AudioBookService';
 import useGetSelectedBookDetails from './GetSelectedBookDetailsHook';
 import {Alert} from 'react-native';
+import { Audio } from '../../interfaces/reducer/audioStore.interface';
 
-const SucessMsg =  `Congratulations !','Audio Book Added Sucessfully.`;
+const congrats = 'Congratulations !';
+const SucessMsg =  `Audio Chapter Added Sucessfully.`;
+const UpdateMsg = 'Audio Chapter Updated Sucessfully.'
 
 const useAddAudioChapterHook = () => {
   const GetSelectedBookDetailsServiceHandler = useGetSelectedBookDetails();
@@ -22,17 +25,44 @@ const useAddAudioChapterHook = () => {
       };
       await AddAudioChapterService(data);
       await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
-      Alert.alert(SucessMsg);
+      Alert.alert(congrats, SucessMsg);
       setTimeout(() => {
         navigation.goBack();
       }, 1000);
     } catch (error: any) {
-      console.log('error.response.data', error.response.data);
-      
       Alert.alert('Error', error.response.data);
     }
   };
-  return AddAudioChapterServiceHandler;
+
+  const UpdateAudioChapterServiceHandler = async (audioData: Audio) => {
+    try {
+      const NewChapterList = [...selectedBookDetails.audio];
+      const index = NewChapterList.findIndex((item: Audio) => item._id === audioData._id);
+      console.log('index ==>', index);
+      
+      const {audioLink, chapterName} = audioData;
+      NewChapterList[index] = {audioLink, chapterName};
+      const newChapterObj = {
+          audio: [...NewChapterList],
+          bookId: selectedBookDetails._id
+      };
+      
+      await AddAudioChapterService(newChapterObj);
+      if(selectedBookDetails._id){
+          await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
+          Alert.alert(congrats, UpdateMsg);
+          setTimeout(() => {
+              navigation.goBack();
+          }, 1000);
+        }
+  } catch (error: any) {
+      Alert.alert('Error', error.response.data[0].msg)
+  }
+  }
+  return {
+    AddAudioChapterServiceHandler,
+    UpdateAudioChapterServiceHandler
+  };
 };
 
 export default useAddAudioChapterHook;
