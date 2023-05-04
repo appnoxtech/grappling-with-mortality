@@ -7,6 +7,7 @@ import AddBookDocs from '../screens/Author/Screen/UploadPdf';
 import BookDetails from '../screens/Author/Screen/BookDetails';
 import AddChaptersForm from '../screens/Author/Screen/AddChaptersForm';
 import AddAudioChaptersForm from '../screens/Author/Screen/AddAudioChaptersForm';
+import AudioEbookPlayer from '../screens/common/AudioEbookPlayer';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,11 @@ const AuthorRoutes = () => {
       <Stack.Screen
         name="AddAudioChaptersForm"
         component={AddAudioChaptersForm}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="AudioEbookPlayer"
+        component={AudioEbookPlayer}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
     </Stack.Navigator>

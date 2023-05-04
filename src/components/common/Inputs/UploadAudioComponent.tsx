@@ -17,10 +17,11 @@ import { ImageUploadService } from '../../../services/common/ImageUploadService'
 
 interface props {
     value: string,
-    setValue(link: string): void 
+    setValue(link: string): void,
+    error: string
 };
 
-const UploadAudioComponent: React.FC<props> = ({value, setValue}) => {
+const UploadAudioComponent: React.FC<props> = ({value, setValue, error}) => {
   const handleBtnPress = async () => {
     try {
       const pickerResult = await DocumentPicker.pickSingle({
@@ -67,7 +68,7 @@ const UploadAudioComponent: React.FC<props> = ({value, setValue}) => {
       onPress={handleBtnPress}
       style={[
         styles.audioContainer,
-        {borderColor: value ? colorSecondary : ColorGrey},
+        {borderColor: error ? 'red' : value ? colorSecondary : ColorGrey},
       ]}>
       <LoadIcon
         iconFamily="MaterialCommunityIcons"

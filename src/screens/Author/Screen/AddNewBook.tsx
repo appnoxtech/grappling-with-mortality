@@ -1,6 +1,7 @@
 import {
   Alert,
   Keyboard,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -104,7 +105,7 @@ const AddNewBook:React.FC<any> = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <HeaderWithBackBtn />
+        <HeaderWithBackBtn paddingTop={ Platform.OS === 'android' ? 8 : 13} />
         <KeyboardAwareScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>

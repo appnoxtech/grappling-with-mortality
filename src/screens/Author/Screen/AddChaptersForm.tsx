@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Keyboard, Platform, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import React, {useState} from 'react';
 import {white} from '../../../../assests/Styles/GlobalTheme';
 import InputComponent from '../../../components/common/Inputs/InputComponent';
@@ -15,6 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {store} from '../../../interfaces/reducer/state';
 import {NewChapterKey} from '../../../interfaces/author/chapter.interface';
 import {UpdateChapterDetails} from '../../../redux/reducers/chaptersReducer';
+import useKeyboardVisibleListener from '../../../hooks/CommonHooks/isKeyboardVisibleHook';
 
 const inputsConstant = {
   chapterNo: {
@@ -45,6 +46,7 @@ const errorInitialState = {
 const AddChaptersForm = () => {
   const inputs = useSelector((state: store) => state.chapter.newChapter);
   const dispatch = useDispatch();
+  const isKeyboardOpen = useKeyboardVisibleListener();
   const [errors, setErrors] = useState(errorInitialState);
   const {UpdateChapterServiceHandler, UpdateSingleChapterServiceHandler} = useUpdateChaptersHook();
 
@@ -59,14 +61,14 @@ const AddChaptersForm = () => {
     const isValid = validation();
     if (isValid && inputs._id) {
       const {chapterName, chapterNo, startingPageNo, endingPageNo} = inputs;
-      UpdateSingleChapterServiceHandler({chapterName, chapterNo, startingPageNo, endingPageNo});
+      UpdateSingleChapterServiceHandler({chapterName, chapterNo, startingPageNo, endingPageNo}, inputs._id);
     } else if(isValid) {
       UpdateChapterServiceHandler(inputs);
     }
   };
 
-  const validation = () => {
-   if (inputs.chapterNo < 0 || isNaN(inputs.chapterNo)) {
+  const validation = () => {   
+   if (typeof(inputs.chapterNo) === 'string') {
       setErrors({
         ...errorInitialState,
         chapterNo: 'Required !',
@@ -78,7 +80,7 @@ const AddChaptersForm = () => {
         chapterName: 'Required !',
       });
       return false;
-    } else if (isNaN(inputs.startingPageNo)) {
+    } else if (typeof(inputs.startingPageNo) === 'string') {
       setErrors({
         ...errorInitialState,
         startingPageNo: 'Required !',
@@ -106,7 +108,8 @@ const AddChaptersForm = () => {
 
   return (
     <View style={styles.container}>
-      <HeaderWithBackBtn />
+      <HeaderWithBackBtn paddingTop={Platform.OS === 'android' ? 8 : 13} />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.mainBody}>
         <View style={styles.inputsContainer}>
           <InputComponent
@@ -145,15 +148,20 @@ const AddChaptersForm = () => {
             keyboardType="numeric"
           />
         </View>
-        <View style={styles.center}>
+        {
+          !isKeyboardOpen ? <View style={styles.center}>
           <View style={styles.btnContainer}>
             <ButtonPrimary
               label={inputs._id ? "Update Chapter"  : "Add Chapter" }
               handleBtnPress={handleAddChapter}
             />
           </View>
-        </View>
+        </View> : null
+        }
+
       </View>
+      </TouchableWithoutFeedback>
+      
     </View>
   );
 };

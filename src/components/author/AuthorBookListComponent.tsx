@@ -1,4 +1,4 @@
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Image, Platform, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {book} from '../../interfaces/author/book.interface';
@@ -57,7 +57,7 @@ const AuthorBookListComponent = () => {
 
   return (
     <View style={styles.container}>
-      <CommonHeader paddingTop={5}>
+      <CommonHeader paddingTop={Platform.OS === 'android' ? 3 : 5}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>Your's Book</Text>
         </View>

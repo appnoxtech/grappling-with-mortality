@@ -25,6 +25,7 @@
 		040EC28029EFECC900A4EFC4 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 040EC27029EFECC800A4EFC4 /* EvilIcons.ttf */; };
 		040EC28129EFECC900A4EFC4 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 040EC27129EFECC800A4EFC4 /* SimpleLineIcons.ttf */; };
 		040EC28229EFECC900A4EFC4 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 040EC27229EFECC800A4EFC4 /* MaterialIcons.ttf */; };
+		04989BF52A038B5F007DB069 /* dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04989BF42A038B5F007DB069 /* dummy.swift */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -66,6 +67,8 @@
 		040EC27029EFECC800A4EFC4 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
 		040EC27129EFECC800A4EFC4 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		040EC27229EFECC800A4EFC4 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
+		04989BF12A0381B3007DB069 /* grappling_with_mortality-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "grappling_with_mortality-Bridging-Header.h"; sourceTree = "<group>"; };
+		04989BF42A038B5F007DB069 /* dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummy.swift; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* grappling_with_mortality.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = grappling_with_mortality.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = grappling_with_mortality/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = grappling_with_mortality/AppDelegate.mm; sourceTree = "<group>"; };
@@ -176,6 +179,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				04989BF42A038B5F007DB069 /* dummy.swift */,
 				040D44FB29F114380060632A /* GoogleService-Info.plist */,
 				040EC26229EFECC800A4EFC4 /* Fonts */,
 				13B07FAE1A68108700A75B9A /* grappling_with_mortality */,
@@ -184,6 +188,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				04989BF12A0381B3007DB069 /* grappling_with_mortality-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -268,7 +273,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1430;
 					};
 				};
 			};
@@ -470,6 +475,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				04989BF52A038B5F007DB069 /* dummy.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -489,6 +495,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-grappling_with_mortality-grappling_with_mortalityTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -516,6 +523,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-grappling_with_mortality-grappling_with_mortalityTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = grappling_with_mortalityTests/Info.plist;
@@ -559,6 +567,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "grappling-with-mortality";
 				PRODUCT_NAME = grappling_with_mortality;
+				SWIFT_OBJC_BRIDGING_HEADER = "grappling_with_mortality-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -587,6 +596,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "grappling-with-mortality";
 				PRODUCT_NAME = grappling_with_mortality;
+				SWIFT_OBJC_BRIDGING_HEADER = "grappling_with_mortality-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

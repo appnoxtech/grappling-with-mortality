@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {
   responsiveScreenHeight,
@@ -11,9 +11,10 @@ import {colorPrimary, white} from '../../../../assests/Styles/GlobalTheme';
 
 interface props {
   children?: ReactNode;
+  paddingTop?: number
 }
 
-const HeaderWithBackBtn: React.FC<props> = ({children}) => {
+const HeaderWithBackBtn: React.FC<props> = ({children, paddingTop = 13}) => {
   const navigation = useNavigation();
 
   const handleBackBtnPress = () => {
@@ -22,7 +23,7 @@ const HeaderWithBackBtn: React.FC<props> = ({children}) => {
   };
 
   return (
-    <CommonHeader paddingTop={13}>
+    <CommonHeader paddingTop={paddingTop}>
       <StatusBar
         animated={true}
         backgroundColor={colorPrimary}
@@ -31,7 +32,7 @@ const HeaderWithBackBtn: React.FC<props> = ({children}) => {
       />
       <TouchableOpacity
         onPress={handleBackBtnPress}
-        style={styles.btnContainer}>
+        style={ Platform.OS === 'android' ? styles.androidBtnContainer : styles.btnContainer}>
         <LoadIcon
           iconName="arrow-back"
           iconFamily="Ionicons"
@@ -54,4 +55,10 @@ const styles = StyleSheet.create({
     top: responsiveScreenHeight(6),
     left: responsiveScreenWidth(4),
   },
+  androidBtnContainer: {
+    position: 'absolute',
+    width: responsiveScreenWidth(10),
+    top: responsiveScreenHeight(1.5),
+    left: responsiveScreenWidth(3),
+  }
 });

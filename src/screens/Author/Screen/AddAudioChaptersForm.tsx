@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {white} from '../../../../assests/Styles/GlobalTheme';
 import UploadAudioComponent from '../../../components/common/Inputs/UploadAudioComponent';
@@ -12,6 +12,10 @@ import useUpdateChaptersHook from '../../../hooks/AuthorHooks/UpdateChaptersHook
 import ButtonPrimary from '../../../components/common/buttons/ButtonPrimary';
 import HeaderWithBackBtn from '../../../components/common/headers/HeaderWithBackBtn';
 import useAddAudioChapterHook from '../../../hooks/AuthorHooks/AddAudioChapterHook';
+import { useDispatch, useSelector } from 'react-redux';
+import { store } from '../../../interfaces/reducer/state';
+import { SetAudioEbookFormInputs } from '../../../redux/reducers/audioEbookReducer';
+import { AudioEbookKey } from '../../../interfaces/reducer/audioStore.interface';
 
 const inputsConstant = {
   chapterName: {
@@ -20,42 +24,62 @@ const inputsConstant = {
   },
 };
 
-const initialState = {
-  chapterName: '',
-  audioLink: '',
-};
-
 const errorInitialState = {
   chapterName: '',
   audioLink: '',
 };
 
 const AddAudioChaptersForm = () => {
-  const [inputs, setInputs] = useState(initialState);
+  const {inputs} = useSelector((store: store) => store.audio);
+  const dispatch = useDispatch();
   const [errors, setErrors] = useState(errorInitialState);
-  const AddAudioChapterServiceHandler = useAddAudioChapterHook();
+  const {AddAudioChapterServiceHandler, UpdateAudioChapterServiceHandler} = useAddAudioChapterHook();
 
-  const HandleInputsTextChange = (text: string, id: string) => {
-    setInputs({
-      ...inputs,
-      [id]: text,
-    });
+  const HandleInputsTextChange = (text: string, id: AudioEbookKey) => {
+    dispatch(SetAudioEbookFormInputs({key: id, value: text}));
   };
 
   const setAudioLink = (link: string) => {
-    setInputs({...inputs, audioLink: link})
-  }
+    dispatch(SetAudioEbookFormInputs({key: 'audioLink', value: link}));
+  };
 
   const handleAddChapter = () => {
-    console.log('inputs', inputs);
-    AddAudioChapterServiceHandler(inputs);
+    const isValid = validation();
+    if (inputs._id && isValid) {
+      UpdateAudioChapterServiceHandler(inputs);
+    } else if(isValid) {
+      AddAudioChapterServiceHandler(inputs);
+    }
+  };
+
+  const validation = () => {
+    if (inputs.audioLink === '') {
+      setErrors({
+        ...errorInitialState,
+        audioLink: 'Required !',
+      });
+      return false;
+    } else if (inputs.chapterName === '') {
+      setErrors({
+        ...errorInitialState,
+        chapterName: 'Required !',
+      });
+      return false;
+    } else {
+      setErrors(errorInitialState);
+      return true;
+    }
   };
 
   return (
     <View style={styles.container}>
-      <HeaderWithBackBtn />
+      <HeaderWithBackBtn paddingTop={Platform.OS === 'android' ? 8 : 13} />
       <View style={styles.formBody}>
-        <UploadAudioComponent value={inputs.audioLink} setValue={setAudioLink} />
+        <UploadAudioComponent
+          error={errors.audioLink}
+          value={inputs.audioLink}
+          setValue={setAudioLink}
+        />
         <InputComponent
           placeholder={inputsConstant.chapterName.placeholder}
           value={inputs.chapterName}
@@ -68,7 +92,7 @@ const AddAudioChaptersForm = () => {
       <View style={styles.center}>
         <View style={styles.btnContainer}>
           <ButtonPrimary
-            label="Add Chapter"
+            label={inputs._id ? "Update Ebook" : "Add Chapter"}
             handleBtnPress={handleAddChapter}
           />
         </View>
