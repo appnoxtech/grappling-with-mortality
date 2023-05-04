@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
     paddingBottom: responsiveScreenHeight(5)
   },
   btnContainer: {
-    width: responsiveScreenWidth(10),
-    height: responsiveScreenWidth(10),
+    width: responsiveScreenWidth(15),
+    height: responsiveScreenWidth(15),
     borderRadius: responsiveScreenWidth(9),
     backgroundColor: colorSecondary,
     justifyContent: 'center',

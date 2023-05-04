@@ -30,6 +30,7 @@ import {inputsConstant} from '../../utils/constants/authConstant';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import LoadingScreen from '../../screens/common/LoadingScreen';
 import { useDispatch } from 'react-redux';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const labels = {
   login: 'Login',
@@ -172,7 +173,7 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
     <LoadingScreen>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaProvider style={styles.container}>
-          <View style={styles.container}>
+          <KeyboardAwareScrollView contentContainerStyle={styles.contentContainer} style={styles.container}>
             <Text style={styles.primaryHeading}>
               {LoginHeading.primaryHeading}
             </Text>
@@ -237,7 +238,7 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
                 />
               </View>
             </View>
-          </View>
+          </KeyboardAwareScrollView>
           {isKeyboardVisible ? null : (
             <View style={styles.footer}>
               <Text style={styles.footerTextSuggestion}>
@@ -267,6 +268,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colorSecondary,
     textAlign: 'center',
+  },
+  contentContainer: {
+    paddingBottom: responsiveScreenHeight(2),
   },
   inputContainer: {
     marginTop: responsiveScreenHeight(2),

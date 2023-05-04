@@ -1,16 +1,14 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   responsiveFontSize,
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/core';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {store} from '../../../../interfaces/reducer/state';
 import LoadIcon from '../../LoadIcons';
-import Slider from '@react-native-community/slider';
 import {
   colorPrimary,
   colorSecondary,
@@ -36,7 +34,7 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
   const handleAudioBookChapterPlay = () => {
     const data = {...chapter, index};
   };
-  
+
   return (
     <View style={styles.chapter}>
       <Text style={styles.chapterNo}>{`${index + 1}.`}</Text>
@@ -65,6 +63,11 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
 const EbookPlayerComponent = () => {
   const {selectedAudioBook} = useSelector((store: store) => store.audio);
   const {selectedBookDetails} = useSelector((state: any) => state.author);
+  const [isListVisible, setIsListVisible] = useState(true);
+
+  const togggleChapterList = () => {
+    setIsListVisible(!isListVisible);
+  };
 
   return (
     <View style={styles.container}>
@@ -76,21 +79,25 @@ const EbookPlayerComponent = () => {
         <Text style={styles.textSecondary}>{`Chapter ${
           selectedAudioBook.index + 1
         }: ${selectedAudioBook.chapterName}`}</Text>
-        <LoadIcon
-          iconFamily="Entypo"
-          iconName="chevron-down"
-          style={{}}
-          color={colorPrimary}
-          size={30}
-        />
+        <TouchableOpacity onPress={togggleChapterList}>
+          <LoadIcon
+            iconFamily="Entypo"
+            iconName={isListVisible ? "chevron-up" : "chevron-down"}
+            style={{}}
+            color={colorPrimary}
+            size={30}
+          />
+        </TouchableOpacity>
       </View>
-      <FlatList
-        style={styles.chapterList}
-        data={selectedBookDetails.audio}
-        renderItem={({item, index}) => (
-          <RenderChapter chapter={item} index={index} />
-        )}
-      />
+      {isListVisible ? (
+        <FlatList
+          style={styles.chapterList}
+          data={selectedBookDetails.audio}
+          renderItem={({item, index}) => (
+            <RenderChapter chapter={item} index={index} />
+          )}
+        />
+      ) : null}
     </View>
   );
 };

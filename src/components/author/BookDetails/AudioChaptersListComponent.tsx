@@ -144,8 +144,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   btnContainer: {
-    width: responsiveScreenWidth(10),
-    height: responsiveScreenWidth(10),
+    width: responsiveScreenWidth(15),
+    height: responsiveScreenWidth(15),
     borderRadius: responsiveScreenWidth(9),
     backgroundColor: colorSecondary,
     justifyContent: 'center',

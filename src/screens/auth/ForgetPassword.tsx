@@ -13,6 +13,7 @@ import InputwithIconComponent from '../../components/common/Inputs/InputwithIcon
 import {inputsConstant} from '../../utils/constants/authConstant';
 import {colorPrimary, colorSecondary, white} from '../../../assests/Styles/GlobalTheme';
 import ButtonPrimary from '../../components/common/buttons/ButtonPrimary';
+import { EMAIL_REGEX } from '../../utils/constants/common';
 
 const initialState = {
   email: '',
@@ -23,10 +24,10 @@ const subTextInitialState = {
 };
 
 const labels = {
-  resetPassword: 'Reset password',
+  resetPassword: 'Reset Password',
   sendEmail: 'Send me an email',
   heading:
-    'To reset your password we need your email address. We will send you an email with a link to choose a new password.',
+    'Please enter the email address associated with your account. An OTP (One-Time Password) consisting of 4 digits will be sent to this email address for verification.',
 };
 
 const ResetPassword = () => {
@@ -46,14 +47,13 @@ const ResetPassword = () => {
   };
 
   const validation = (value: string, id: string) => {
-    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     let state: boolean;
     if (id === 'email' && value === '') {
       state = false;
       setSubText({
         email: 'Email is Required',
       });
-    } else if (id === 'email' && !regex.test(value)) {
+    } else if (id === 'email' && !EMAIL_REGEX.test(value)) {
       state = false;
       setSubText({
         email: 'Please enter a valid email',
@@ -65,6 +65,20 @@ const ResetPassword = () => {
     setIsActive(state);
   };
 
+
+  const handleBtnPress = () => {
+     if(inputs.email === '') {
+        return setSubText({
+          email: 'Email is Required',
+        }); 
+     } else if(!EMAIL_REGEX.test(inputs.email)) {
+        return setSubText({
+          email: 'Please enter a valid email',
+        });
+     } else {
+      handleClick()
+     }
+  }
   const handleClick = async () => {
     try {
       const data = {
@@ -108,7 +122,7 @@ const ResetPassword = () => {
       <View style={styles.btnContainer}>
         <ButtonPrimary
           isActive={isActive}
-          handleBtnPress={handleClick}
+          handleBtnPress={handleBtnPress}
           label={labels.resetPassword}
         />
       </View>
@@ -142,7 +156,7 @@ const styles = StyleSheet.create({
   helpingText: {
     fontSize: responsiveFontSize(2.1),
     marginBottom: responsiveScreenHeight(2),
-    opacity: 0.5,
+    opacity: 0.7,
     color: colorPrimary,
   },
   body: {

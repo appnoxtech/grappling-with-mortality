@@ -1,5 +1,6 @@
 import {
   Keyboard,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -91,7 +92,7 @@ const AddAuthorDetails = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <HeaderWithBackBtn />
+        <HeaderWithBackBtn paddingTop={Platform.OS === 'android' ? 8 : 13} />
         <KeyboardAwareScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>

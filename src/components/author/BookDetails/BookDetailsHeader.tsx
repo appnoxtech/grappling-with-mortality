@@ -9,10 +9,8 @@ import {useNavigation} from '@react-navigation/core';
 import {TouchableOpacity} from 'react-native';
 import LoadIcon from '../../common/LoadIcons';
 import {colorSecondary} from '../../../../assests/Styles/GlobalTheme';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { EditNewBook } from '../../../redux/reducers/authorReducer';
-
-const path = '../../../../assests/images/profile.jpg';
 
 const BookDetailsHeaderComponent = () => {
   const navigation = useNavigation();
@@ -47,8 +45,7 @@ const BookDetailsHeaderComponent = () => {
             size={30}
           />
         </TouchableOpacity>
-        <View style={styles.rightContainer}>
-          <TouchableOpacity onPress={handleBookEdit}>
+        <TouchableOpacity onPress={handleBookEdit}>
             <LoadIcon
               iconName="book-edit-outline"
               iconFamily="MaterialCommunityIcons"
@@ -57,14 +54,6 @@ const BookDetailsHeaderComponent = () => {
               size={30}
             />
           </TouchableOpacity>
-          <LoadIcon
-            iconName="share-social-sharp"
-            iconFamily="Ionicons"
-            style={{}}
-            color={colorSecondary}
-            size={30}
-          />
-        </View>
       </View>
     </View>
   );
@@ -98,7 +87,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: responsiveScreenWidth(5),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   image: {
     width: responsiveScreenWidth(10),

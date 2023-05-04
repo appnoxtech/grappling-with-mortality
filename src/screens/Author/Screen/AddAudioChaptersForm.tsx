@@ -1,4 +1,13 @@
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {
+  Keyboard,
+  Platform,
+  StyleSheet,
+  Text,
+  Touchable,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import {white} from '../../../../assests/Styles/GlobalTheme';
 import UploadAudioComponent from '../../../components/common/Inputs/UploadAudioComponent';
@@ -12,10 +21,11 @@ import useUpdateChaptersHook from '../../../hooks/AuthorHooks/UpdateChaptersHook
 import ButtonPrimary from '../../../components/common/buttons/ButtonPrimary';
 import HeaderWithBackBtn from '../../../components/common/headers/HeaderWithBackBtn';
 import useAddAudioChapterHook from '../../../hooks/AuthorHooks/AddAudioChapterHook';
-import { useDispatch, useSelector } from 'react-redux';
-import { store } from '../../../interfaces/reducer/state';
-import { SetAudioEbookFormInputs } from '../../../redux/reducers/audioEbookReducer';
-import { AudioEbookKey } from '../../../interfaces/reducer/audioStore.interface';
+import {useDispatch, useSelector} from 'react-redux';
+import {store} from '../../../interfaces/reducer/state';
+import {SetAudioEbookFormInputs} from '../../../redux/reducers/audioEbookReducer';
+import {AudioEbookKey} from '../../../interfaces/reducer/audioStore.interface';
+import useKeyboardVisibleListener from '../../../hooks/CommonHooks/isKeyboardVisibleHook';
 
 const inputsConstant = {
   chapterName: {
@@ -31,9 +41,11 @@ const errorInitialState = {
 
 const AddAudioChaptersForm = () => {
   const {inputs} = useSelector((store: store) => store.audio);
+  const isKeyboardVisible = useKeyboardVisibleListener();
   const dispatch = useDispatch();
   const [errors, setErrors] = useState(errorInitialState);
-  const {AddAudioChapterServiceHandler, UpdateAudioChapterServiceHandler} = useAddAudioChapterHook();
+  const {AddAudioChapterServiceHandler, UpdateAudioChapterServiceHandler} =
+    useAddAudioChapterHook();
 
   const HandleInputsTextChange = (text: string, id: AudioEbookKey) => {
     dispatch(SetAudioEbookFormInputs({key: id, value: text}));
@@ -47,7 +59,7 @@ const AddAudioChaptersForm = () => {
     const isValid = validation();
     if (inputs._id && isValid) {
       UpdateAudioChapterServiceHandler(inputs);
-    } else if(isValid) {
+    } else if (isValid) {
       AddAudioChapterServiceHandler(inputs);
     }
   };
@@ -72,32 +84,38 @@ const AddAudioChaptersForm = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <HeaderWithBackBtn paddingTop={Platform.OS === 'android' ? 8 : 13} />
-      <View style={styles.formBody}>
-        <UploadAudioComponent
-          error={errors.audioLink}
-          value={inputs.audioLink}
-          setValue={setAudioLink}
-        />
-        <InputComponent
-          placeholder={inputsConstant.chapterName.placeholder}
-          value={inputs.chapterName}
-          error={errors.chapterName}
-          containerStyle={styles.inputContainer}
-          id={inputsConstant.chapterName.id}
-          onChangeHandler={HandleInputsTextChange}
-        />
-      </View>
-      <View style={styles.center}>
-        <View style={styles.btnContainer}>
-          <ButtonPrimary
-            label={inputs._id ? "Update Ebook" : "Add Chapter"}
-            handleBtnPress={handleAddChapter}
+    <TouchableWithoutFeedback
+      onPress={Keyboard.dismiss}
+      style={styles.container}>
+      <View style={styles.container}>
+        <HeaderWithBackBtn paddingTop={Platform.OS === 'android' ? 8 : 13} />
+        <View style={styles.formBody}>
+          <UploadAudioComponent
+            error={errors.audioLink}
+            value={inputs.audioLink}
+            setValue={setAudioLink}
+          />
+          <InputComponent
+            placeholder={inputsConstant.chapterName.placeholder}
+            value={inputs.chapterName}
+            error={errors.chapterName}
+            containerStyle={styles.inputContainer}
+            id={inputsConstant.chapterName.id}
+            onChangeHandler={HandleInputsTextChange}
           />
         </View>
+        <View style={styles.center}>
+          <View style={styles.btnContainer}>
+            {isKeyboardVisible ? null : (
+              <ButtonPrimary
+                label={inputs._id ? 'Update Ebook' : 'Add Chapter'}
+                handleBtnPress={handleAddChapter}
+              />
+            )}
+          </View>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
