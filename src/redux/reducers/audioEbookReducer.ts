@@ -1,4 +1,4 @@
-import { Audio, AudioStore, ClearAudioEbookFormInput, SetAudioInputs, UpdateAudioEbook } from "../../interfaces/reducer/audioStore.interface";
+import { Audio, AudioStore, ClearAudioEbookFormInput, SelectedBook, SetAudioInputs, UpdateAudioEbook } from "../../interfaces/reducer/audioStore.interface";
 import { AudioEbookData } from "../../interfaces/reducer/audioStore.interface";
 import { AudioEbookAction } from "../../interfaces/reducer/audioStore.interface"
 
@@ -6,7 +6,13 @@ const initialState: AudioStore = {
     inputs: {
         chapterName: '',
         audioLink: '',
-    }
+    },
+    selectedAudioBook: {
+        _id: '',
+        chapterName: '',
+        audioLink: '',
+        index: 0
+    },
 }
 
 const AudioEbookReducers = (state=initialState, action: AudioEbookAction) => {
@@ -39,6 +45,15 @@ const AudioEbookReducers = (state=initialState, action: AudioEbookAction) => {
             }
         }
     }
+
+    case 'UPDATE_SELECTED_AUDIO_BOOK': {
+        return {
+            ...state,
+            selectedAudioBook: {
+                ...action.payload
+            }
+        }
+    }
    
     default:
         return state;
@@ -64,5 +79,12 @@ export const EditEbook = (data: Audio): UpdateAudioEbook => {
 export const ResetAudioEbookFormInput = (): ClearAudioEbookFormInput => {
     return {
         type: 'FORMAT_AUDIO_FORM_INPUT'
+    }
+}
+
+export const UpdateSelectedAudioBook = (AudioBook: SelectedBook) => {
+    return {
+        type: 'UPDATE_SELECTED_AUDIO_BOOK',
+        payload: AudioBook
     }
 }
