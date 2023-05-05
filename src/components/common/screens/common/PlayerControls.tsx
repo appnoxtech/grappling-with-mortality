@@ -16,7 +16,9 @@ import TrackPlayer, {
   useProgress,
   useTrackPlayerEvents,
   Event,
+  usePlaybackState,
 } from 'react-native-track-player';
+import Lottie from 'lottie-react-native';
 import Slider from '@react-native-community/slider';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -25,18 +27,24 @@ import {
 } from '../../../../../assests/Styles/GlobalTheme';
 import LoadIcon from '../../LoadIcons';
 import {store} from '../../../../interfaces/reducer/state';
-import { UpdateSelectedAudioBook } from '../../../../redux/reducers/audioEbookReducer';
+import {UpdateSelectedAudioBook} from '../../../../redux/reducers/audioEbookReducer';
+import LoadingScreen from '../../../../screens/common/LoadingScreen';
+import {SetIsLoadingState} from '../../../../redux/reducers/commonReducer';
 
 const PlayerControls = () => {
   const [trackTitle, setTrackTitle] = useState<string>();
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const {selectedBookDetails} = useSelector((state: store) => state.author);
   const [state, setState] = useState<State>();
   const {selectedAudioBook} = useSelector((store: store) => store.audio);
   const progress = useProgress();
+  const crrState = usePlaybackState();
+  const path = '../../../../../assests/animations/Loading.json';
 
   useEffect(() => {
     TrackPlayerSetup();
+    return () => {TrackPlayer.pause();}
   }, []);
 
   const TrackPlayerSetup = async () => {
@@ -51,6 +59,10 @@ const PlayerControls = () => {
         }),
       );
       TrackPlayer.skip(selectedAudioBook.index);
+      TrackPlayer.addEventListener(Event.RemoteSeek, (event) => {
+        console.log('Event.RemoteSeek', event);
+        TrackPlayer.seekTo(event.position);
+      });
       await togglePlayer();
       await setCurrentState();
       setState(state);
@@ -109,17 +121,60 @@ const PlayerControls = () => {
   });
 
   useEffect(() => {
-     if(trackTitle !== selectedAudioBook._id){
-        const audioList = selectedBookDetails.audio;
-        const index = audioList.findIndex((item) => item._id === trackTitle);
-        if(index !== -1){
-            const data = {...audioList[index], index};
-            dispatch(UpdateSelectedAudioBook(data));
-        }
-     }
+    if (trackTitle !== selectedAudioBook._id) {
+      const audioList = selectedBookDetails.audio;
+      const index = audioList.findIndex(item => item._id === trackTitle);
+      if (index !== -1) {
+        const data = {...audioList[index], index};
+        dispatch(UpdateSelectedAudioBook(data));
+      }
+    }
   }, [trackTitle]);
-  
 
+  const handleNext = () => {
+    if (selectedAudioBook.index === selectedBookDetails.audio.length - 1) {
+      return;
+    } else {
+      const audioList = selectedBookDetails.audio;
+      const index = audioList.findIndex(item => item._id === trackTitle);
+      if (index !== -1) {
+        const newIndex = index + 1;
+        const data = {...audioList[newIndex], index: newIndex};
+        dispatch(UpdateSelectedAudioBook(data));
+        TrackPlayer.skip(newIndex);
+        setCurrentState();
+      }
+    }
+  };
+
+  const handlePrevious = () => {
+    if (selectedAudioBook.index) {
+      const audioList = selectedBookDetails.audio;
+      const index = audioList.findIndex(item => item._id === trackTitle);
+      if (index !== -1) {
+        const newIndex = index - 1;
+        const data = {...audioList[newIndex], index: newIndex};
+        dispatch(UpdateSelectedAudioBook(data));
+        TrackPlayer.skip(newIndex);
+        setCurrentState();
+      }
+    }
+  };
+
+  const colorDisable = 'rgba(0,0,0,0.3)';
+
+  useEffect(() => {
+     if(crrState === State.Buffering || crrState === State.Connecting || crrState === State.None) {
+      setIsLoading(true);
+     }else {
+      setIsLoading(false);
+     }
+  }, [crrState]);
+
+  useEffect(() => {
+    TrackPlayer.skip(selectedAudioBook.index);
+  }, []);
+  
   return (
     <>
       <View style={styles.progrsBarSection}>
@@ -132,35 +187,57 @@ const PlayerControls = () => {
           minimumValue={0}
           maximumValue={progress.duration}
           minimumTrackTintColor={colorSecondary}
-          maximumTrackTintColor={'rgba(0,0,0,0.3)'}
+          maximumTrackTintColor={colorDisable}
           thumbTintColor={colorPrimary}
           value={progress.position}
         />
       </View>
       <View style={styles.playerControls}>
-        <LoadIcon
-          iconFamily="AntDesign"
-          iconName="stepbackward"
-          style={{}}
-          size={responsiveFontSize(5)}
-          color={colorSecondary}
-        />
-        <TouchableOpacity onPress={togglePlayer}>
+        <TouchableOpacity onPress={handlePrevious}>
           <LoadIcon
-            iconFamily="FontAwesome"
-            iconName={state === State.Paused ? 'play' : 'pause'}
+            iconFamily="AntDesign"
+            iconName="stepbackward"
             style={{}}
-            size={responsiveFontSize(6)}
-            color={colorSecondary}
+            size={responsiveFontSize(5)}
+            color={
+              selectedAudioBook.index === 0 ? colorDisable : colorSecondary
+            }
           />
         </TouchableOpacity>
-        <LoadIcon
-          iconFamily="AntDesign"
-          iconName="stepbackward"
-          style={{transform: [{rotateY: '180deg'}]}}
-          size={responsiveFontSize(5)}
-          color={colorSecondary}
-        />
+        {isLoading ? (
+          <View style={styles.animationContainer}>
+            <Lottie
+            resizeMode='cover'
+            style={styles.animationStyle}
+            source={require(path)}
+            autoPlay
+            loop
+          />
+          </View>
+        ) : (
+          <TouchableOpacity style={styles.animationContainer} onPress={togglePlayer}>
+            <LoadIcon
+              iconFamily="FontAwesome"
+              iconName={crrState === State.Paused || crrState === State.Ready  ? 'play' : 'pause'}
+              style={{}}
+              size={responsiveFontSize(6)}
+              color={colorSecondary}
+            />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity onPress={handleNext}>
+          <LoadIcon
+            iconFamily="AntDesign"
+            iconName="stepbackward"
+            style={{transform: [{rotateY: '180deg'}]}}
+            size={responsiveFontSize(5)}
+            color={
+              selectedAudioBook.index === selectedBookDetails.audio.length - 1
+                ? colorDisable
+                : colorSecondary
+            }
+          />
+        </TouchableOpacity>
       </View>
     </>
   );
@@ -171,6 +248,15 @@ export default PlayerControls;
 const styles = StyleSheet.create({
   progrsBarSection: {
     marginTop: responsiveScreenHeight(2.5),
+  },
+  animationContainer: {
+    width: responsiveScreenWidth(20),
+    height: responsiveScreenWidth(20),
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  animationStyle: {
+    
   },
   timerContainer: {
     flexDirection: 'row',

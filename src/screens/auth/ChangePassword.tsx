@@ -45,10 +45,10 @@ const ChangePassword = ({route}: any) => {
         [id]: value,
       };
     });
-    validation(value, id);
+    OnChangeTextValidation(value, id);
   };
 
-  const validation = (value: string, id: string) => {
+  const OnChangeTextValidation = (value: string, id: string) => {
     let state: boolean;
     if (id === 'password' && value === '') {
       state = false;
@@ -69,7 +69,7 @@ const ChangePassword = ({route}: any) => {
         password: '',
         confirmPassowrd: ErrorMessage.REQ,
       });
-    } else if (id === 'confirmPassowrd' && value.length < 6) {
+    } else if (id === 'confirmPassowrd' && value.length < 5) {
       state = false;
       setSubTexts({
         ...subTexts,
@@ -83,13 +83,6 @@ const ChangePassword = ({route}: any) => {
         password: '',
         confirmPassowrd: ErrorMessage.PSWD_NOT_MATCH,
       });
-    } else if (id === 'password' && inputs.confirmPassowrd !== value) {
-      state = false;
-      setSubTexts({
-        ...subTexts,
-        password: '',
-        confirmPassowrd: 'Password not matched !',
-      });
     } else {
       state = true;
       setSubTexts(subText);
@@ -97,18 +90,63 @@ const ChangePassword = ({route}: any) => {
     setIsActive(state);
   };
 
+  const validation = () => {
+    let state: boolean;
+    if (inputs.password === '') {
+      state = false;
+      setSubTexts({
+        ...subTexts,
+        password: ErrorMessage.REQ,
+      });
+    } else if (inputs.password.length < 5) {
+      state = false;
+      setSubTexts({
+        ...subTexts,
+        password: ErrorMessage.PSWD_LENGTH,
+      });
+    } else if (inputs.confirmPassowrd === '') {
+      state = false;
+      setSubTexts({
+        ...subTexts,
+        password: '',
+        confirmPassowrd: ErrorMessage.REQ,
+      });
+    } else if (inputs.confirmPassowrd.length < 5) {
+      state = false;
+      setSubTexts({
+        ...subTexts,
+        password: '',
+        confirmPassowrd: ErrorMessage.PSWD_LENGTH,
+      });
+    } else if (inputs.confirmPassowrd !== inputs.password) {
+      state = false;
+      setSubTexts({
+        ...subTexts,
+        password: '',
+        confirmPassowrd: ErrorMessage.PSWD_NOT_MATCH,
+      });
+    } else {
+      state = true;
+      setSubTexts(subText);
+    }
+    return state;
+  };
+
   const handleClick = async () => {
-    try {
-      const data: resetPassword = {
-        email,
-        otp: parseInt(otp, 10),
-        password: inputs.password,
-      };
-      await ResetPasswordServices(data);
-      Alert.alert('Password Reset');
-      NavigateTo.navigate('LandingPage' as never);
-    } catch (error) {
-      console.log('Error', error);
+    const isValid = validation();
+    if (isValid) {
+      try {
+        const data: resetPassword = {
+          email,
+          otp: parseInt(otp, 10),
+          password: inputs.password,
+        };
+        await ResetPasswordServices(data);
+        Alert.alert('Password Reset');
+        NavigateTo.navigate('LandingPage' as never);
+      } catch (error) {
+        console.log('Error', error);
+      }
     }
   };
 

@@ -6,7 +6,7 @@ import {
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
 import {useNavigation} from '@react-navigation/core';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {store} from '../../../../interfaces/reducer/state';
 import LoadIcon from '../../LoadIcons';
 import {
@@ -15,6 +15,8 @@ import {
   white,
 } from '../../../../../assests/Styles/GlobalTheme';
 import PlayerControls from './PlayerControls';
+import {UpdateSelectedAudioBook} from '../../../../redux/reducers/audioEbookReducer';
+import TrackPlayer from 'react-native-track-player';
 
 interface audio {
   _id: string;
@@ -28,11 +30,15 @@ interface chapterProps {
 }
 
 const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
-  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {selectedAudioBook} = useSelector((store: store) => store.audio);
 
   const handleAudioBookChapterPlay = () => {
-    const data = {...chapter, index};
+    if (selectedAudioBook.index !== index) {
+      const data = {...chapter, index};
+      dispatch(UpdateSelectedAudioBook(data));
+      TrackPlayer.skip(index);
+    }
   };
 
   return (
@@ -41,19 +47,25 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
       <View style={styles.chapterBody}>
         <Text style={styles.chapterName}>{chapter.chapterName}</Text>
         <View style={styles.actionContainer}>
-          <TouchableOpacity onPress={handleAudioBookChapterPlay}>
+          {selectedAudioBook.index === index ? (
             <LoadIcon
               iconFamily="Ionicons"
-              iconName={
-                selectedAudioBook.index === index
-                  ? 'pause-circle'
-                  : 'play-circle'
-              }
+              iconName={'pause-circle'}
               style={{}}
               size={30}
               color={colorSecondary}
             />
-          </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={handleAudioBookChapterPlay}>
+              <LoadIcon
+                iconFamily="Ionicons"
+                iconName={'play-circle'}
+                style={{}}
+                size={30}
+                color={colorSecondary}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>
@@ -82,7 +94,7 @@ const EbookPlayerComponent = () => {
         <TouchableOpacity onPress={togggleChapterList}>
           <LoadIcon
             iconFamily="Entypo"
-            iconName={isListVisible ? "chevron-up" : "chevron-down"}
+            iconName={isListVisible ? 'chevron-up' : 'chevron-down'}
             style={{}}
             color={colorPrimary}
             size={30}
