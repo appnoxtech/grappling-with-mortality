@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, Platform, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { white } from '../../../assests/Styles/GlobalTheme'
 import HeaderWithBackBtn from '../../components/common/headers/HeaderWithBackBtn'
@@ -13,7 +13,7 @@ const AudioEbookPlayer = () => {
 
   return (
     <View style={styles.container}>
-       <HeaderWithBackBtn />
+       <HeaderWithBackBtn paddingTop={Platform.OS === 'android' ? 8 : 13} />
        <View style={styles.body}>
         <View style={styles.bookSection}>
           <View style={styles.imageContainer}>

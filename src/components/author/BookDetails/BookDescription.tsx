@@ -21,9 +21,9 @@ const BookDescription = () => {
                  <Image style={styles.authorImage} source={{uri: selectedBookDetails.authorImage}} />
                  <Text style={styles.authorName}>{selectedBookDetails?.authorName}</Text>
              </View>
-             <TouchableOpacity style={styles.btnTextContainer}>
+             {/* <TouchableOpacity style={styles.btnTextContainer}>
                <Text style={styles.btnText}>View Profile</Text>
-             </TouchableOpacity>
+             </TouchableOpacity> */}
         </View>
       </View>
     </View>

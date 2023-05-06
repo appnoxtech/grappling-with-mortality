@@ -1,6 +1,7 @@
 import {
   Alert,
   Keyboard,
+  Platform,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
@@ -40,7 +41,6 @@ const AddBookDocs = () => {
   const handelBtnPress = () => {
     if (newBook.bookLink) {
       if (newBook._id) {
-        console.log('Book Edit ');
         EditNewBookServiceHandler();
       } else {
         UploadNewBookServiceHandler();
@@ -101,7 +101,7 @@ const AddBookDocs = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <HeaderWithBackBtn />
+        <HeaderWithBackBtn paddingTop={Platform.OS === 'android' ? 8 : 13} />
         <DocumentPicker />
         {!isKeyboardVisible ? (
           <View style={styles.btnContainer}>
