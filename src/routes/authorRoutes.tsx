@@ -8,6 +8,7 @@ import BookDetails from '../screens/Author/Screen/BookDetails';
 import AddChaptersForm from '../screens/Author/Screen/AddChaptersForm';
 import AddAudioChaptersForm from '../screens/Author/Screen/AddAudioChaptersForm';
 import AudioEbookPlayer from '../screens/common/AudioEbookPlayer';
+import EBookReader from '../screens/Author/Screen/ReadBookChapter';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,11 @@ const AuthorRoutes = () => {
       <Stack.Screen
         name="AudioEbookPlayer"
         component={AudioEbookPlayer}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="EBookReader"
+        component={EBookReader}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
     </Stack.Navigator>
