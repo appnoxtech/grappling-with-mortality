@@ -1,19 +1,19 @@
 import {Alert, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import HeaderComponent from '../../../components/Homepages/Profile/HeaderComponent';
-import {colorGrey, colorPrimary, white} from '../../../../assests/Styles/GlobalTheme';
+import HeaderComponent from '../../components/Homepages/Profile/HeaderComponent';
+import {colorGrey, colorPrimary, white} from '../../../assests/Styles/GlobalTheme';
 import {
   responsiveFontSize,
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
 import { useDispatch, useSelector } from 'react-redux';
-import LoadIcon from '../../../components/common/LoadIcons';
-import { systemGrey } from '../../../../assests/Styles/GlobalTheme';
-import { deleteUserData } from '../../../utils/helperFunctions/auth';
-import { updateUserData } from '../../../redux/reducers/userReducer';
+import LoadIcon from '../../components/common/LoadIcons';
+import { systemGrey } from '../../../assests/Styles/GlobalTheme';
+import { deleteUserData } from '../../utils/helperFunctions/auth';
+import { updateUserData } from '../../redux/reducers/userReducer';
 
-const path = '../../../../assests/images/profile.jpg';
+const path = '../../../assests/images/profile.jpg';
 
 const Profile = () => {
   const dispatch = useDispatch();

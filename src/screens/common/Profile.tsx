@@ -1,21 +1,50 @@
-import {Alert, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
 import HeaderComponent from '../../components/Homepages/Profile/HeaderComponent';
-import {colorGrey, colorPrimary, white} from '../../../assests/Styles/GlobalTheme';
+import {
+  colorGrey,
+  colorPrimary,
+  white,
+} from '../../../assests/Styles/GlobalTheme';
 import {
   responsiveFontSize,
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import LoadIcon from '../../components/common/LoadIcons';
-import { systemGrey } from '../../../assests/Styles/GlobalTheme';
-import { deleteUserData } from '../../utils/helperFunctions/auth';
-import { updateUserData } from '../../redux/reducers/userReducer';
+import {systemGrey} from '../../../assests/Styles/GlobalTheme';
+import {deleteUserData} from '../../utils/helperFunctions/auth';
+import {updateUserData} from '../../redux/reducers/userReducer';
 
 const path = '../../../assests/images/profile.jpg';
+
+const ProfileNavData = [
+  {
+    name: 'Change Password',
+    screenName: 'ResetPassword',
+  },
+  {
+    name: 'Privacy Policy',
+    screenName: 'PrivacyPolicy',
+  },
+  {
+    name: 'Logout',
+    screenName: 'Logout',
+  },
+];
+
 const Profile = () => {
   const dispatch = useDispatch();
+  const Navigation = useNavigation();
   const {userDetails} = useSelector((state: any) => state.user);
   const handelLogoutPress = () => {
     Alert.alert('', 'Sure you want to Logout?', [
@@ -33,6 +62,14 @@ const Profile = () => {
     dispatch(updateUserData(false));
   };
 
+  const PrivacyPolicyNav = () => {
+    Navigation.navigate('PrivacyPolicy' as never);
+  };
+
+  const handleProfileEdit = () => {
+    Navigation.navigate('EditProfile' as never);
+  }
+
   return (
     <View style={styles.container}>
       <HeaderComponent />
@@ -41,20 +78,47 @@ const Profile = () => {
           <View style={styles.leftContainer}>
             <Image style={styles.image} source={require(path)} alt="Profile" />
             <View style={styles.userInfo}>
-               <Text style={styles.userName}>{userDetails.fullName}</Text>
-               <Text style={styles.userEmail}>Shudhanshus199@gmail.com</Text>
+              <Text style={styles.userName}>{userDetails.fullName}</Text>
+              <Text style={styles.userEmail}>{userDetails.email}</Text>
             </View>
           </View>
           <View style={styles.rightContainer}>
-             <LoadIcon iconFamily='MaterialCommunityIcons' iconName='account-edit' style={{}} color={colorPrimary} size={30} />
+            <TouchableOpacity onPress={handleProfileEdit}>
+              <LoadIcon
+                iconFamily="MaterialCommunityIcons"
+                iconName="account-edit"
+                style={{}}
+                color={colorPrimary}
+                size={30}
+              />
+            </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity onPress={handelLogoutPress} style={styles.itemContainer}>
-          <Text style={styles.itemText}>Logout</Text>
-          <LoadIcon iconFamily='MaterialIcons' iconName='keyboard-arrow-right' size={25} color='black' style={{}} />
-        </TouchableOpacity>
+        {ProfileNavData.map(navItem => {
+          const handleNavItemPress = () => {
+            if (navItem.name === 'Logout') {
+              handelLogoutPress();
+            } else {
+              Navigation.navigate(navItem.screenName as never);
+            }
+          };
+          return (
+            <TouchableOpacity
+              key={navItem.name}
+              onPress={handleNavItemPress}
+              style={styles.itemContainer}>
+              <Text style={styles.itemText}>{navItem.name}</Text>
+              <LoadIcon
+                iconFamily="MaterialIcons"
+                iconName="keyboard-arrow-right"
+                size={25}
+                color="black"
+                style={{}}
+              />
+            </TouchableOpacity>
+          );
+        })}
       </View>
-     
     </View>
   );
 };
@@ -75,7 +139,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomColor: systemGrey,
     borderBottomWidth: 2,
-    paddingBottom: responsiveScreenHeight(1)
+    paddingBottom: responsiveScreenHeight(1),
   },
   image: {
     width: responsiveScreenWidth(12),
@@ -83,29 +147,27 @@ const styles = StyleSheet.create({
     borderRadius: responsiveScreenWidth(7),
     resizeMode: 'cover',
   },
-  userInfo: {
-    
-  },
+  userInfo: {},
   leftContainer: {
     flexDirection: 'row',
     gap: responsiveScreenWidth(2),
-    width: '80%'
+    width: '80%',
   },
   userName: {
     fontSize: responsiveFontSize(2.4),
     lineHeight: 20,
     fontWeight: '600',
-    letterSpacing: 0.4
+    letterSpacing: 0.4,
   },
   userEmail: {
     fontSize: responsiveFontSize(1.8),
     color: 'black',
     opacity: 0.7,
-    letterSpacing: 0.4
+    letterSpacing: 0.4,
   },
   rightContainer: {
-     justifyContent: 'center',
-     alignItems: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   itemContainer: {
     paddingVertical: responsiveScreenHeight(2.5),
@@ -117,6 +179,6 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: responsiveFontSize(2.3),
-    fontWeight: '600'
-  }
+    fontWeight: '600',
+  },
 });

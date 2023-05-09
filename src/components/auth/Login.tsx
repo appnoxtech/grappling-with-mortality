@@ -31,6 +31,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import LoadingScreen from '../../screens/common/LoadingScreen';
 import { useDispatch } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { SetIsLoadingState } from '../../redux/reducers/commonReducer';
 
 const labels = {
   login: 'Login',

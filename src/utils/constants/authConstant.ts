@@ -59,6 +59,13 @@ export const inputsConstant = {
        placeHolder: "Email",
        iconSize: 20
      },
+     oldPassword: {
+        id: "oldPassword",
+        iconFamily: "FontAwesome",
+        iconName: "lock",
+        placeHolder: "Old Password",
+        iconSize: 20
+      },
      password: {
        id: "password",
        iconFamily: "FontAwesome",
