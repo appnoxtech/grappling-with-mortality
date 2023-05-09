@@ -7,8 +7,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {colorPrimary} from '../../../../assests/Styles/GlobalTheme';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
-import Profile from './Profile';
-import Discover from '../../Homepage/Discover'; 
+import Profile from '../../common/Profile';
+import Discover from '../../common/Discover'; 
 import MyBooks from './MyBooks';
 
 

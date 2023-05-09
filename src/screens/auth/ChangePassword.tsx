@@ -26,10 +26,12 @@ const initialState = {
   password: '',
   confirmPassowrd: '',
 };
+
 const subText = {
   password: '',
   confirmPassowrd: '',
 };
+
 const ChangePassword = ({route}: any) => {
   const [inputs, setInputs] = useState(initialState);
   const [subTexts, setSubTexts] = useState(subText);
