@@ -96,16 +96,23 @@ const PlayerControls = () => {
   };
 
   const getCurrentPosition = () => {
-    if (progress.position < 10) {
+    console.log('crrState', crrState);
+    
+    if(crrState === State.Buffering || crrState === State.Connecting || crrState === State.Ready) {
+      return `00:00`
+    } else if (progress.position < 10) {
       return `00:0${progress.position.toFixed(0)}`;
     } else {
       return `00:${progress.position.toFixed(0)}`;
     }
+    
   };
 
   const getTimeLeft = () => {
     const diff = progress.duration - progress.position;
-    if (diff < 10) {
+    if(crrState === State.Buffering || crrState === State.Connecting || crrState === State.Ready) {
+      return `00:00`
+    }else if (diff < 10) {
       return `-00:0${diff.toFixed(0)}`;
     } else {
       return `-00:${diff.toFixed(0)}`;
@@ -189,7 +196,7 @@ const PlayerControls = () => {
           minimumTrackTintColor={colorSecondary}
           maximumTrackTintColor={colorDisable}
           thumbTintColor={colorPrimary}
-          value={progress.position}
+          value={crrState === State.Buffering || crrState === State.Connecting || crrState === State.Ready ? 0 : progress.position}
         />
       </View>
       <View style={styles.playerControls}>

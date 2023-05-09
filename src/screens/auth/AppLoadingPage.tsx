@@ -40,6 +40,7 @@ const AppLoadingPage = () => {
           },
         ]}>
         <Text style={styles.fadingText}>{appName}</Text>
+        <Text style={styles.fadingText}>LLC</Text>
       </Animated.View>
     </ImageBackground>
   );

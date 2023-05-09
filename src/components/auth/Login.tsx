@@ -31,6 +31,8 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import LoadingScreen from '../../screens/common/LoadingScreen';
 import { useDispatch } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import useKeyboardVisibleListener from '../../hooks/CommonHooks/isKeyboardVisibleHook';
+import { SetIsLoadingState } from '../../redux/reducers/commonReducer';
 
 const labels = {
   login: 'Login',
@@ -54,8 +56,7 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState(LoginInputsInitialState);
   const [errors, setErrors] = useState(LoginInputsInitialState);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const [rememberPswd, setRememberPswd] = useState(false);
+  const isKeyboardVisible = useKeyboardVisibleListener();
 
   const navigation = useNavigation();
 
@@ -144,29 +145,6 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
 
   const handleForgetPasswordClick = () => {
     navigation.navigate('ResetPassword' as never);
-  };
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      _keyboardDidShow,
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      _keyboardDidHide,
-    );
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
-  const _keyboardDidShow = () => {
-    setIsKeyboardVisible(true);
-  };
-
-  const _keyboardDidHide = () => {
-    setIsKeyboardVisible(false);
   };
 
   return (

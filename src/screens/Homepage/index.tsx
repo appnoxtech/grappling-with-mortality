@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -7,9 +7,11 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {colorPrimary} from '../../../assests/Styles/GlobalTheme';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
-import Discover from './Discover';
+import Discover from '../Discover/index';
 import SearchScreen from './Search';
 import Profile from './Profile';
+import {useDispatch} from 'react-redux';
+import {UpdateShowEditorOptions} from '../../redux/reducers/commonReducer';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,18 +37,6 @@ const Homepages = () => {
               />
             );
           }
-          // else if (route.name === 'Search') {
-          //   return (
-          //     <Ionicons
-          //       style={
-          //         (iconName = focused ? styles.iconFocused : styles.icon)
-          //       }
-          //       name={
-          //         (iconName = focused ? 'md-search' : 'md-search')
-          //       }
-          //     />
-          //   );
-          // }
         },
         tabBarActiveTintColor: colorPrimary,
         tabBarInactiveTintColor: 'gray',

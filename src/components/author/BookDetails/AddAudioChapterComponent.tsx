@@ -4,10 +4,15 @@ import {useNavigation} from '@react-navigation/core';
 import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { white } from '../../../../assests/Styles/GlobalTheme'
 import LoadIcon from '../../common/LoadIcons';
+import { useDispatch } from 'react-redux';
+import { ResetAudioEbookFormInput } from '../../../redux/reducers/audioEbookReducer';
 
 const AddAudioChapterComponent = () => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+
   const handleBtnPress = () => {
+    dispatch(ResetAudioEbookFormInput());
     navigation.navigate('AddAudioChaptersForm' as never);
   };
 

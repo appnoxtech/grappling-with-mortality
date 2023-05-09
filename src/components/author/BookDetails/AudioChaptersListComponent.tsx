@@ -25,6 +25,7 @@ import {
   UpdateSelectedAudioBook,
 } from '../../../redux/reducers/audioEbookReducer';
 import TrackPlayer from 'react-native-track-player';
+import {store} from '../../../interfaces/reducer/state';
 
 interface audio {
   _id: string;
@@ -37,6 +38,7 @@ interface chapterProps {
 }
 
 const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
+  const {showEditorOptions} = useSelector((state: store) => state.common);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -47,41 +49,56 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
   };
 
   const handleAudioBookChapterPlay = () => {
-    const data = {...chapter, index}
+    const data = {...chapter, index};
     dispatch(UpdateSelectedAudioBook(data));
     navigation.navigate('AudioEbookPlayer' as never);
-  }
+  };
   return (
     <View style={styles.chapter}>
       <Text style={styles.chapterNo}>{`${index + 1}.`}</Text>
       <View style={styles.chapterBody}>
         <Text style={styles.chapterName}>{chapter.chapterName}</Text>
-        <View style={styles.actionContainer}>
-          <TouchableOpacity onPress={handleAudioBookChapterPlay}>
-            <LoadIcon
-              iconFamily="Ionicons"
-              iconName="play-circle"
-              style={{}}
-              size={30}
-              color={colorSecondary}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleEditPress}>
-            <LoadIcon
-              iconFamily="MaterialCommunityIcons"
-              iconName="circle-edit-outline"
-              style={{}}
-              size={30}
-              color={colorSecondary}
-            />
-          </TouchableOpacity>
-        </View>
+        {showEditorOptions ? (
+          <View style={styles.actionContainer}>
+            <TouchableOpacity onPress={handleAudioBookChapterPlay}>
+              <LoadIcon
+                iconFamily="Ionicons"
+                iconName="play-circle"
+                style={{}}
+                size={30}
+                color={colorSecondary}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleEditPress}>
+              <LoadIcon
+                iconFamily="MaterialCommunityIcons"
+                iconName="circle-edit-outline"
+                style={{}}
+                size={30}
+                color={colorSecondary}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.listBtnContainer}>
+            <TouchableOpacity onPress={handleAudioBookChapterPlay}>
+              <LoadIcon
+                iconFamily="Ionicons"
+                iconName="play-circle"
+                style={{}}
+                size={30}
+                color={colorSecondary}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
 };
 
 export default function AudioChaptersListComponent() {
+  const {showEditorOptions} = useSelector((state: store) => state.common);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {selectedBookDetails} = useSelector((state: any) => state.author);
@@ -99,15 +116,17 @@ export default function AudioChaptersListComponent() {
           <RenderChapter chapter={item} index={index} />
         )}
       />
-      <TouchableOpacity onPress={handlePress} style={styles.btnContainer}>
-        <LoadIcon
-          iconFamily="FontAwesome5"
-          iconName="plus"
-          color="white"
-          style={{}}
-          size={20}
-        />
-      </TouchableOpacity>
+      {showEditorOptions ? (
+        <TouchableOpacity onPress={handlePress} style={styles.btnContainer}>
+          <LoadIcon
+            iconFamily="FontAwesome5"
+            iconName="plus"
+            color="white"
+            style={{}}
+            size={20}
+          />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 }
@@ -164,6 +183,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: responsiveScreenWidth(2),
-    gap: responsiveScreenWidth(3)
+    gap: responsiveScreenWidth(3),
+  },
+  listBtnContainer: {
+    paddingHorizontal: responsiveScreenWidth(1.5),
   },
 });

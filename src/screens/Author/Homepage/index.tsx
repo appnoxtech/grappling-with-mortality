@@ -1,14 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {colorPrimary} from '../../../../assests/Styles/GlobalTheme';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import Profile from './Profile';
-import Discover from '../../Homepage/Discover'; 
+import Discover from '../../Discover/index'; 
 import MyBooks from './MyBooks';
 
 
@@ -19,7 +17,7 @@ const Homepages = () => {
     <Tab.Navigator
       //@ts-ignore
       screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
+        tabBarIcon: ({focused}) => {
           let iconName;
           if (route.name === 'Discover') {
             return (

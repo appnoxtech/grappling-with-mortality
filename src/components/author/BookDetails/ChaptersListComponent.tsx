@@ -25,7 +25,8 @@ import {
   UpdateSelectedChapter,
 } from '../../../redux/reducers/chaptersReducer';
 import ButtonPrimary from '../../common/buttons/ButtonPrimary';
-import { SetStartingPageNumber } from '../../../redux/reducers/eBookReaderReducer';
+import {SetStartingPageNumber} from '../../../redux/reducers/eBookReaderReducer';
+import {store} from '../../../interfaces/reducer/state';
 
 interface chapter {
   _id: string;
@@ -40,6 +41,7 @@ interface chapterProps {
 }
 
 const RenderChapter: React.FC<chapterProps> = ({chapter}) => {
+  const {showEditorOptions} = useSelector((state: store) => state.common);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -52,39 +54,54 @@ const RenderChapter: React.FC<chapterProps> = ({chapter}) => {
     dispatch(UpdateSelectedChapter(chapter));
     dispatch(SetStartingPageNumber(chapter.startingPageNo));
     navigation.navigate('EBookReader' as never);
-  }
+  };
 
   return (
     <View style={styles.chapter}>
       <Text style={styles.chapterNo}>{`${chapter.chapterNo}.`}</Text>
       <View style={styles.chapterBody}>
         <Text style={styles.chapterName}>{chapter.chapterName}</Text>
-        <View style={styles.actionContainer}>
-        <TouchableOpacity onPress={handleChapterRead}>
-            <LoadIcon
-              iconFamily="FontAwesome5"
-              iconName="book-reader"
-              style={{}}
-              size={25}
-              color={colorSecondary}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleEditPress}>
-            <LoadIcon
-              iconFamily="Feather"
-              iconName="edit"
-              style={{}}
-              size={25}
-              color={colorSecondary}
-            />
-          </TouchableOpacity>
-        </View>
+        {showEditorOptions ? (
+          <View style={styles.actionContainer}>
+            <TouchableOpacity onPress={handleChapterRead}>
+              <LoadIcon
+                iconFamily="FontAwesome5"
+                iconName="book-reader"
+                style={{}}
+                size={25}
+                color={colorSecondary}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleEditPress}>
+              <LoadIcon
+                iconFamily="Feather"
+                iconName="edit"
+                style={{}}
+                size={25}
+                color={colorSecondary}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.readBookContain}>
+            <TouchableOpacity onPress={handleChapterRead}>
+              <LoadIcon
+                iconFamily="FontAwesome5"
+                iconName="book-reader"
+                style={{}}
+                size={25}
+                color={colorSecondary}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
 };
 
 const ChaptersListComponent = () => {
+  const {showEditorOptions} = useSelector((state: store) => state.common);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {selectedBookDetails} = useSelector((state: any) => state.author);
@@ -95,7 +112,7 @@ const ChaptersListComponent = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.listContainer}>
+      <View style={ showEditorOptions ? styles.listContainer : styles.onlyListContainer}>
         <FlatList
           showsVerticalScrollIndicator={false}
           style={styles.chapterList}
@@ -104,9 +121,11 @@ const ChaptersListComponent = () => {
           renderItem={({item}) => <RenderChapter chapter={item} />}
         />
       </View>
-      <View style={styles.btnContainer}>
-         <ButtonPrimary label='Add Chapter' handleBtnPress={handlePress} />
-      </View>
+      {showEditorOptions ? (
+        <View style={styles.btnContainer}>
+          <ButtonPrimary label="Add Chapter" handleBtnPress={handlePress} />
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -119,7 +138,10 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   listContainer: {
-    height: responsiveScreenHeight(35)
+    height: responsiveScreenHeight(35),
+  },
+  onlyListContainer: {
+    flex: 1
   },
   chapter: {
     flexDirection: 'row',
@@ -165,4 +187,7 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     paddingBottom: responsiveScreenHeight(5),
   },
+  readBookContain: {
+    paddingHorizontal: responsiveScreenWidth(1)
+  }
 });
