@@ -33,7 +33,7 @@ import useRegisterHook from '../../hooks/AuthHooks/RegisterHook';
 import {inputsConstant} from '../../utils/constants/authConstant';
 
 const labels = {
-  findAccount: "Don't have an account? ",
+  findAccount: "Already have an account? ",
   login: 'Login Now',
   register: 'Register',
   Google: 'Google',
@@ -96,6 +96,12 @@ const Register: React.FC<props> = ({handleLabelClick}) => {
         password: ErrorMessage.PSWD_LENGTH,
       });
       return false;
+    } else if (inputs.confirmPassowrd === '') {
+      setInputsError({
+        ...RegisterInitialState,
+        confirmPassowrd: ErrorMessage.REQ,
+      });
+      return false;
     } else if (inputs.confirmPassowrd !== inputs.password) {
       setInputsError({
         ...RegisterInitialState,
@@ -137,6 +143,12 @@ const Register: React.FC<props> = ({handleLabelClick}) => {
       setInputsError({
         ...RegisterInitialState,
         password: ErrorMessage.PSWD_LENGTH,
+      });
+      return false;
+    } else if (id === 'confirmPassowrd' && value === '') {
+      setInputsError({
+        ...RegisterInitialState,
+        confirmPassowrd: ErrorMessage.REQ,
       });
       return false;
     } else if (id === 'confirmPassowrd' && value !== inputs.password) {

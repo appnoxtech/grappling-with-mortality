@@ -24,6 +24,7 @@ import {
   ResetAudioEbookFormInput,
   UpdateSelectedAudioBook,
 } from '../../../redux/reducers/audioEbookReducer';
+import TrackPlayer from 'react-native-track-player';
 
 interface audio {
   _id: string;
@@ -42,6 +43,7 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
   const handleEditPress = () => {
     dispatch(EditEbook(chapter));
     navigation.navigate('AddAudioChaptersForm' as never);
+    TrackPlayer.skip(index);
   };
 
   const handleAudioBookChapterPlay = () => {
@@ -119,7 +121,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 3,
-    paddingVertical: responsiveScreenHeight(2),
+    paddingTop: responsiveScreenHeight(2),
+    paddingBottom: responsiveScreenHeight(1),
     borderBottomWidth: 1,
     borderColor: 'rgba(0,0,0,0.2)',
   },
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: responsiveScreenWidth(2),
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
   },
   chapterName: {
@@ -144,8 +147,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   btnContainer: {
-    width: responsiveScreenWidth(10),
-    height: responsiveScreenWidth(10),
+    width: responsiveScreenWidth(15),
+    height: responsiveScreenWidth(15),
     borderRadius: responsiveScreenWidth(9),
     backgroundColor: colorSecondary,
     justifyContent: 'center',

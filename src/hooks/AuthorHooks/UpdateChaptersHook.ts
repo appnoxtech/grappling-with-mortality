@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { Chapter } from "../../interfaces/author/chapter.interface";
 import { store } from "../../interfaces/reducer/state";
 
-const congrats = 'Congratulations !';
 const SucessMsg = "New Chapter Added Successfully.";
 const SuccessUpdate = "Chapter Updated Successfully.";
 
@@ -28,7 +27,7 @@ const useUpdateChaptersHook = () => {
             await UpdateChaptersService(newChapterList);
             if(selectedBookDetails._id){
               await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
-              Alert.alert(congrats, SucessMsg);
+              Alert.alert('', SucessMsg);
               setTimeout(() => {
                   navigation.goBack();
               }, 1000);
@@ -55,7 +54,7 @@ const useUpdateChaptersHook = () => {
             await UpdateChaptersService(newChapterObj);
             if(selectedBookDetails._id){
                 await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
-                Alert.alert(congrats, SuccessUpdate);
+                Alert.alert('', SuccessUpdate);
                 setTimeout(() => {
                     navigation.goBack();
                 }, 1000);

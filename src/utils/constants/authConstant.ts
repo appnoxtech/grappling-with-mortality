@@ -34,14 +34,14 @@ export const RegisterInitialState = {
 export const ErrorMessage = {
     PSWD_NOT_MATCH: 'Password not match.',
     PSWD_LENGTH: 'Password length must be greater then 5.',
-    PSWD_REQ: 'Passowrd is required !',
+    PSWD_REQ: 'Password is required !',
     INVD_EMAIL: 'Please enter a valid email.',
     EMAIL_REQ: 'Email is required !',
     REQ: 'Required !'
 }
 
 export const SuccessMessage = {
-    signUp: 'SuccessFully Sign up'
+    signUp: 'Successfully Sign up'
 }
 
 export const inputsConstant = {
@@ -59,6 +59,13 @@ export const inputsConstant = {
        placeHolder: "Email",
        iconSize: 20
      },
+     oldPassword: {
+        id: "oldPassword",
+        iconFamily: "FontAwesome",
+        iconName: "lock",
+        placeHolder: "Old Password",
+        iconSize: 20
+      },
      password: {
        id: "password",
        iconFamily: "FontAwesome",

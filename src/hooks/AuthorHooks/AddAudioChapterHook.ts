@@ -5,7 +5,6 @@ import useGetSelectedBookDetails from './GetSelectedBookDetailsHook';
 import {Alert} from 'react-native';
 import { Audio } from '../../interfaces/reducer/audioStore.interface';
 
-const congrats = 'Congratulations !';
 const SucessMsg =  `Audio Chapter Added Sucessfully.`;
 const UpdateMsg = 'Audio Chapter Updated Sucessfully.'
 
@@ -25,7 +24,7 @@ const useAddAudioChapterHook = () => {
       };
       await AddAudioChapterService(data);
       await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
-      Alert.alert(congrats, SucessMsg);
+      Alert.alert('', SucessMsg);
       setTimeout(() => {
         navigation.goBack();
       }, 1000);
@@ -50,7 +49,7 @@ const useAddAudioChapterHook = () => {
       await AddAudioChapterService(newChapterObj);
       if(selectedBookDetails._id){
           await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
-          Alert.alert(congrats, UpdateMsg);
+          Alert.alert('', UpdateMsg);
           setTimeout(() => {
               navigation.goBack();
           }, 1000);

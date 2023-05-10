@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UpdateNewBookDetails } from '../../../redux/reducers/authorReducer';
 
 const labels = {
-  uploadPromp: 'Click here to upload books.',
+  uploadPromp: 'Click here to upload book.',
   success: 'Book uploaded Successfully.'
 };
 const DocumentPickerComponent = () => {

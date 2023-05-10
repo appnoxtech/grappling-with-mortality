@@ -7,9 +7,9 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {colorPrimary} from '../../../assests/Styles/GlobalTheme';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
-import Discover from './Discover';
+import Discover from '../common/Discover';
 import SearchScreen from './Search';
-import Profile from './Profile';
+import Profile from '../common/Profile';
 
 const Tab = createBottomTabNavigator();
 

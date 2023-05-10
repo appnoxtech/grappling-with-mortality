@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import {inputComponentProps} from '../../../interfaces/components/inputs/inputComponent';
 import {
   responsiveFontSize,
+  responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
 import {
@@ -23,7 +24,7 @@ const InputComponent: React.FC<inputComponentProps> = ({
   const [isActive, setIsActive] = useState(false);
 
   return (
-    <React.Fragment>
+    <View style={styles.mainContainer}>
       <TextInput
         style={[containerStyle, styles.textInputContainer]}
         placeholder={placeholder}
@@ -34,7 +35,11 @@ const InputComponent: React.FC<inputComponentProps> = ({
         inputMode={keyboardType}
         onChangeText={text => {
           if (keyboardType === 'numeric') {
-            onChangeHandler(parseInt(text, 10), id);
+            if(text){
+              onChangeHandler(parseInt(text, 10), id);
+            }else {
+              onChangeHandler('', id);
+            }
           } else {
             onChangeHandler(text, id);
           }
@@ -43,18 +48,23 @@ const InputComponent: React.FC<inputComponentProps> = ({
       <View style={styles.errorStringContainer}>
         {error ? <Text style={styles.errorString}>{error}</Text> : null}
       </View>
-    </React.Fragment>
+    </View>
   );
 };
 
 export default InputComponent;
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    marginBottom: responsiveScreenHeight(0.5),
+    width: '100%'
+  },
   textInputContainer: {
     borderRadius: responsiveScreenWidth(2),
     borderWidth: 1,
     borderColor: 'rgba(128,128,128,0.23)',
     width: '100%',
+    marginBottom: 3,
   },
   activeTextInputContainer: {
     borderRadius: responsiveScreenWidth(2),

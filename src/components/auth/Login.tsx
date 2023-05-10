@@ -30,6 +30,8 @@ import {inputsConstant} from '../../utils/constants/authConstant';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import LoadingScreen from '../../screens/common/LoadingScreen';
 import { useDispatch } from 'react-redux';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { SetIsLoadingState } from '../../redux/reducers/commonReducer';
 
 const labels = {
   login: 'Login',
@@ -172,7 +174,7 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
     <LoadingScreen>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaProvider style={styles.container}>
-          <View style={styles.container}>
+          <KeyboardAwareScrollView contentContainerStyle={styles.contentContainer} style={styles.container}>
             <Text style={styles.primaryHeading}>
               {LoginHeading.primaryHeading}
             </Text>
@@ -203,24 +205,6 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
               />
             </View>
             <View style={styles.othersOptionsContainer}>
-              <Pressable
-                onPress={() => setRememberPswd(!rememberPswd)}
-                style={styles.rememberContainer}>
-                <View style={styles.iconContainer}>
-                  <LoadIcon
-                    style={{}}
-                    iconFamily={labels.mtIconFamily}
-                    iconName={
-                      rememberPswd
-                        ? labels.mtCheckedIconName
-                        : labels.mtIconName
-                    }
-                    size={labels.mtIconSize}
-                    color={colorSecondary}
-                  />
-                </View>
-                <Text style={styles.rememberText}>{LoginHeading.remember}</Text>
-              </Pressable>
               <View style={styles.forgetPswdContainer}>
                 <TouchableOpacity onPress={handleForgetPasswordClick}>
                   <Text style={styles.forgetPswdText}>
@@ -237,7 +221,7 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
                 />
               </View>
             </View>
-          </View>
+          </KeyboardAwareScrollView>
           {isKeyboardVisible ? null : (
             <View style={styles.footer}>
               <Text style={styles.footerTextSuggestion}>
@@ -268,15 +252,18 @@ const styles = StyleSheet.create({
     color: colorSecondary,
     textAlign: 'center',
   },
+  contentContainer: {
+    paddingBottom: responsiveScreenHeight(2),
+  },
   inputContainer: {
     marginTop: responsiveScreenHeight(2),
     paddingHorizontal: responsiveScreenWidth(3),
   },
   othersOptionsContainer: {
-    paddingHorizontal: responsiveScreenWidth(4.5),
+    paddingHorizontal: responsiveScreenWidth(2),
     paddingVertical: responsiveScreenHeight(1.5),
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
   rememberContainer: {

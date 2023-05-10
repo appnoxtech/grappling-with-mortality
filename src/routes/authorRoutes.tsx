@@ -8,6 +8,9 @@ import BookDetails from '../screens/Author/Screen/BookDetails';
 import AddChaptersForm from '../screens/Author/Screen/AddChaptersForm';
 import AddAudioChaptersForm from '../screens/Author/Screen/AddAudioChaptersForm';
 import AudioEbookPlayer from '../screens/common/AudioEbookPlayer';
+import PrivacyPolicy from '../screens/profile/PrivacyPolicy';
+import ResetPassword from '../screens/profile/ResetPassword';
+import EditProfile from '../screens/profile/EditProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +55,21 @@ const AuthorRoutes = () => {
       <Stack.Screen
         name="AudioEbookPlayer"
         component={AudioEbookPlayer}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="PrivacyPolicy"
+        component={PrivacyPolicy}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="ResetPassword"
+        component={ResetPassword}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
     </Stack.Navigator>

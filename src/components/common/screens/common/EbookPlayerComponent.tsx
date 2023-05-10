@@ -1,22 +1,22 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   responsiveFontSize,
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/core';
 import {useDispatch, useSelector} from 'react-redux';
 import {store} from '../../../../interfaces/reducer/state';
 import LoadIcon from '../../LoadIcons';
-import Slider from '@react-native-community/slider';
 import {
   colorPrimary,
   colorSecondary,
   white,
 } from '../../../../../assests/Styles/GlobalTheme';
 import PlayerControls from './PlayerControls';
+import {UpdateSelectedAudioBook} from '../../../../redux/reducers/audioEbookReducer';
+import TrackPlayer from 'react-native-track-player';
 
 interface audio {
   _id: string;
@@ -30,32 +30,42 @@ interface chapterProps {
 }
 
 const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
-  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {selectedAudioBook} = useSelector((store: store) => store.audio);
 
   const handleAudioBookChapterPlay = () => {
-    const data = {...chapter, index};
+    if (selectedAudioBook.index !== index) {
+      const data = {...chapter, index};
+      dispatch(UpdateSelectedAudioBook(data));
+      TrackPlayer.skip(index);
+    }
   };
-  
+
   return (
     <View style={styles.chapter}>
       <Text style={styles.chapterNo}>{`${index + 1}.`}</Text>
       <View style={styles.chapterBody}>
         <Text style={styles.chapterName}>{chapter.chapterName}</Text>
         <View style={styles.actionContainer}>
-          <TouchableOpacity onPress={handleAudioBookChapterPlay}>
+          {selectedAudioBook.index === index ? (
             <LoadIcon
               iconFamily="Ionicons"
-              iconName={
-                selectedAudioBook.index === index
-                  ? 'pause-circle'
-                  : 'play-circle'
-              }
+              iconName={'pause-circle'}
               style={{}}
               size={30}
               color={colorSecondary}
             />
-          </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={handleAudioBookChapterPlay}>
+              <LoadIcon
+                iconFamily="Ionicons"
+                iconName={'play-circle'}
+                style={{}}
+                size={30}
+                color={colorSecondary}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>
@@ -65,6 +75,11 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
 const EbookPlayerComponent = () => {
   const {selectedAudioBook} = useSelector((store: store) => store.audio);
   const {selectedBookDetails} = useSelector((state: any) => state.author);
+  const [isListVisible, setIsListVisible] = useState(true);
+
+  const togggleChapterList = () => {
+    setIsListVisible(!isListVisible);
+  };
 
   return (
     <View style={styles.container}>
@@ -76,21 +91,25 @@ const EbookPlayerComponent = () => {
         <Text style={styles.textSecondary}>{`Chapter ${
           selectedAudioBook.index + 1
         }: ${selectedAudioBook.chapterName}`}</Text>
-        <LoadIcon
-          iconFamily="Entypo"
-          iconName="chevron-down"
-          style={{}}
-          color={colorPrimary}
-          size={30}
-        />
+        <TouchableOpacity onPress={togggleChapterList}>
+          <LoadIcon
+            iconFamily="Entypo"
+            iconName={isListVisible ? 'chevron-up' : 'chevron-down'}
+            style={{}}
+            color={colorPrimary}
+            size={30}
+          />
+        </TouchableOpacity>
       </View>
-      <FlatList
-        style={styles.chapterList}
-        data={selectedBookDetails.audio}
-        renderItem={({item, index}) => (
-          <RenderChapter chapter={item} index={index} />
-        )}
-      />
+      {isListVisible ? (
+        <FlatList
+          style={styles.chapterList}
+          data={selectedBookDetails.audio}
+          renderItem={({item, index}) => (
+            <RenderChapter chapter={item} index={index} />
+          )}
+        />
+      ) : null}
     </View>
   );
 };
