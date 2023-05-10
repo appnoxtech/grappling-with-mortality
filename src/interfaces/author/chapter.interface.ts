@@ -31,7 +31,13 @@ export interface editChapterDetails {
   payload: Chapter;
 }
 
+export interface updateSelectedChapter {
+  type: 'UPDATE_SELECTED_CHAPTER',
+  payload: Chapter
+}
+
 export type ChapterActions =
   | updateChapterDetails
   | resetChapterDetails
-  | editChapterDetails;
+  | editChapterDetails
+  | updateSelectedChapter;

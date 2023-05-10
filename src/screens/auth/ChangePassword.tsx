@@ -21,6 +21,10 @@ import InputwithIconComponent from '../../components/common/Inputs/InputwithIcon
 import {colorPrimary} from '../../../assests/Styles/GlobalTheme';
 import ButtonPrimary from '../../components/common/buttons/ButtonPrimary';
 import {resetPassword} from '../../interfaces/auth/authServiceInterface';
+import useKeyboardVisibleListener from '../../hooks/CommonHooks/isKeyboardVisibleHook';
+import LoadingScreen from '../common/LoadingScreen';
+import { useDispatch } from 'react-redux';
+import { SetIsLoadingState } from '../../redux/reducers/commonReducer';
 
 const initialState = {
   password: '',
@@ -33,12 +37,14 @@ const subText = {
 };
 
 const ChangePassword = ({route}: any) => {
+  const NavigateTo = useNavigation();
+  const isKeyboardVisible = useKeyboardVisibleListener();
+  const dispatch = useDispatch();
   const [inputs, setInputs] = useState(initialState);
   const [subTexts, setSubTexts] = useState(subText);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const {email, otp} = route.params;
-  const NavigateTo = useNavigation();
+  
 
   const handleChange = (value: string, id: string) => {
     setInputs(oldState => {
@@ -138,90 +144,72 @@ const ChangePassword = ({route}: any) => {
     const isValid = validation();
     if (isValid) {
       try {
+        dispatch(SetIsLoadingState(true));
         const data: resetPassword = {
           email,
           otp: parseInt(otp, 10),
           password: inputs.password,
         };
         await ResetPasswordServices(data);
+        dispatch(SetIsLoadingState(false));
         Alert.alert('Password Reset');
         NavigateTo.navigate('LandingPage' as never);
       } catch (error) {
         console.log('Error', error);
+        dispatch(SetIsLoadingState(false));
       }
     }
   };
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      _keyboardDidShow,
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      _keyboardDidHide,
-    );
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
-  const _keyboardDidShow = () => {
-    setIsKeyboardVisible(true);
-  };
-
-  const _keyboardDidHide = () => {
-    setIsKeyboardVisible(false);
-  };
-
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <HeaderWithBackBtn />
-        <View style={styles.body}>
-          <Text style={styles.primaryText}>Create New Password</Text>
-          <Text style={styles.subText}>
-            Make sure your password is six or more characters long
-          </Text>
-        </View>
-        <View style={styles.textContainer}>
-          <InputwithIconComponent
-            id={inputsConstant.password.id}
-            handelTextChange={handleChange}
-            iconColor={colorPrimary}
-            iconFamily={inputsConstant.password.iconFamily}
-            iconName={inputsConstant.password.iconName}
-            iconSize={inputsConstant.password.iconSize}
-            iconStyle={{}}
-            placeholder={inputsConstant.password.placeHolder}
-            value={inputs.password}
-            errorString={subTexts.password}
-          />
-          <InputwithIconComponent
-            id={inputsConstant.confirmPassword.id}
-            handelTextChange={handleChange}
-            iconColor={colorPrimary}
-            iconFamily={inputsConstant.confirmPassword.iconFamily}
-            iconName={inputsConstant.confirmPassword.iconName}
-            iconSize={inputsConstant.confirmPassword.iconSize}
-            iconStyle={{}}
-            placeholder={inputsConstant.confirmPassword.placeholder}
-            value={inputs.confirmPassowrd}
-            errorString={subTexts.confirmPassowrd}
-          />
-        </View>
-        {isKeyboardVisible ? null : (
-          <View style={styles.btnContainer}>
-            <ButtonPrimary
-              handleBtnPress={handleClick}
-              label="Reset Password"
-              isActive={isActive}
+    <LoadingScreen>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <HeaderWithBackBtn />
+          <View style={styles.body}>
+            <Text style={styles.primaryText}>Create New Password</Text>
+            <Text style={styles.subText}>
+              Make sure your password is six or more characters long
+            </Text>
+          </View>
+          <View style={styles.textContainer}>
+            <InputwithIconComponent
+              id={inputsConstant.password.id}
+              handelTextChange={handleChange}
+              iconColor={colorPrimary}
+              iconFamily={inputsConstant.password.iconFamily}
+              iconName={inputsConstant.password.iconName}
+              iconSize={inputsConstant.password.iconSize}
+              iconStyle={{}}
+              placeholder={inputsConstant.password.placeHolder}
+              value={inputs.password}
+              errorString={subTexts.password}
+            />
+            <InputwithIconComponent
+              id={inputsConstant.confirmPassword.id}
+              handelTextChange={handleChange}
+              iconColor={colorPrimary}
+              iconFamily={inputsConstant.confirmPassword.iconFamily}
+              iconName={inputsConstant.confirmPassword.iconName}
+              iconSize={inputsConstant.confirmPassword.iconSize}
+              iconStyle={{}}
+              placeholder={inputsConstant.confirmPassword.placeholder}
+              value={inputs.confirmPassowrd}
+              errorString={subTexts.confirmPassowrd}
             />
           </View>
-        )}
-      </View>
-    </TouchableWithoutFeedback>
+          {isKeyboardVisible ? null : (
+            <View style={styles.btnContainer}>
+              <ButtonPrimary
+                handleBtnPress={handleClick}
+                label="Reset Password"
+                isActive={isActive}
+              />
+            </View>
+          )}
+        </View>
+      </TouchableWithoutFeedback>
+    </LoadingScreen>
   );
 };
 

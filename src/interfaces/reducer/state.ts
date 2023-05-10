@@ -3,6 +3,7 @@ import { AuthStoreInterface } from "./authStore.Interface";
 import { AuthorStoreInterface } from "./authorStore.interface";
 import { ChapterStoreInterface } from "./chapter.interface";
 import { CommonStoreInterface } from "./commonStore.interface";
+import BookReaderStore from "./eBookReaderStore.interface";
 import { userStore } from "./user.interface";
 
 export interface store {
@@ -11,5 +12,6 @@ export interface store {
     author: AuthorStoreInterface,
     common: CommonStoreInterface,
     chapter: ChapterStoreInterface
-    audio: AudioStore
+    audio: AudioStore,
+    bookReader: BookReaderStore
 }

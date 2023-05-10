@@ -46,9 +46,9 @@ const Profile = () => {
                <Text style={styles.userEmail}>{userDetails.email}</Text>
             </View>
           </View>
-          <View style={styles.rightContainer}>
+          {/* <View style={styles.rightContainer}>
              <LoadIcon iconFamily='MaterialCommunityIcons' iconName='account-edit' style={{}} color={colorPrimary} size={30} />
-          </View>
+          </View> */}
         </View>
         <TouchableOpacity onPress={handelLogoutPress} style={styles.itemContainer}>
           <Text style={styles.itemText}>Logout</Text>

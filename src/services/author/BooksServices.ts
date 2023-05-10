@@ -25,8 +25,6 @@ export const AuthorBookListService = async() => {
 export const GetBookListService = async() => {
   const url = `${URL}book/get-all-book`;
   const user = await getUserDataFromLocalStorage();
-  console.log('url', url);
-  console.log('user', user)
   return axios.get(url, {
     headers: {
       'x-auth-token': user.token,

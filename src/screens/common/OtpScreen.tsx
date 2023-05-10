@@ -32,6 +32,7 @@ import {
   generateOTPService,
 } from '../../services/common/OtpService';
 import {SuccessMessage} from '../../utils/constants/authConstant';
+import useKeyboardVisibleListener from '../../hooks/CommonHooks/isKeyboardVisibleHook';
 
 type otpInterface = {
   [key: string]: string;
@@ -64,7 +65,7 @@ const labels = {
 
 const OTP: React.FC<any> = ({route}) => {
   const {email, type, flow} = route.params;
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const isKeyboardVisible = useKeyboardVisibleListener();
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(59);
   const [show, setShow] = useState(false);
@@ -99,7 +100,11 @@ const OTP: React.FC<any> = ({route}) => {
         navigation.navigate('ChangePassword' as never, {email, otp} as never);
       }
     } catch (error: any) {
-      Alert.alert('Notification', error.response.data.errors[0].message);
+      if(error.response.data.errors[0].message === 'Otp Is Invalid') {
+        Alert.alert('Notification', 'OTP is invalid');
+      }else {
+        Alert.alert('Notification', error.response.data.errors[0].message);
+      }
     }
   };
 
@@ -163,29 +168,6 @@ const OTP: React.FC<any> = ({route}) => {
       clearInterval(interval);
     };
   }, [timer]);
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      _keyboardDidShow,
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      _keyboardDidHide,
-    );
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
-  const _keyboardDidShow = () => {
-    setIsKeyboardVisible(true);
-  };
-
-  const _keyboardDidHide = () => {
-    setIsKeyboardVisible(false);
-  };
 
   return (
     <View style={styles.mainContainer}>

@@ -4,10 +4,14 @@ import {useNavigation} from '@react-navigation/core';
 import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions'
 import { white } from '../../../../assests/Styles/GlobalTheme'
 import LoadIcon from '../../common/LoadIcons'
+import { useDispatch } from 'react-redux';
+import { ResetChapterDetails } from '../../../redux/reducers/chaptersReducer';
 
 const AddChaptersComponent = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const handleBtnPress = () => {
+    dispatch(ResetChapterDetails());
     navigation.navigate('AddChaptersForm' as never);
   };
 

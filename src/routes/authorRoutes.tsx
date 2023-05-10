@@ -11,6 +11,7 @@ import AudioEbookPlayer from '../screens/common/AudioEbookPlayer';
 import PrivacyPolicy from '../screens/profile/PrivacyPolicy';
 import ResetPassword from '../screens/profile/ResetPassword';
 import EditProfile from '../screens/profile/EditProfile';
+import EBookReader from '../screens/Author/Screen/ReadBookChapter';
 
 const Stack = createNativeStackNavigator();
 
@@ -70,6 +71,8 @@ const AuthorRoutes = () => {
       <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
+        name="EBookReader"
+        component={EBookReader}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
     </Stack.Navigator>

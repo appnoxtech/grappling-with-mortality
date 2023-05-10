@@ -14,6 +14,12 @@ const initialState = {
     startingPageNo: '',
     endingPageNo: '',
   },
+  selectedChapter: {
+    chapterNo: '',
+    chapterName: '',
+    startingPageNo: '',
+    endingPageNo: '',
+  }
 };
 
 const ChapterReducer = (state = initialState, action: ChapterActions) => {
@@ -45,6 +51,13 @@ const ChapterReducer = (state = initialState, action: ChapterActions) => {
         }
     }
 
+    case 'UPDATE_SELECTED_CHAPTER': {
+       return {
+         ...state,
+         selectedChapter: {...action.payload}
+       }
+    }
+
     default:
       return state;
   }
@@ -72,4 +85,11 @@ export const EditChapter = (chapterData: Chapter): editChapterDetails => {
         type: 'EDIT_CHAPTER_DETAILS',
         payload: chapterData
     }
+}
+
+export const UpdateSelectedChapter = (chapterData: Chapter) => {
+  return {
+    type: 'UPDATE_SELECTED_CHAPTER',
+    payload: chapterData
+  }
 }
