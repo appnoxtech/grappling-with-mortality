@@ -62,10 +62,6 @@ const Profile = () => {
     dispatch(updateUserData(false));
   };
 
-  const PrivacyPolicyNav = () => {
-    Navigation.navigate('PrivacyPolicy' as never);
-  };
-
   const handleProfileEdit = () => {
     Navigation.navigate('EditProfile' as never);
   }
@@ -76,7 +72,11 @@ const Profile = () => {
       <View style={styles.body}>
         <View style={styles.userDetails}>
           <View style={styles.leftContainer}>
-            <Image style={styles.image} source={require(path)} alt="Profile" />
+          {userDetails?.image ? (
+               <Image style={styles.image} source={{uri: userDetails?.image}} alt="Profile" />
+            ) : (
+              <Image style={styles.image} source={require(path)} alt="Profile" />
+            )}
             <View style={styles.userInfo}>
               <Text style={styles.userName}>{userDetails.fullName}</Text>
               <Text style={styles.userEmail}>{userDetails.email}</Text>

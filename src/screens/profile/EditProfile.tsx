@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Alert, Image, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {colorPrimary, white} from '../../../assests/Styles/GlobalTheme';
 import {TouchableOpacity} from 'react-native';
@@ -9,31 +9,34 @@ import {
 } from 'react-native-responsive-dimensions';
 import HeaderWithBackBtn from '../../components/common/headers/HeaderWithBackBtn';
 import InputwithIconComponent from '../../components/common/Inputs/InputwithIconComponent';
-import {
-  ErrorMessage,
-  RegisterInitialState,
-  inputsConstant,
-} from '../../utils/constants/authConstant';
+import {ErrorMessage, inputsConstant} from '../../utils/constants/authConstant';
 import * as ImagePicker from 'react-native-image-picker';
 import {EMAIL_REGEX} from '../../utils/constants/common';
 import ButtonPrimary from '../../components/common/buttons/ButtonPrimary';
-import { useSelector } from 'react-redux';
-import { store } from '../../interfaces/reducer/state';
+import {useDispatch, useSelector} from 'react-redux';
+import {store} from '../../interfaces/reducer/state';
+import {ImageUploadService} from '../../services/common/ImageUploadService';
+import useUpdateUserProfileHook from '../../hooks/User/UpdateProfileHandler';
 
 const path = '../../../assests/images/profile.jpg';
 const errorObj = {
-    fullName: '',
-    email: ''
-}
+  fullName: '',
+  email: '',
+};
+
 const EditProfile = () => {
   const {userDetails} = useSelector((state: store) => state.user);
+  const UpdateUserProfileServiceHandler = useUpdateUserProfileHook();
+
   const RegisterInitialState = {
+    image: '',
     fullName: userDetails.fullName,
     email: userDetails.email,
   };
+
   const [inputs, setInputs] = useState(RegisterInitialState);
   const [inputsError, setInputsError] = useState(errorObj);
- 
+
   const HandleInputsTextChange = (text: string, id: string) => {
     setInputs({
       ...inputs,
@@ -45,56 +48,35 @@ const EditProfile = () => {
   const OnTextChangeValidation = (id: string, value: string) => {
     if (id === 'fullName' && value === '') {
       setInputsError({
-        ...RegisterInitialState,
+        ...errorObj,
         fullName: ErrorMessage.REQ,
       });
       return false;
     } else if (id === 'email' && value === '') {
       setInputsError({
-        ...RegisterInitialState,
+        ...errorObj,
         email: ErrorMessage.EMAIL_REQ,
       });
       return false;
     } else if (id === 'email' && !EMAIL_REGEX.test(value)) {
       setInputsError({
-        ...RegisterInitialState,
+        ...errorObj,
         email: ErrorMessage.INVD_EMAIL,
       });
       return false;
-    } else if (id === 'password' && value === '') {
-      setInputsError({
-        ...RegisterInitialState,
-        password: ErrorMessage.PSWD_REQ,
-      });
-      return false;
-    } else if (id === 'password' && value.length <= 5) {
-      setInputsError({
-        ...RegisterInitialState,
-        password: ErrorMessage.PSWD_LENGTH,
-      });
-      return false;
-    } else if (id === 'confirmPassowrd' && value === '') {
-      setInputsError({
-        ...RegisterInitialState,
-        confirmPassowrd: ErrorMessage.REQ,
-      });
-      return false;
-    } else if (id === 'confirmPassowrd' && value !== inputs.password) {
-      setInputsError({
-        ...RegisterInitialState,
-        confirmPassowrd: ErrorMessage.PSWD_NOT_MATCH,
-      });
-      return false;
     } else {
-      setInputsError(RegisterInitialState);
+      setInputsError(errorObj);
       return true;
     }
   };
 
-  console.log('userdetails', inputs);
-  
-
-  const onPressHandler = () => {};
+  const onPressHandler = () => {
+    const data = {
+      fullName: inputs.fullName,
+      image: inputs.image,
+    };
+    UpdateUserProfileServiceHandler(data);
+  };
 
   const handlePickerPress = async () => {
     await ImagePicker.launchImageLibrary({mediaType: 'photo'}, response => {
@@ -107,10 +89,26 @@ const EditProfile = () => {
           name: image[0].fileName,
         });
         console.log('image Data', data);
-        // handleImageUpdload(data);
+        handleImageUpdload(data);
       }
     });
   };
+
+  const handleImageUpdload = async (image: any) => {
+    try {
+      const res = await ImageUploadService(image);
+      console.log('res', res.data);
+      const {data} = res.data;
+      const imageUrl = data.baseUrl + data.imagePath;
+      setInputs({
+        ...inputs,
+        image: imageUrl,
+      });
+    } catch (error: any) {
+      Alert.alert('Error', error.response.data.msg);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <HeaderWithBackBtn>
@@ -120,12 +118,22 @@ const EditProfile = () => {
       </HeaderWithBackBtn>
       <View style={styles.body}>
         <View style={styles.profileContainer}>
-          <TouchableOpacity onPress={handlePickerPress} style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              source={require(path)}
-              alt="user-profile"
-            />
+          <TouchableOpacity
+            onPress={handlePickerPress}
+            style={styles.imageContainer}>
+            {userDetails?.image ? (
+              <Image
+                style={styles.image}
+                source={{uri: userDetails?.image}}
+                alt="user-profile"
+              />
+            ) : (
+              <Image
+                style={styles.image}
+                source={require(path)}
+                alt="user-profile"
+              />
+            )}
           </TouchableOpacity>
         </View>
         <View style={styles.inputsContainer}>
@@ -142,6 +150,7 @@ const EditProfile = () => {
             errorString={inputsError.fullName}
           />
           <InputwithIconComponent
+            isEditable={false}
             id={inputsConstant.email.id}
             handelTextChange={HandleInputsTextChange}
             iconColor={colorPrimary}

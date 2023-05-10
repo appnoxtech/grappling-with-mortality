@@ -40,11 +40,12 @@ const errorInitialState = {
 };
 
 const AddAudioChaptersForm = () => {
+  const {selectedBookDetails} = useSelector((state: any) => state.author);
   const {inputs} = useSelector((store: store) => store.audio);
   const isKeyboardVisible = useKeyboardVisibleListener();
   const dispatch = useDispatch();
   const [errors, setErrors] = useState(errorInitialState);
-  const {AddAudioChapterServiceHandler, UpdateAudioChapterServiceHandler} =
+  const {AddAudioChapterServiceHandler, UpdateAudioChapterServiceHandler, UpdateAudioChapterItemServiceHandler} =
     useAddAudioChapterHook();
 
   const HandleInputsTextChange = (text: string, id: AudioEbookKey) => {
@@ -58,9 +59,14 @@ const AddAudioChaptersForm = () => {
   const handleAddChapter = () => {
     const isValid = validation();
     if (inputs._id && isValid) {
-      UpdateAudioChapterServiceHandler(inputs);
+      UpdateAudioChapterItemServiceHandler(inputs);
     } else if (isValid) {
-      AddAudioChapterServiceHandler(inputs);
+      if(selectedBookDetails?.audio?.length){        
+        UpdateAudioChapterServiceHandler(inputs);
+      }else {
+        AddAudioChapterServiceHandler(inputs);
+      }
+     
     }
   };
 

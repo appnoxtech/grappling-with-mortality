@@ -16,7 +16,11 @@ const useLoginHook = () => {
             dispatch(SetIsLoadingState(false))
             const userInfo = res.data.data;
             saveUserData(userInfo);
-            dispatch(updateUserDetails({fullName: userInfo.fullName, email: data.email, userType: userInfo.userType}));
+            if(userInfo?.image){
+                dispatch(updateUserDetails({fullName: userInfo.fullName, email: data.email, userType: userInfo.userType, image: userInfo.image}));
+            } else {
+                dispatch(updateUserDetails({fullName: userInfo.fullName, email: data.email, userType: userInfo.userType}));
+            }
             dispatch(updateUserData(true));
             
         } catch (error: any) {

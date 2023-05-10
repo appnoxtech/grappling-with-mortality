@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {colorPrimary, white} from '../../../assests/Styles/GlobalTheme';
 import HeaderWithBackBtn from '../../components/common/headers/HeaderWithBackBtn';
@@ -10,6 +10,7 @@ import {
 import InputwithIconComponent from '../../components/common/Inputs/InputwithIconComponent';
 import {ErrorMessage, inputsConstant} from '../../utils/constants/authConstant';
 import ButtonPrimary from '../../components/common/buttons/ButtonPrimary';
+import { ChangePasswordService } from '../../services/user/ChangePasswordService';
 
 const initialState = {
   oldPassword: '',
@@ -32,53 +33,117 @@ const ResetPassword = () => {
   const onChangeTextValidation = (id: string, value: string) => {
     if (id === 'oldPassword' && value === '') {
       setErrors({
-        ...errors,
-        [id]: ErrorMessage.REQ,
+        ...initialState,
+        oldPassword: ErrorMessage.REQ,
       });
       return false;
     } else if (id === 'oldPassword' && value.length < 5) {
       setErrors({
-        ...errors,
-        [id]: ErrorMessage.PSWD_LENGTH,
+        ...initialState,
+        oldPassword: ErrorMessage.PSWD_LENGTH,
       });
       return false;
     } else if(id === 'newPassword' && value === '') {
       setErrors({
-        ...errors,
-        [id]: ErrorMessage.REQ,
+        ...initialState,
+        newPassword: ErrorMessage.REQ,
       });
       return false;
     } else if(id === 'newPassword' && value.length < 5) {
       setErrors({
-        ...errors,
-        [id]: ErrorMessage.PSWD_LENGTH,
+        ...initialState,
+        newPassword: ErrorMessage.PSWD_LENGTH,
       });
       return false;
     } else if(id === 'confirmNewPassword' && value === '') {
       setErrors({
-        ...errors,
+        ...initialState,
         [id]: ErrorMessage.REQ,
       });
       return false;
     } else if (id === 'confirmNewPassword' && value.length < 5) {
       setErrors({
-        ...errors,
+        ...initialState,
         [id]: ErrorMessage.PSWD_LENGTH,
       });
       return false;
     } else if (id === 'confirmNewPassword' && value !== inputs.newPassword) {
       setErrors({
-        ...errors,
+        ...initialState,
         [id]: ErrorMessage.PSWD_NOT_MATCH,
       });
       return false;
     } else {
-      setErrors({...errors});
+      setErrors({...initialState});
       return true;
     }
   };
 
-  const onPressHandler = () => {};
+  const validation = () => {
+    if (inputs.oldPassword === '') {
+      setErrors({
+        ...initialState,
+        oldPassword: ErrorMessage.REQ,
+      });
+      return false;
+    } else if (inputs.oldPassword.length < 5) {
+      setErrors({
+        ...initialState,
+        oldPassword: ErrorMessage.PSWD_LENGTH,
+      });
+      return false;
+    } else if(inputs.newPassword === '') {
+      setErrors({
+        ...initialState,
+        newPassword: ErrorMessage.REQ,
+      });
+      return false;
+    } else if(inputs.newPassword.length < 5) {
+      setErrors({
+        ...initialState,
+        newPassword: ErrorMessage.PSWD_LENGTH,
+      });
+      return false;
+    } else if(inputs.confirmNewPassword === '') {
+      setErrors({
+        ...initialState,
+        confirmNewPassword: ErrorMessage.REQ,
+      });
+      return false;
+    } else if (inputs.confirmNewPassword.length < 5) {
+      setErrors({
+        ...initialState,
+        confirmNewPassword: ErrorMessage.PSWD_LENGTH,
+      });
+      return false;
+    } else if (inputs.confirmNewPassword !== inputs.newPassword) {
+      setErrors({
+        ...initialState,
+        confirmNewPassword: ErrorMessage.PSWD_NOT_MATCH,
+      });
+      return false;
+    } else {
+      setErrors({...initialState});
+      return true;
+    }
+  }
+
+  const onPressHandler = async () => {
+    const isValid = validation();
+    if(isValid) {
+      try {
+        const data = {
+          oldPassword: inputs.oldPassword,
+          newPassword: inputs.newPassword
+        }
+        await ChangePasswordService(data);
+        Alert.alert('', 'Password Changed Successfully!');
+        setInputs(initialState)
+      } catch (error: any) {
+        Alert.alert('Error', error.response.data.errors[0].message)
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -101,7 +166,7 @@ const ResetPassword = () => {
           errorString={errors.oldPassword}
         />
         <InputwithIconComponent
-          id={inputsConstant.confirmPassword.id}
+          id={'newPassword'}
           handelTextChange={HandleInputsTextChange}
           iconColor={colorPrimary}
           iconFamily={inputsConstant.password.iconFamily}
@@ -113,7 +178,7 @@ const ResetPassword = () => {
           errorString={errors.newPassword}
         />
         <InputwithIconComponent
-          id={inputsConstant.confirmPassword.id}
+          id={'confirmNewPassword'}
           handelTextChange={HandleInputsTextChange}
           iconColor={colorPrimary}
           iconFamily={inputsConstant.confirmPassword.iconFamily}
@@ -121,8 +186,8 @@ const ResetPassword = () => {
           iconSize={inputsConstant.confirmPassword.iconSize}
           iconStyle={{}}
           placeholder={inputsConstant.confirmPassword.placeholder}
-          value={inputs.newPassword}
-          errorString={errors.newPassword}
+          value={inputs.confirmNewPassword}
+          errorString={errors.confirmNewPassword}
         />
       </View>
       <View style={styles.center}>

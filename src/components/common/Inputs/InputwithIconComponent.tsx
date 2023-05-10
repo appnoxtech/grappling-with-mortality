@@ -19,6 +19,7 @@ const InputwithIconComponent: React.FC<InputsWithIconComponentProps> = ({
   placeholder,
   value,
   id,
+  isEditable = true,
   handelTextChange,
   errorString,
 }) => {
@@ -37,6 +38,7 @@ const InputwithIconComponent: React.FC<InputsWithIconComponentProps> = ({
           />
         </View>
         <TextInput
+          editable={isEditable}
           style={styles.textInput}
           placeholder={placeholder}
           value={value}

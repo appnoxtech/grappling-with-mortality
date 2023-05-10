@@ -31,6 +31,7 @@ export default PrivacyPolicy;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: white
   },
   pageNameContainer: {
     position: 'absolute',
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: responsiveScreenWidth(3)
   },
   contentContainer: {
-    paddingBottom: responsiveScreenHeight(4)
+    paddingBottom: responsiveScreenHeight(4),
   },
   privacyText: { 
     fontSize: responsiveFontSize(1.7),

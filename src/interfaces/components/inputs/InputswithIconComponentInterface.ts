@@ -11,4 +11,5 @@ export interface InputsWithIconComponentProps {
     iconFamily: string,
     iconSize: number,
     iconStyle?:  StyleProp<TextStyle>,
+    isEditable?: boolean
 }

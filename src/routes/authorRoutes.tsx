@@ -71,6 +71,9 @@ const AuthorRoutes = () => {
       <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
         name="EBookReader"
         component={EBookReader}
         options={{headerShown: false, animation: 'slide_from_bottom'}}

@@ -6,7 +6,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {colorPrimary} from '../../../../assests/Styles/GlobalTheme';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import Profile from '../../common/Profile';
-import Discover from '../../common/Discover'; 
+import Discover from '../../Discover/index'; 
 import MyBooks from './MyBooks';
 
 

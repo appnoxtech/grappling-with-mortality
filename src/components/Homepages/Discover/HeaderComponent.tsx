@@ -6,9 +6,13 @@ import {
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
+import { store } from '../../../interfaces/reducer/state';
 const path = '../../../../assests/images/profile.jpg';
 
 const HeaderComponent = () => {
+  const {userDetails} = useSelector((state: store) => state.user);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -18,8 +22,10 @@ const HeaderComponent = () => {
         showHideTransition={'slide'}
       />
       <View style={styles.body}>
-        <Text style={styles.userName}>Hello, Shudhanshu</Text>
-        <Image style={styles.image} source={require(path)} alt="Profile" />
+        <Text style={styles.userName}>{`Hello, ${userDetails.fullName}`}</Text>
+        {
+          userDetails?.image ? <Image style={styles.image} source={{uri: userDetails.image}} alt="Profile" /> : <Image style={styles.image} source={require(path)} alt="Profile" />
+        }
       </View>
     </SafeAreaView>
   );

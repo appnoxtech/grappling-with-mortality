@@ -9,10 +9,12 @@ import {useNavigation} from '@react-navigation/core';
 import {TouchableOpacity} from 'react-native';
 import LoadIcon from '../../common/LoadIcons';
 import {colorSecondary} from '../../../../assests/Styles/GlobalTheme';
-import { useDispatch } from 'react-redux';
-import { EditNewBook } from '../../../redux/reducers/authorReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {EditNewBook} from '../../../redux/reducers/authorReducer';
+import {store} from '../../../interfaces/reducer/state';
 
 const BookDetailsHeaderComponent = () => {
+  const {showEditorOptions} = useSelector((state: store) => state.common);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -26,7 +28,10 @@ const BookDetailsHeaderComponent = () => {
   };
 
   return (
-    <View style={Platform.OS === 'android' ? styles.androidContainer : styles.container}>
+    <View
+      style={
+        Platform.OS === 'android' ? styles.androidContainer : styles.container
+      }>
       <StatusBar
         animated={true}
         backgroundColor={'#f1f9ec'}
@@ -45,7 +50,8 @@ const BookDetailsHeaderComponent = () => {
             size={30}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleBookEdit}>
+        {showEditorOptions ? (
+          <TouchableOpacity onPress={handleBookEdit}>
             <LoadIcon
               iconName="book-edit-outline"
               iconFamily="MaterialCommunityIcons"
@@ -54,6 +60,7 @@ const BookDetailsHeaderComponent = () => {
               size={30}
             />
           </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );
