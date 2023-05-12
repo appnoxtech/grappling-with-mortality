@@ -14,7 +14,6 @@ const MyBooks = () => {
 
   useEffect(() => {
      GetAuthorBookListServiceHandler();
-     dispatch(UpdateShowEditorOptions(true));
   }, []);
   
   return (

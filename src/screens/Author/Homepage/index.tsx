@@ -8,11 +8,14 @@ import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import Profile from '../../common/Profile';
 import Discover from '../../Discover/index'; 
 import MyBooks from './MyBooks';
+import { useDispatch } from 'react-redux';
+import { UpdateShowEditorOptions } from '../../../redux/reducers/commonReducer';
 
 
 const Tab = createBottomTabNavigator();
 
 const Homepages = () => {
+  const dispatch = useDispatch();
   return (
     <Tab.Navigator
       //@ts-ignore
@@ -54,6 +57,16 @@ const Homepages = () => {
       <Tab.Screen
         name="Discover"
         component={Discover}
+        listeners={({ navigation, route }) => ({
+          tabPress: (e) => {
+            // Prevent default action
+            e.preventDefault();
+      
+            // Do something with the `navigation` object
+            dispatch(UpdateShowEditorOptions(false));
+            navigation.navigate('Discover');
+          },
+        })}
         options={{
           headerShown: false,
           tabBarHideOnKeyboard: true,
@@ -62,6 +75,16 @@ const Homepages = () => {
       <Tab.Screen
         name="My Books"
         component={MyBooks}
+        listeners={({ navigation, route }) => ({
+          tabPress: (e) => {
+            // Prevent default action
+            e.preventDefault();
+      
+            // Do something with the `navigation` object
+            dispatch(UpdateShowEditorOptions(true));
+            navigation.navigate('My Books');
+          },
+        })}
         options={{
           headerShown: false,
           tabBarHideOnKeyboard: true,
