@@ -1,4 +1,12 @@
-import {Alert, Image, StyleSheet, Text, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  Keyboard,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import {colorPrimary, white} from '../../../assests/Styles/GlobalTheme';
 import {TouchableOpacity} from 'react-native';
@@ -17,8 +25,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {store} from '../../interfaces/reducer/state';
 import {ImageUploadService} from '../../services/common/ImageUploadService';
 import useUpdateUserProfileHook from '../../hooks/User/UpdateProfileHandler';
+import {TouchableWithoutFeedback} from 'react-native';
 
 const path = '../../../assests/images/profile.jpg';
+
 const errorObj = {
   fullName: '',
   email: '',
@@ -110,66 +120,68 @@ const EditProfile = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <HeaderWithBackBtn>
-        <View style={styles.pageNameContainer}>
-          <Text style={styles.pageName}>Edit Profile</Text>
-        </View>
-      </HeaderWithBackBtn>
-      <View style={styles.body}>
-        <View style={styles.profileContainer}>
-          <TouchableOpacity
-            onPress={handlePickerPress}
-            style={styles.imageContainer}>
-            {userDetails?.image ? (
-              <Image
-                style={styles.image}
-                source={{uri: userDetails?.image}}
-                alt="user-profile"
-              />
-            ) : (
-              <Image
-                style={styles.image}
-                source={require(path)}
-                alt="user-profile"
-              />
-            )}
-          </TouchableOpacity>
-        </View>
-        <View style={styles.inputsContainer}>
-          <InputwithIconComponent
-            id={inputsConstant.fullName.id}
-            handelTextChange={HandleInputsTextChange}
-            iconColor={colorPrimary}
-            iconFamily={inputsConstant.fullName.iconFamily}
-            iconName={inputsConstant.fullName.iconName}
-            iconSize={inputsConstant.fullName.iconSize}
-            iconStyle={{}}
-            placeholder={inputsConstant.fullName.placeholder}
-            value={inputs.fullName}
-            errorString={inputsError.fullName}
-          />
-          <InputwithIconComponent
-            isEditable={false}
-            id={inputsConstant.email.id}
-            handelTextChange={HandleInputsTextChange}
-            iconColor={colorPrimary}
-            iconFamily={inputsConstant.email.iconFamily}
-            iconName={inputsConstant.email.iconName}
-            iconSize={inputsConstant.email.iconSize}
-            iconStyle={{}}
-            placeholder={inputsConstant.email.placeHolder}
-            value={inputs.email}
-            errorString={inputsError.email}
-          />
-        </View>
-        <View style={styles.center}>
-          <View style={styles.btnContainer}>
-            <ButtonPrimary label="Save" handleBtnPress={onPressHandler} />
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container}>
+        <HeaderWithBackBtn>
+          <View style={styles.pageNameContainer}>
+            <Text style={styles.pageName}>Edit Profile</Text>
+          </View>
+        </HeaderWithBackBtn>
+        <View style={styles.body}>
+          <View style={styles.profileContainer}>
+            <TouchableOpacity
+              onPress={handlePickerPress}
+              style={styles.imageContainer}>
+              {userDetails?.image ? (
+                <Image
+                  style={styles.image}
+                  source={{uri: userDetails?.image}}
+                  alt="user-profile"
+                />
+              ) : (
+                <Image
+                  style={styles.image}
+                  source={require(path)}
+                  alt="user-profile"
+                />
+              )}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.inputsContainer}>
+            <InputwithIconComponent
+              id={inputsConstant.fullName.id}
+              handelTextChange={HandleInputsTextChange}
+              iconColor={colorPrimary}
+              iconFamily={inputsConstant.fullName.iconFamily}
+              iconName={inputsConstant.fullName.iconName}
+              iconSize={inputsConstant.fullName.iconSize}
+              iconStyle={{}}
+              placeholder={inputsConstant.fullName.placeholder}
+              value={inputs.fullName}
+              errorString={inputsError.fullName}
+            />
+            <InputwithIconComponent
+              isEditable={false}
+              id={inputsConstant.email.id}
+              handelTextChange={HandleInputsTextChange}
+              iconColor={colorPrimary}
+              iconFamily={inputsConstant.email.iconFamily}
+              iconName={inputsConstant.email.iconName}
+              iconSize={inputsConstant.email.iconSize}
+              iconStyle={{}}
+              placeholder={inputsConstant.email.placeHolder}
+              value={inputs.email}
+              errorString={inputsError.email}
+            />
+          </View>
+          <View style={styles.center}>
+            <View style={styles.btnContainer}>
+              <ButtonPrimary label="Save" handleBtnPress={onPressHandler} />
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -182,7 +194,10 @@ const styles = StyleSheet.create({
   },
   pageNameContainer: {
     position: 'absolute',
-    top: responsiveScreenHeight(6.5),
+    top:
+      Platform.OS === 'ios'
+        ? responsiveScreenHeight(6.5)
+        : responsiveScreenHeight(1.7),
     left: responsiveScreenWidth(15),
     alignItems: 'center',
   },

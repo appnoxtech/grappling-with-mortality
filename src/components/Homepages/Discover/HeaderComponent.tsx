@@ -8,6 +8,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { store } from '../../../interfaces/reducer/state';
+import { colorPrimary, colorSecondary, white } from '../../../../assests/Styles/GlobalTheme';
 const path = '../../../../assests/images/profile.jpg';
 
 const HeaderComponent = () => {
@@ -17,7 +18,7 @@ const HeaderComponent = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar
         animated={true}
-        backgroundColor={'#f1f9ec'}
+        backgroundColor={colorSecondary}
         barStyle={'default'}
         showHideTransition={'slide'}
       />
@@ -38,12 +39,12 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: responsiveScreenWidth(6),
     borderBottomRightRadius: responsiveScreenWidth(6),
     height: Platform.OS === 'android' ? responsiveScreenHeight(10) : responsiveScreenHeight(15),
-    backgroundColor: '#f1f9ec',
+    backgroundColor: colorSecondary,
   },
   userName: {
     fontSize: responsiveFontSize(2.5),
     fontWeight: '600',
-    color: 'black',
+    color: white,
   },
   body: {
     paddingHorizontal: responsiveScreenWidth(5),

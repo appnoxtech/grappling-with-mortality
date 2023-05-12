@@ -8,7 +8,7 @@ import {
 import {useNavigation} from '@react-navigation/core';
 import {TouchableOpacity} from 'react-native';
 import LoadIcon from '../../common/LoadIcons';
-import {colorSecondary} from '../../../../assests/Styles/GlobalTheme';
+import {colorPrimary, colorSecondary, white} from '../../../../assests/Styles/GlobalTheme';
 import {useDispatch, useSelector} from 'react-redux';
 import {EditNewBook} from '../../../redux/reducers/authorReducer';
 import {store} from '../../../interfaces/reducer/state';
@@ -34,7 +34,7 @@ const BookDetailsHeaderComponent = () => {
       }>
       <StatusBar
         animated={true}
-        backgroundColor={'#f1f9ec'}
+        backgroundColor={colorPrimary}
         barStyle={'default'}
         showHideTransition={'slide'}
       />
@@ -46,7 +46,7 @@ const BookDetailsHeaderComponent = () => {
             iconName="arrow-back"
             iconFamily="Ionicons"
             style={{}}
-            color={colorSecondary}
+            color={white}
             size={30}
           />
         </TouchableOpacity>
@@ -56,7 +56,7 @@ const BookDetailsHeaderComponent = () => {
               iconName="book-edit-outline"
               iconFamily="MaterialCommunityIcons"
               style={{}}
-              color={colorSecondary}
+              color={white}
               size={30}
             />
           </TouchableOpacity>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     height: responsiveScreenHeight(15),
     paddingTop: responsiveScreenHeight(3),
     justifyContent: 'center',
-    backgroundColor: '#f1f9ec',
+    backgroundColor: colorPrimary,
   },
   androidContainer: {
     borderBottomLeftRadius: responsiveScreenWidth(6),
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     height: responsiveScreenHeight(8),
     paddingTop: responsiveScreenHeight(1),
     justifyContent: 'center',
-    backgroundColor: '#f1f9ec',
+    backgroundColor: colorPrimary,
   },
   userName: {
     fontSize: responsiveFontSize(2.5),

@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import HeaderWithBackBtn from '../../components/common/headers/HeaderWithBackBtn';
 import {
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   pageNameContainer: {
     position: 'absolute',
-    top: responsiveScreenHeight(6.5),
+    top: Platform.OS === 'ios' ? responsiveScreenHeight(6.5) : responsiveScreenHeight(1.7),
     left: responsiveScreenWidth(15),
     alignItems: 'center',
   },
