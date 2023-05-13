@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "895805790628",
+    "project_id": "grapling-with-mortality",
+    "storage_bucket": "grapling-with-mortality.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895805790628:android:578c852418e2086bd28931",
+        "android_client_info": {
+          "package_name": "com.grappling_with_mortality"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "895805790628-skm91lft8fed2am0n1s1cfst47ik2hob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grappling_with_mortality",
+            "certificate_hash": "8e9d702f76ad148b9f03b38ebedbe3534c1d6747"
+          }
+        },
+        {
+          "client_id": "895805790628-fcslugmusggib4ofbrqulg16jpf4ojvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmG1_S6tZ-rwJW5wke-2aZCZl9kypt3sU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "895805790628-9qlje51k0vphl2mms6q5ege1eevuha97.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "895805790628-j3b8s7v0279hgj76es85t75isf7lsmoc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "grappling-with-mortality"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
