@@ -17,6 +17,9 @@ import { loginData, resetPassword, signupData, ssoData } from '../../interfaces/
   export const LoginServices = async (data: loginData) => {
     const url = `${URL}account/login`;
     const FCMToken = await GetFCMToken();
+    console.log('url', url);
+    console.log('data', data);
+    
     const newData = Platform.OS === 'android' ? 
     {...data, notificationToken: FCMToken} : data;
     
