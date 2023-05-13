@@ -13,14 +13,14 @@ const useRegisterHook = () => {
     try {
       dispatch(SetIsLoadingState(true));
       await RegisterService(data);
+      dispatch(SetIsLoadingState(false));
       navigation.navigate(
         'VerifyOtp' as never,
         {email: data.email, type: 'VERIFY', flow: 'Signup'} as never,
       );
-      dispatch(SetIsLoadingState(false));
     } catch (error: any) {
-      Alert.alert('Error', error.response.data.errors[0].message);
       dispatch(SetIsLoadingState(false));
+      Alert.alert('Error', error.response.data.errors[0].message);
     }
   };
   return handleRegisterService;

@@ -18,7 +18,6 @@ const Discover = () => {
 
   useEffect(() => {
     GetAllBookListServiceHandler();
-    dispatch(UpdateShowEditorOptions(false));
   }, []);
 
   return (
