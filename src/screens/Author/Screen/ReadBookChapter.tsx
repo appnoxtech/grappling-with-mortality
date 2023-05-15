@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
   chapterNameContainer: {
     position: 'absolute',
-    top: responsiveScreenHeight(6.5),
+    top: Platform.OS === 'ios' ? responsiveScreenHeight(6.5) : responsiveScreenHeight(1.7),
     left: responsiveScreenWidth(15),
   },
   chapterName: {

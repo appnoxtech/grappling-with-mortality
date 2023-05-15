@@ -93,7 +93,7 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
         password: ErrorMessage.REQ,
       });
       return false;
-    } else if (inputs.password.length <= 5) {
+    } else if (inputs.password.length < 5) {
       setErrors({
         ...LoginInputsInitialState,
         password: ErrorMessage.PSWD_LENGTH,
@@ -124,7 +124,7 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
         password: ErrorMessage.REQ,
       });
       return false;
-    } else if (id === 'password' && value.length <= 5) {
+    } else if (id === 'password' && value.length < 5) {
       setErrors({
         ...LoginInputsInitialState,
         password: ErrorMessage.PSWD_LENGTH,
@@ -146,6 +146,10 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
   const handleForgetPasswordClick = () => {
     navigation.navigate('ResetPassword' as never);
   };
+
+  useEffect(() => {
+     dispatch(SetIsLoadingState(false))
+  }, [])
 
   return (
     <LoadingScreen>

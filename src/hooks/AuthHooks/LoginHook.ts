@@ -19,44 +19,25 @@ const useLoginHook = () => {
     try {
       dispatch(SetIsLoadingState(true));
       const res = await LoginServices(data);
-      dispatch(SetIsLoadingState(false));
       const userInfo = res.data.data;
-      saveUserData(userInfo);
-      if (userInfo?.image) {
-        dispatch(
-          updateUserDetails({
-            fullName: userInfo.fullName,
-            email: data.email,
-            userType: userInfo.userType,
-            image: userInfo.image,
-          }),
-        );
+      if(userInfo?.isEmailVerified){
+          dispatch(SetIsLoadingState(false));
+          saveUserData(userInfo);
+          if(userInfo?.image){
+              dispatch(updateUserDetails({fullName: userInfo.fullName, email: data.email, userType: userInfo.userType, image: userInfo.image}));
+          } else {
+              dispatch(updateUserDetails({fullName: userInfo.fullName, email: data.email, userType: userInfo.userType}));
+          }
+          dispatch(updateUserData(true));
       } else {
-        dispatch(
-          updateUserDetails({
-            fullName: userInfo.fullName,
-            email: data.email,
-            userType: userInfo.userType,
-          }),
-        );
+          const params = {
+              email: data.email,
+              type: 'GENERATE',
+          }
+          await generateOTPService(params);
+          dispatch(SetIsLoadingState(false));
+          Navigation.navigate('VerifyOtp' as never, {email: data.email, type: 'VERIFY', flow: 'Signup'} as never)
       }
-      dispatch(updateUserData(true));
-      // if(userInfo?.isEmailVerified){
-      //     saveUserData(userInfo);
-      //     if(userInfo?.image){
-      //         dispatch(updateUserDetails({fullName: userInfo.fullName, email: data.email, userType: userInfo.userType, image: userInfo.image}));
-      //     } else {
-      //         dispatch(updateUserDetails({fullName: userInfo.fullName, email: data.email, userType: userInfo.userType}));
-      //     }
-      //     dispatch(updateUserData(true));
-      // } else {
-      //     const params = {
-      //         email: data.email,
-      //         type: 'GENERATE',
-      //     }
-      //     await generateOTPService(params);
-      //     Navigation.navigate('VerifyOtp' as never, {email: data.email, type: 'VERIFY', flow: 'Signup'} as never)
-      // }
     } catch (error: any) {
       dispatch(SetIsLoadingState(false));
       Alert.alert('Error', error.response.data.errors[0].message);

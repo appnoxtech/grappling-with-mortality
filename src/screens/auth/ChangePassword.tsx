@@ -169,7 +169,7 @@ const ChangePassword = ({route}: any) => {
           <View style={styles.body}>
             <Text style={styles.primaryText}>Create New Password</Text>
             <Text style={styles.subText}>
-              Make sure your password is six or more characters long
+              Make sure your password is five or more characters long
             </Text>
           </View>
           <View style={styles.textContainer}>

@@ -26,6 +26,7 @@ import {store} from '../../interfaces/reducer/state';
 import {ImageUploadService} from '../../services/common/ImageUploadService';
 import useUpdateUserProfileHook from '../../hooks/User/UpdateProfileHandler';
 import {TouchableWithoutFeedback} from 'react-native';
+import useKeyboardVisibleListener from '../../hooks/CommonHooks/isKeyboardVisibleHook';
 
 const path = '../../../assests/images/profile.jpg';
 
@@ -34,9 +35,15 @@ const errorObj = {
   email: '',
 };
 
+interface updatedData {
+  fullName: string;
+  image: string;
+}
+
 const EditProfile = () => {
   const {userDetails} = useSelector((state: store) => state.user);
   const UpdateUserProfileServiceHandler = useUpdateUserProfileHook();
+  const isKeyboardVisible = useKeyboardVisibleListener();
 
   const RegisterInitialState = {
     image: '',
@@ -80,12 +87,49 @@ const EditProfile = () => {
     }
   };
 
-  const onPressHandler = () => {
-    const data = {
-      fullName: inputs.fullName,
-      image: inputs.image,
-    };
-    UpdateUserProfileServiceHandler(data);
+  const validation = () => {
+    if (inputs.fullName === '') {
+      setInputsError({
+        ...errorObj,
+        fullName: ErrorMessage.REQ,
+      });
+      return false;
+    } else if (inputs.email === '') {
+      setInputsError({
+        ...errorObj,
+        email: ErrorMessage.EMAIL_REQ,
+      });
+      return false;
+    } else if (!EMAIL_REGEX.test(inputs.email)) {
+      setInputsError({
+        ...errorObj,
+        email: ErrorMessage.INVD_EMAIL,
+      });
+      return false;
+    } else {
+      setInputsError(errorObj);
+      return true;
+    }
+  };
+
+  const onPressHandler = async (data: updatedData) => {
+    const isValid = validation();
+    if (isValid) {
+      await UpdateUserProfileServiceHandler(data);
+    } else {
+      return;
+    }
+  };
+
+  const handleProfileSaveBtnPress = async () => {
+    if (userDetails.fullName !== inputs.fullName) {
+      const updatedData = {
+        fullName: inputs.fullName,
+        image: inputs.image,
+      };
+      await onPressHandler(updatedData);
+      Alert.alert('', 'User name updated Successfully!');
+    }
   };
 
   const handlePickerPress = async () => {
@@ -110,10 +154,13 @@ const EditProfile = () => {
       console.log('res', res.data);
       const {data} = res.data;
       const imageUrl = data.baseUrl + data.imagePath;
-      setInputs({
-        ...inputs,
+      setInputs({...inputs, image: imageUrl});
+      const updatedData = {
+        fullName: inputs.fullName,
         image: imageUrl,
-      });
+      };
+      await onPressHandler(updatedData);
+      Alert.alert('', 'Profile Picture updated Successfully!');
     } catch (error: any) {
       Alert.alert('Error', error.response.data.msg);
     }
@@ -174,12 +221,17 @@ const EditProfile = () => {
               errorString={inputsError.email}
             />
           </View>
+        </View>
+        {!isKeyboardVisible ? (
           <View style={styles.center}>
             <View style={styles.btnContainer}>
-              <ButtonPrimary label="Save" handleBtnPress={onPressHandler} />
+              <ButtonPrimary
+                label="Save"
+                handleBtnPress={handleProfileSaveBtnPress}
+              />
             </View>
           </View>
-        </View>
+        ) : null}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -232,10 +284,10 @@ const styles = StyleSheet.create({
     marginTop: responsiveScreenHeight(2),
   },
   btnContainer: {
-    width: '65%',
+    width: '85%',
   },
   center: {
-    marginTop: responsiveScreenHeight(3),
+    marginVertical: responsiveScreenHeight(3),
     justifyContent: 'center',
     alignItems: 'center',
   },

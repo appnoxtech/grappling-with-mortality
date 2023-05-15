@@ -26,6 +26,7 @@ import {
 } from '../../../redux/reducers/audioEbookReducer';
 import TrackPlayer from 'react-native-track-player';
 import {store} from '../../../interfaces/reducer/state';
+import ButtonPrimary from '../../common/buttons/ButtonPrimary';
 
 interface audio {
   _id: string;
@@ -109,23 +110,23 @@ export default function AudioChaptersListComponent() {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        style={styles.chapterList}
-        data={selectedBookDetails.audio}
-        renderItem={({item, index}) => (
-          <RenderChapter chapter={item} index={index} />
-        )}
-      />
+      <View
+        style={
+          showEditorOptions ? styles.listContainer : styles.onlyListContainer
+        }>
+        <FlatList
+          style={styles.chapterList}
+          data={selectedBookDetails.audio}
+          renderItem={({item, index}) => (
+            <RenderChapter chapter={item} index={index} />
+          )}
+        />
+      </View>
+
       {showEditorOptions ? (
-        <TouchableOpacity onPress={handlePress} style={styles.btnContainer}>
-          <LoadIcon
-            iconFamily="FontAwesome5"
-            iconName="plus"
-            color="white"
-            style={{}}
-            size={20}
-          />
-        </TouchableOpacity>
+        <View style={styles.btnContainer}>
+          <ButtonPrimary label="Add Chapter" handleBtnPress={handlePress} />
+        </View>
       ) : null}
     </View>
   );
@@ -135,6 +136,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
+  },
+  listContainer: {
+    height: responsiveScreenHeight(33),
+  },
+  onlyListContainer: {
+    flex: 1,
   },
   chapter: {
     flexDirection: 'row',
@@ -166,18 +173,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   btnContainer: {
-    width: responsiveScreenWidth(15),
-    height: responsiveScreenWidth(15),
+    width: '100%',
     borderRadius: responsiveScreenWidth(9),
     backgroundColor: colorSecondary,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    right: Platform.OS === 'android' ? responsiveScreenWidth(1) : 10,
-    bottom:
-      Platform.OS === 'android'
-        ? responsiveScreenHeight(8)
-        : responsiveScreenHeight(10),
   },
   actionContainer: {
     flexDirection: 'row',

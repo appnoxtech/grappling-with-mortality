@@ -33,6 +33,7 @@ const ResetPassword = () => {
   const [inputs, setInputs] = useState(initialState);
   const [errors, setErrors] = useState(initialState);
   const isKeyboardVisible = useKeyboardVisibleListener();
+
   const HandleInputsTextChange = (text: string, id: string) => {
     setInputs({
       ...inputs,
@@ -206,11 +207,13 @@ const ResetPassword = () => {
             />
           </View>
         </KeyboardAwareScrollView>
-        <View style={styles.center}>
-          <View style={styles.btnContainer}>
-            <ButtonPrimary label="Save" handleBtnPress={onPressHandler} />
+        {isKeyboardVisible ? null : (
+          <View style={styles.center}>
+            <View style={styles.btnContainer}>
+              <ButtonPrimary label="Save" handleBtnPress={onPressHandler} />
+            </View>
           </View>
-        </View>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );

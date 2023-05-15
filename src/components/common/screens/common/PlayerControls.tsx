@@ -44,7 +44,9 @@ const PlayerControls = () => {
 
   useEffect(() => {
     TrackPlayerSetup();
-    return () => {TrackPlayer.pause();}
+    return () => {
+      TrackPlayer.pause();
+    };
   }, []);
 
   const TrackPlayerSetup = async () => {
@@ -59,7 +61,7 @@ const PlayerControls = () => {
         }),
       );
       TrackPlayer.skip(selectedAudioBook.index);
-      TrackPlayer.addEventListener(Event.RemoteSeek, (event) => {
+      TrackPlayer.addEventListener(Event.RemoteSeek, event => {
         console.log('Event.RemoteSeek', event);
         TrackPlayer.seekTo(event.position);
       });
@@ -97,22 +99,29 @@ const PlayerControls = () => {
 
   const getCurrentPosition = () => {
     console.log('crrState', crrState);
-    
-    if(crrState === State.Buffering || crrState === State.Connecting || crrState === State.Ready) {
-      return `00:00`
+
+    if (
+      crrState === State.Buffering ||
+      crrState === State.Connecting ||
+      crrState === State.Ready
+    ) {
+      return `00:00`;
     } else if (progress.position < 10) {
       return `00:0${progress.position.toFixed(0)}`;
     } else {
       return `00:${progress.position.toFixed(0)}`;
     }
-    
   };
 
   const getTimeLeft = () => {
     const diff = progress.duration - progress.position;
-    if(crrState === State.Buffering || crrState === State.Connecting || crrState === State.Ready) {
-      return `00:00`
-    }else if (diff < 10) {
+    if (
+      crrState === State.Buffering ||
+      crrState === State.Connecting ||
+      crrState === State.Ready
+    ) {
+      return `00:00`;
+    } else if (diff < 10) {
       return `-00:0${diff.toFixed(0)}`;
     } else {
       return `-00:${diff.toFixed(0)}`;
@@ -171,17 +180,21 @@ const PlayerControls = () => {
   const colorDisable = 'rgba(0,0,0,0.3)';
 
   useEffect(() => {
-     if(crrState === State.Buffering || crrState === State.Connecting || crrState === State.None) {
+    if (
+      crrState === State.Buffering ||
+      crrState === State.Connecting ||
+      crrState === State.None
+    ) {
       setIsLoading(true);
-     }else {
+    } else {
       setIsLoading(false);
-     }
+    }
   }, [crrState]);
 
   useEffect(() => {
     TrackPlayer.skip(selectedAudioBook.index);
   }, []);
-  
+
   return (
     <>
       <View style={styles.progrsBarSection}>
@@ -196,7 +209,13 @@ const PlayerControls = () => {
           minimumTrackTintColor={colorSecondary}
           maximumTrackTintColor={colorDisable}
           thumbTintColor={colorPrimary}
-          value={crrState === State.Buffering || crrState === State.Connecting || crrState === State.Ready ? 0 : progress.position}
+          value={
+            crrState === State.Buffering ||
+            crrState === State.Connecting ||
+            crrState === State.Ready
+              ? 0
+              : progress.position
+          }
         />
       </View>
       <View style={styles.playerControls}>
@@ -205,7 +224,7 @@ const PlayerControls = () => {
             iconFamily="AntDesign"
             iconName="stepbackward"
             style={{}}
-            size={responsiveFontSize(5)}
+            size={responsiveFontSize(4)}
             color={
               selectedAudioBook.index === 0 ? colorDisable : colorSecondary
             }
@@ -214,20 +233,26 @@ const PlayerControls = () => {
         {isLoading ? (
           <View style={styles.animationContainer}>
             <Lottie
-            resizeMode='cover'
-            style={styles.animationStyle}
-            source={require(path)}
-            autoPlay
-            loop
-          />
+              resizeMode="cover"
+              style={styles.animationStyle}
+              source={require(path)}
+              autoPlay
+              loop
+            />
           </View>
         ) : (
-          <TouchableOpacity style={styles.animationContainer} onPress={togglePlayer}>
+          <TouchableOpacity
+            style={styles.animationContainer}
+            onPress={togglePlayer}>
             <LoadIcon
               iconFamily="FontAwesome"
-              iconName={crrState === State.Paused || crrState === State.Ready  ? 'play' : 'pause'}
+              iconName={
+                crrState === State.Paused || crrState === State.Ready
+                  ? 'play'
+                  : 'pause'
+              }
               style={{}}
-              size={responsiveFontSize(6)}
+              size={responsiveFontSize(5)}
               color={colorSecondary}
             />
           </TouchableOpacity>
@@ -237,7 +262,7 @@ const PlayerControls = () => {
             iconFamily="AntDesign"
             iconName="stepbackward"
             style={{transform: [{rotateY: '180deg'}]}}
-            size={responsiveFontSize(5)}
+            size={responsiveFontSize(4)}
             color={
               selectedAudioBook.index === selectedBookDetails.audio.length - 1
                 ? colorDisable
@@ -260,11 +285,9 @@ const styles = StyleSheet.create({
     width: responsiveScreenWidth(20),
     height: responsiveScreenWidth(20),
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  animationStyle: {
-    
-  },
+  animationStyle: {},
   timerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -273,7 +296,8 @@ const styles = StyleSheet.create({
   playerControls: {
     marginTop: responsiveScreenHeight(1),
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
+    gap: responsiveScreenWidth(10),
     alignItems: 'center',
   },
   smallControlBtn: {

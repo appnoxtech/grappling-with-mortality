@@ -92,7 +92,7 @@ const Register: React.FC<props> = ({handleLabelClick}) => {
         password: ErrorMessage.PSWD_REQ,
       });
       return false;
-    } else if (inputs.password.length <= 5) {
+    } else if (inputs.password.length < 5) {
       setInputsError({
         ...RegisterInitialState,
         password: ErrorMessage.PSWD_LENGTH,
@@ -141,7 +141,7 @@ const Register: React.FC<props> = ({handleLabelClick}) => {
         password: ErrorMessage.PSWD_REQ,
       });
       return false;
-    } else if (id === 'password' && value.length <= 5) {
+    } else if (id === 'password' && value.length < 5) {
       setInputsError({
         ...RegisterInitialState,
         password: ErrorMessage.PSWD_LENGTH,
