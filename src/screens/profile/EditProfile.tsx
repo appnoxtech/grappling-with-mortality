@@ -130,7 +130,7 @@ const EditProfile = () => {
       const isValid = validation();
       if (isValid) {
         await UpdateUserProfileServiceHandler(updatedData);
-        Alert.alert('', 'User name updated Successfully!');
+        Alert.alert('', 'Username updated successfully!');
       } else {
         return;
       }

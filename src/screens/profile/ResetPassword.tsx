@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     top:
       Platform.OS === 'ios'
         ? responsiveScreenHeight(6.5)
-        : responsiveScreenHeight(1.7),
+        : responsiveScreenHeight(2),
     left: responsiveScreenWidth(15),
     alignItems: 'center',
   },
