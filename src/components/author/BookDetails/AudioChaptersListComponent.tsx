@@ -125,7 +125,7 @@ export default function AudioChaptersListComponent() {
 
       {showEditorOptions ? (
         <View style={styles.btnContainer}>
-          <ButtonPrimary label="Add Chapter" handleBtnPress={handlePress} />
+          <ButtonPrimary label="Add Audiobook" handleBtnPress={handlePress} />
         </View>
       ) : null}
     </View>
