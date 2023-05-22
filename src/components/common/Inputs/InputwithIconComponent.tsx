@@ -1,8 +1,18 @@
-import {Platform, StyleSheet, TextInput, View, Text, TouchableOpacity} from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  TextInput,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useState} from 'react';
 import LoadIcon from '../LoadIcons';
 import {InputsWithIconComponentProps} from '../../../interfaces/components/inputs/InputswithIconComponentInterface';
-import {colorPrimary, colorSecondary} from '../../../../assests/Styles/GlobalTheme';
+import {
+  colorPrimary,
+  colorSecondary,
+} from '../../../../assests/Styles/GlobalTheme';
 import {
   responsiveFontSize,
   responsiveScreenHeight,
@@ -24,10 +34,17 @@ const InputwithIconComponent: React.FC<InputsWithIconComponentProps> = ({
   errorString,
 }) => {
   const [isFocus, setIsFocus] = useState(false);
-  const [showPswd, setShowPswd]  = useState(false);
+  const [showPswd, setShowPswd] = useState(false);
   return (
     <View>
-      <View style={errorString ? styles.errorContainer : isFocus ? styles.focusContainer :  styles.container}>
+      <View
+        style={
+          errorString
+            ? styles.errorContainer
+            : isFocus
+            ? styles.focusContainer
+            : styles.container
+        }>
         <View style={styles.iconContainer}>
           <LoadIcon
             color={iconColor}
@@ -42,23 +59,29 @@ const InputwithIconComponent: React.FC<InputsWithIconComponentProps> = ({
           style={styles.textInput}
           placeholder={placeholder}
           value={value}
-          secureTextEntry={(id === 'password' || id === 'confirmPassowrd') ? !showPswd : false}
+          secureTextEntry={
+            id === 'password' || id === 'confirmPassowrd' ? !showPswd : false
+          }
           onChangeText={text => handelTextChange(text, id)}
           placeholderTextColor={placeholderColor}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
         />
-        {
-          (id === 'password' || id === 'confirmPassowrd') 
-          ? ( 
-             <TouchableOpacity onPress={() => setShowPswd(!showPswd)} style={styles.eyeIconContainer}>
-                {
-                  <LoadIcon iconFamily='Ionicons' iconName={showPswd ? 'eye-off' : 'eye'} size={iconSize} style={{}} color={colorSecondary} />
-                }
-             </TouchableOpacity> 
-            )
-          : null
-        }
+        {id === 'password' || id === 'confirmPassowrd' ? (
+          <TouchableOpacity
+            onPress={() => setShowPswd(!showPswd)}
+            style={styles.eyeIconContainer}>
+            {
+              <LoadIcon
+                iconFamily="Ionicons"
+                iconName={showPswd ? 'eye' : 'eye-off'}
+                size={iconSize}
+                style={{}}
+                color={colorSecondary}
+              />
+            }
+          </TouchableOpacity>
+        ) : null}
       </View>
       {errorString ? (
         <View style={styles.errorStringContainer}>
@@ -122,11 +145,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   errorStringContainer: {
-    justifyContent:'flex-end',
-    alignItems: 'flex-end'
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   errorString: {
     fontSize: responsiveFontSize(1.9),
-    color: 'rgba(220,20,60,0.7)'
-  }
+    color: 'rgba(220,20,60,0.7)',
+  },
 });

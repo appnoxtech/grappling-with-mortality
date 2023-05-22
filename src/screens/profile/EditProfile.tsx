@@ -127,8 +127,14 @@ const EditProfile = () => {
         fullName: inputs.fullName,
         image: inputs.image,
       };
-      await onPressHandler(updatedData);
-      Alert.alert('', 'User name updated Successfully!');
+      const isValid = validation();
+      if (isValid) {
+        await UpdateUserProfileServiceHandler(updatedData);
+        Alert.alert('', 'User name updated Successfully!');
+      } else {
+        return;
+      }
+      
     }
   };
 

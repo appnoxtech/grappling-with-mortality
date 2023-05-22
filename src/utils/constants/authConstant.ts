@@ -34,6 +34,8 @@ export const RegisterInitialState = {
 export const ErrorMessage = {
     PSWD_NOT_MATCH: 'Password not match.',
     PSWD_LENGTH: 'Password length must be of 5 digits.',
+    PSWD_SUGGESTION: 'Password must contain atleast 5 alphabets, 1 Uppercase, 1 Lowercase, 1 Special Chanracter and 1 digit.',
+    PSWD_FIVE_ALPHABET: 'Password must contain at least 5 Alphabets',
     PSWD_REQ: 'Password is required !',
     INVD_EMAIL: 'Please enter a valid email.',
     EMAIL_REQ: 'Email is required !',

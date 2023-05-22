@@ -59,7 +59,7 @@ const AuthorBookListComponent = () => {
     <View style={styles.container}>
       <CommonHeader paddingTop={Platform.OS === 'android' ? 3 : 5}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>Your's Book</Text>
+          <Text style={styles.text}>Your Books</Text>
         </View>
       </CommonHeader>
       <FlatList

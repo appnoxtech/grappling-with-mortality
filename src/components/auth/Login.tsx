@@ -24,7 +24,7 @@ import InputwithIconComponent from '../common/Inputs/InputwithIconComponent';
 import {LoginInputsInitialState} from '../../utils/constants/authConstant';
 import LoadIcon from '../common/LoadIcons';
 import ButtonPrimary from '../common/buttons/ButtonPrimary';
-import {EMAIL_REGEX} from '../../utils/constants/common';
+import {EMAIL_REGEX, PSWD_REGEX} from '../../utils/constants/common';
 import useLoginHook from '../../hooks/AuthHooks/LoginHook';
 import {inputsConstant} from '../../utils/constants/authConstant';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -33,6 +33,7 @@ import { useDispatch } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import useKeyboardVisibleListener from '../../hooks/CommonHooks/isKeyboardVisibleHook';
 import { SetIsLoadingState } from '../../redux/reducers/commonReducer';
+import { checkPasswordValidity } from '../../utils/helperFunctions/passwordValidation';
 
 const labels = {
   login: 'Login',
@@ -93,11 +94,14 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
         password: ErrorMessage.REQ,
       });
       return false;
-    } else if (inputs.password.length < 5) {
-      setErrors({
-        ...LoginInputsInitialState,
-        password: ErrorMessage.PSWD_LENGTH,
-      });
+    } else if (checkPasswordValidity(inputs.password)) {
+      const msg = checkPasswordValidity(inputs.password);
+      if(msg){
+        setErrors({
+          ...LoginInputsInitialState,
+          password: msg,
+        });
+      }
       return false;
     } else {
       setErrors(LoginInputsInitialState);
@@ -124,11 +128,14 @@ const Login: React.FC<props> = ({handleLabelClick}) => {
         password: ErrorMessage.REQ,
       });
       return false;
-    } else if (id === 'password' && value.length < 5) {
-      setErrors({
-        ...LoginInputsInitialState,
-        password: ErrorMessage.PSWD_LENGTH,
-      });
+    } else if (id === 'password' && checkPasswordValidity(value)) {
+      const msg = checkPasswordValidity(value);
+      if(msg){
+        setErrors({
+          ...LoginInputsInitialState,
+          password: msg,
+        });
+      }
       return false;
     } else {
       setErrors(LoginInputsInitialState);

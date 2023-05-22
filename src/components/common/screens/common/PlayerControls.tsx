@@ -252,7 +252,7 @@ const PlayerControls = () => {
                   : 'pause'
               }
               style={{}}
-              size={responsiveFontSize(5)}
+              size={responsiveFontSize(4)}
               color={colorSecondary}
             />
           </TouchableOpacity>
