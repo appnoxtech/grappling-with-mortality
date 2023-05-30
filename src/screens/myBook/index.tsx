@@ -1,12 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import useGetBookList from '../../../hooks/AuthorHooks/GetBookListHooks';
-import { white } from '../../../../assests/Styles/GlobalTheme';
-import AuthorBookListComponent from '../../../components/author/AuthorBookListComponent';
-import AddNewBookComponent from '../../../components/author/AddNewBookComponent';
-import { UpdateShowEditorOptions } from '../../../redux/reducers/commonReducer';
-import LoadingScreen from '../../common/LoadingScreen';
+import useGetBookList from '../../hooks/AuthorHooks/GetBookListHooks';
+import LoadingScreen from '../common/LoadingScreen';
+import AuthorBookListComponent from '../../components/author/AuthorBookListComponent';
+import AddNewBookComponent from '../../components/author/AddNewBookComponent';
+import { white } from '../../../assests/Styles/GlobalTheme';
 
 const MyBooks = () => {
   const dispatch = useDispatch();

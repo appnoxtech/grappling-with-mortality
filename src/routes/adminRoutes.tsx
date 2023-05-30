@@ -15,7 +15,7 @@ import EBookReader from '../screens/myBook/screen/ReadBookChapter';
 
 const Stack = createNativeStackNavigator();
 
-const AuthorRoutes = () => {
+const AdminRoutes = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -82,4 +82,4 @@ const AuthorRoutes = () => {
   );
 };
 
-export default AuthorRoutes;
+export default AdminRoutes;

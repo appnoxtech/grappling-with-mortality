@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
-import HeaderComponent from '../../components/Homepages/Profile/HeaderComponent';
+import HeaderComponent from '../../components/homepages/Profile/HeaderComponent';
 import {
   colorGrey,
   colorPrimary,

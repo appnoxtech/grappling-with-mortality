@@ -1,26 +1,25 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {colorPrimary} from '../../../../assests/Styles/GlobalTheme';
+import {colorPrimary} from '../../../assests/Styles/GlobalTheme';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
-import Profile from '../../common/Profile';
-import Discover from '../../Discover/index'; 
-import MyBooks from './MyBooks';
-import { useDispatch } from 'react-redux';
-import { UpdateShowEditorOptions } from '../../../redux/reducers/commonReducer';
-
+import Profile from '../common/Profile';
+import Discover from '../discover/index';
+import {useDispatch} from 'react-redux';
+import {UpdateShowEditorOptions} from '../../redux/reducers/commonReducer';
 
 const Tab = createBottomTabNavigator();
 
 const Homepages = () => {
-  const dispatch = useDispatch();
   return (
     <Tab.Navigator
       //@ts-ignore
       screenOptions={({route}) => ({
-        tabBarIcon: ({focused}) => {
+        tabBarIcon: ({focused, color, size}) => {
           let iconName;
           if (route.name === 'Discover') {
             return (
@@ -36,15 +35,7 @@ const Homepages = () => {
                 name="account-circle"
               />
             );
-          } else if (route.name === 'My Books') {
-            return (
-              <Ionicons
-                style={(iconName = focused ? styles.iconFocused : styles.icon)}
-                name={(iconName = focused ? 'book' : 'book-outline')}
-              />
-            );
           }
-
         },
         tabBarActiveTintColor: colorPrimary,
         tabBarInactiveTintColor: 'gray',
@@ -57,34 +48,6 @@ const Homepages = () => {
       <Tab.Screen
         name="Discover"
         component={Discover}
-        listeners={({ navigation, route }) => ({
-          tabPress: (e) => {
-            // Prevent default action
-            e.preventDefault();
-      
-            // Do something with the `navigation` object
-            dispatch(UpdateShowEditorOptions(false));
-            navigation.navigate('Discover');
-          },
-        })}
-        options={{
-          headerShown: false,
-          tabBarHideOnKeyboard: true,
-        }}
-      />
-      <Tab.Screen
-        name="My Books"
-        component={MyBooks}
-        listeners={({ navigation, route }) => ({
-          tabPress: (e) => {
-            // Prevent default action
-            e.preventDefault();
-      
-            // Do something with the `navigation` object
-            dispatch(UpdateShowEditorOptions(true));
-            navigation.navigate('My Books');
-          },
-        })}
         options={{
           headerShown: false,
           tabBarHideOnKeyboard: true,

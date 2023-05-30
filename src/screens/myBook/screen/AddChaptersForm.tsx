@@ -10,7 +10,7 @@ import {
 import ButtonPrimary from '../../../components/common/buttons/ButtonPrimary';
 import useUpdateChaptersHook from '../../../hooks/AuthorHooks/UpdateChaptersHook';
 import HeaderWithBackBtn from '../../../components/common/headers/HeaderWithBackBtn';
-import HeaderComponent from '../../../components/Homepages/Discover/HeaderComponent';
+import HeaderComponent from '../../../components/homepages/Discover/HeaderComponent';
 import {useDispatch, useSelector} from 'react-redux';
 import {store} from '../../../interfaces/reducer/state';
 import {NewChapterKey} from '../../../interfaces/author/chapter.interface';

@@ -30,4 +30,7 @@ Our App is not intended for use by children under the age of 13. If we become aw
 
 Changes to This Privacy Policy
 We may update this privacy policy from time to time. We will notify you of any changes by posting the new privacy policy on our App. You are advised to review this privacy policy periodically for any changes.
+
+Contact us
+For any queries please contact us on Sky@noblemanbooks.com
 `;

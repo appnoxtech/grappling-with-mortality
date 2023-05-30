@@ -4,7 +4,7 @@ import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth } fro
 import { white } from '../../../assests/Styles/GlobalTheme';
 import {useNavigation} from '@react-navigation/core';
 import ButtonPrimary from '../common/buttons/ButtonPrimary';
-import HeaderComponent from '../Homepages/Discover/HeaderComponent';
+import HeaderComponent from '../homepages/Discover/HeaderComponent';
 
 const Labels = {
     primary: 'Add your own Book',

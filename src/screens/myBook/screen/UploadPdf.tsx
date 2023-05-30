@@ -55,7 +55,7 @@ const AddBookDocs = () => {
       await AddNewBookService(newBook);
       await GetAuthorBookListServiceHandler();
       dispatch(ClearNewBookDetails());
-      Alert.alert('Congratulations!', 'Your Book uploaded successfully!');
+      Alert.alert('Congratulations!', 'Your Book Uploaded Successfully!');
       setTimeout(() => {
         navigation.navigate('Homepage' as never);
       }, 1000);
@@ -89,7 +89,7 @@ const AddBookDocs = () => {
 
       await GetAuthorBookListServiceHandler();
       dispatch(ClearNewBookDetails());
-      Alert.alert('Congratulations!', 'Your Book Updated successfully!');
+      Alert.alert('Congratulations!', 'Your Book Updated Successfully!');
       setTimeout(() => {
         navigation.navigate('Homepage' as never);
       }, 1000);
