@@ -50,6 +50,7 @@ const AddAudioChaptersForm = () => {
 
   const HandleInputsTextChange = (text: string, id: AudioEbookKey) => {
     dispatch(SetAudioEbookFormInputs({key: id, value: text}));
+    onChangeValidation(id, text);
   };
 
   const setAudioLink = (link: string) => {
@@ -88,6 +89,19 @@ const AddAudioChaptersForm = () => {
       return true;
     }
   };
+
+  const onChangeValidation = (id: string, value: string) => {
+    if (inputs.audioLink === '') {
+      setErrors({
+        ...errorInitialState,
+        audioLink: 'Required !',
+      });
+      return false;
+    }else {
+      setErrors(errorInitialState);
+      return true;
+    }
+  }
 
   return (
     <TouchableWithoutFeedback

@@ -8,8 +8,8 @@ import useGetSelectedBookDetails from './GetSelectedBookDetailsHook';
 import {Alert} from 'react-native';
 import {Audio} from '../../interfaces/reducer/audioStore.interface';
 
-const SucessMsg = `Audio Chapter Added Sucessfully.`;
-const UpdateMsg = 'Audio Chapter Updated Sucessfully.';
+const SucessMsg = `Audio Chapter Added Successfully.`;
+const UpdateMsg = 'Audio Chapter Updated Successfully.';
 
 const useAddAudioChapterHook = () => {
   const GetSelectedBookDetailsServiceHandler = useGetSelectedBookDetails();

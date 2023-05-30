@@ -62,6 +62,7 @@ const AddNewBook:React.FC<any> = () => {
 
   const onChangeHandler = (text: string, id: NewBookUpdateKey) => {
     dispatch(UpdateNewBookDetails({key: id, value: text}))
+    onChangeValidation(id, text);
   };
 
   const handelBtnPress = () => {
@@ -101,6 +102,37 @@ const AddNewBook:React.FC<any> = () => {
       return true;
     }
   };
+
+  const onChangeValidation = (id: string, value: string | number) => {
+    if(id === 'bookImage' && value === ''){
+      setErrors({
+        ...initialState,
+        bookImage: 'Required !'
+      });
+      return false;
+    } else if(id === 'bookName' && value === '') {
+      setErrors({
+        ...initialState,
+        bookName: 'Required !'
+      });
+      return false;
+    } else if(id === 'noOfPages' && !value) {
+      setErrors({
+        ...initialState,
+        noOfPages: 'Required !'
+      });
+      return false;
+    } else if(id === 'description' &&  !value) {
+      setErrors({
+        ...initialState,
+        description: 'Required !'
+      });
+      return false;
+    } else {
+      setErrors(initialState);
+      return true;
+    }
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

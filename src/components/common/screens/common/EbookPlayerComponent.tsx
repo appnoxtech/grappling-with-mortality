@@ -5,7 +5,7 @@ import {
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
-import {useNavigation} from '@react-navigation/core';
+import Lottie from 'lottie-react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {store} from '../../../../interfaces/reducer/state';
 import LoadIcon from '../../LoadIcons';
@@ -32,6 +32,7 @@ interface chapterProps {
 const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
   const dispatch = useDispatch();
   const {selectedAudioBook} = useSelector((store: store) => store.audio);
+  const path = '../../../../../assests/animations/music-player.json';
 
   const handleAudioBookChapterPlay = () => {
     if (selectedAudioBook.index !== index) {
@@ -48,12 +49,11 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
         <Text style={styles.chapterName}>{chapter.chapterName}</Text>
         <View style={styles.actionContainer}>
           {selectedAudioBook.index === index ? (
-            <LoadIcon
-              iconFamily="Ionicons"
-              iconName={'pause-circle'}
-              style={{}}
-              size={30}
-              color={colorSecondary}
+            <Lottie
+              style={styles.animationStyle}
+              source={require(path)}
+              autoPlay
+              loop
             />
           ) : (
             <TouchableOpacity onPress={handleAudioBookChapterPlay}>
@@ -122,6 +122,9 @@ const styles = StyleSheet.create({
     marginTop: responsiveScreenHeight(2),
     paddingHorizontal: responsiveScreenWidth(4),
   },
+  animationContainer: {
+    width: responsiveScreenWidth(10),
+  },
   textPrimary: {
     textAlign: 'center',
     fontSize: responsiveFontSize(2.8),
@@ -150,6 +153,10 @@ const styles = StyleSheet.create({
   },
   chapterList: {
     flex: 1,
+  },
+  animationStyle: {
+    width: responsiveScreenWidth(5),
+    marginRight: responsiveScreenWidth(1.8)
   },
   chapter: {
     flexDirection: 'row',

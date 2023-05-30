@@ -5,6 +5,7 @@ import { getUserDataFromLocalStorage } from '../utils/helperFunctions/auth';
 import UnAuthRoutes from './unAuthRoutes';
 import UserRoutes from './userRoutes';
 import AuthorRoutes from './authorRoutes';
+import AdminRoutes from './adminRoutes';
 
 const StackNavigation = () => {
   const {isLogin, userDetails} = useSelector((state: any) => state.user);
@@ -26,8 +27,10 @@ const StackNavigation = () => {
   if (isLogin) {
     if(userDetails.userType === 'CUSTOMER') {
       return <UserRoutes />;
-    }else {
+    }else if(userDetails.userType === 'AUTHOR') {
       return <AuthorRoutes />;
+    }else if(userDetails.userType === 'ADMIN') {
+      return <AdminRoutes />
     }
   } else {
     return <UnAuthRoutes />;

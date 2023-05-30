@@ -1,6 +1,6 @@
 import {Alert, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import HeaderComponent from '../../components/Homepages/Profile/HeaderComponent';
+import HeaderComponent from '../../components/homepages/Profile/HeaderComponent';
 import {colorGrey, colorPrimary, white} from '../../../assests/Styles/GlobalTheme';
 import {
   responsiveFontSize,

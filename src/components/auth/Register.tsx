@@ -27,12 +27,12 @@ import {
 } from '../../utils/constants/authConstant';
 import InputwithIconComponent from '../common/Inputs/InputwithIconComponent';
 import ButtonPrimary from '../common/buttons/ButtonPrimary';
-import SocialLoginBtn from '../common/buttons/SocialLoginBtn';
 import {EMAIL_REGEX} from '../../utils/constants/common';
 import useRegisterHook from '../../hooks/AuthHooks/RegisterHook';
 import {inputsConstant} from '../../utils/constants/authConstant';
 import LoadingScreen from '../../screens/common/LoadingScreen';
 import useKeyboardVisibleListener from '../../hooks/CommonHooks/isKeyboardVisibleHook';
+import { checkPasswordValidity } from '../../utils/helperFunctions/passwordValidation';
 
 const labels = {
   findAccount: 'Already have an account? ',
@@ -92,11 +92,14 @@ const Register: React.FC<props> = ({handleLabelClick}) => {
         password: ErrorMessage.PSWD_REQ,
       });
       return false;
-    } else if (inputs.password.length <= 5) {
-      setInputsError({
-        ...RegisterInitialState,
-        password: ErrorMessage.PSWD_LENGTH,
-      });
+    } else if (checkPasswordValidity(inputs.password)) {
+      const msg = checkPasswordValidity(inputs.password);
+      if(msg){
+        setInputsError({
+          ...RegisterInitialState,
+          password: msg,
+        });
+      }
       return false;
     } else if (inputs.confirmPassowrd === '') {
       setInputsError({
@@ -141,11 +144,14 @@ const Register: React.FC<props> = ({handleLabelClick}) => {
         password: ErrorMessage.PSWD_REQ,
       });
       return false;
-    } else if (id === 'password' && value.length <= 5) {
-      setInputsError({
-        ...RegisterInitialState,
-        password: ErrorMessage.PSWD_LENGTH,
-      });
+    } else if (id === 'password' && checkPasswordValidity(value)) {
+      const msg = checkPasswordValidity(value);
+      if(msg){
+        setInputsError({
+          ...RegisterInitialState,
+          password: msg,
+        });
+      }
       return false;
     } else if (id === 'confirmPassowrd' && value === '') {
       setInputsError({

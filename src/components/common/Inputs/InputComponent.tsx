@@ -30,7 +30,7 @@ const InputComponent: React.FC<inputComponentProps> = ({
         placeholder={placeholder}
         onFocus={() => setIsActive(true)}
         onBlur={() => setIsActive(false)}
-        value={value?.toString()}
+        value={typeof(value) === 'number' ? isNaN(value) ? '' : value.toString() : value}
         multiline={allowMultiLine}
         inputMode={keyboardType}
         onChangeText={text => {

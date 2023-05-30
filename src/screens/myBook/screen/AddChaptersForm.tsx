@@ -10,7 +10,7 @@ import {
 import ButtonPrimary from '../../../components/common/buttons/ButtonPrimary';
 import useUpdateChaptersHook from '../../../hooks/AuthorHooks/UpdateChaptersHook';
 import HeaderWithBackBtn from '../../../components/common/headers/HeaderWithBackBtn';
-import HeaderComponent from '../../../components/Homepages/Discover/HeaderComponent';
+import HeaderComponent from '../../../components/homepages/Discover/HeaderComponent';
 import {useDispatch, useSelector} from 'react-redux';
 import {store} from '../../../interfaces/reducer/state';
 import {NewChapterKey} from '../../../interfaces/author/chapter.interface';
@@ -53,8 +53,10 @@ const AddChaptersForm = () => {
   const HandleInputsTextChange = (text: string | number, id: NewChapterKey) => {
     if (typeof text === 'number') {
       dispatch(UpdateChapterDetails({key: id, value: isNaN(text) ? 0 : text}));
+      onChangeValidation(id, isNaN(text) ? 0 : text);
     } else {
       dispatch(UpdateChapterDetails({key: id, value: text}));
+      onChangeValidation(id, text)
     }
   };
   const handleAddChapter = () => {
@@ -86,7 +88,7 @@ const AddChaptersForm = () => {
         startingPageNo: 'Required !',
       });
       return false;
-    } else if (isNaN(inputs.endingPageNo)) {
+    } else if (typeof(inputs.endingPageNo) === 'string') {
       setErrors({
         ...errorInitialState,
         endingPageNo: 'Required !',
@@ -105,6 +107,45 @@ const AddChaptersForm = () => {
       return true;
     }
   };
+
+  const onChangeValidation = (id: string, value: string | number) => {
+    if (id === 'chapterNo' && typeof(value) === 'string') {
+      setErrors({
+        ...errorInitialState,
+        chapterNo: 'Required !',
+      });
+      return false;
+    } else if (id === 'chapterName' && value === '') {
+      setErrors({
+        ...errorInitialState,
+        chapterName: 'Required !',
+      });
+      return false;
+    } else if (id === 'startingPageNo' && typeof(value) === 'string') {
+      setErrors({
+        ...errorInitialState,
+        startingPageNo: 'Required !',
+      });
+      return false;
+    } else if (id === 'endingPageNo' && typeof(value) === 'string') {
+      setErrors({
+        ...errorInitialState,
+        endingPageNo: 'Required !',
+      });
+      return false;
+    } else if (inputs.startingPageNo > inputs.endingPageNo) {
+      setErrors({
+        ...errorInitialState,
+        endingPageNo: 'Enter a valid Page Number',
+      });
+      return false;
+    } else {
+      setErrors({
+        ...errorInitialState,
+      });
+      return true;
+    }
+  }
 
   return (
     <View style={styles.container}>

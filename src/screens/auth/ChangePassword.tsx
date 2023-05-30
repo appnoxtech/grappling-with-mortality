@@ -25,6 +25,7 @@ import useKeyboardVisibleListener from '../../hooks/CommonHooks/isKeyboardVisibl
 import LoadingScreen from '../common/LoadingScreen';
 import { useDispatch } from 'react-redux';
 import { SetIsLoadingState } from '../../redux/reducers/commonReducer';
+import { checkPasswordValidity } from '../../utils/helperFunctions/passwordValidation';
 
 const initialState = {
   password: '',
@@ -64,25 +65,21 @@ const ChangePassword = ({route}: any) => {
         ...subTexts,
         password: ErrorMessage.REQ,
       });
-    } else if (id === 'password' && value.length < 5) {
+    } else if (id === 'password' && checkPasswordValidity(value)) {
       state = false;
-      setSubTexts({
-        ...subTexts,
-        password: ErrorMessage.PSWD_LENGTH,
-      });
+      const msg = checkPasswordValidity(inputs.password);
+      if(msg){
+        setSubTexts({
+          ...subTexts,
+          password: msg,
+        });
+      }
     } else if (id === 'confirmPassword' && value === '') {
       state = false;
       setSubTexts({
         ...subTexts,
         password: '',
         confirmPassowrd: ErrorMessage.REQ,
-      });
-    } else if (id === 'confirmPassowrd' && value.length < 5) {
-      state = false;
-      setSubTexts({
-        ...subTexts,
-        password: '',
-        confirmPassowrd: ErrorMessage.PSWD_LENGTH,
       });
     } else if (id === 'confirmPassowrd' && inputs.password !== value) {
       state = false;
@@ -106,25 +103,21 @@ const ChangePassword = ({route}: any) => {
         ...subTexts,
         password: ErrorMessage.REQ,
       });
-    } else if (inputs.password.length < 5) {
+    } else if (checkPasswordValidity(inputs.password)) {
       state = false;
-      setSubTexts({
-        ...subTexts,
-        password: ErrorMessage.PSWD_LENGTH,
-      });
+      const msg = checkPasswordValidity(inputs.password);
+      if(msg){
+        setSubTexts({
+          ...subTexts,
+          password: msg,
+        });
+      }
     } else if (inputs.confirmPassowrd === '') {
       state = false;
       setSubTexts({
         ...subTexts,
         password: '',
         confirmPassowrd: ErrorMessage.REQ,
-      });
-    } else if (inputs.confirmPassowrd.length < 5) {
-      state = false;
-      setSubTexts({
-        ...subTexts,
-        password: '',
-        confirmPassowrd: ErrorMessage.PSWD_LENGTH,
       });
     } else if (inputs.confirmPassowrd !== inputs.password) {
       state = false;
@@ -169,7 +162,7 @@ const ChangePassword = ({route}: any) => {
           <View style={styles.body}>
             <Text style={styles.primaryText}>Create New Password</Text>
             <Text style={styles.subText}>
-              Make sure your password is six or more characters long
+              Make sure your password is Eight or more characters long
             </Text>
           </View>
           <View style={styles.textContainer}>
