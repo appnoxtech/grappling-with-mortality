@@ -1,6 +1,6 @@
 import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
-import HeaderComponent from '../../components/Homepages/Discover/HeaderComponent';
+import HeaderComponent from '../../components/homepages/Discover/HeaderComponent';
 import {
   responsiveScreenHeight,
   responsiveScreenWidth,
@@ -8,7 +8,7 @@ import {
 import useGetAllBookListServiceHandler from '../../hooks/CommonHooks/GetAllBookListServiceHandler';
 import {useDispatch, useSelector} from 'react-redux';
 import {store} from '../../interfaces/reducer/state';
-import BookItemComponent from '../../components/Homepages/Discover/BookItemComponent';
+import BookItemComponent from '../../components/homepages/Discover/BookItemComponent';
 import { UpdateShowEditorOptions } from '../../redux/reducers/commonReducer';
 
 const Discover = () => {

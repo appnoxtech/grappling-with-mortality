@@ -17,7 +17,6 @@ const useUpdateUserProfileHook = () => {
             } else {
                 dispatch(updateUserDetails({...userDetails, fullName: data.fullName}));
             }
-            Alert.alert('', 'Profile Updated Successfully!');
         } catch (error: any) {
             Alert.alert('Error', error.response.data.errors[0].message);
         }

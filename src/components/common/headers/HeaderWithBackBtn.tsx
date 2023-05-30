@@ -14,11 +14,10 @@ interface props {
   paddingTop?: number
 }
 
-const HeaderWithBackBtn: React.FC<props> = ({children, paddingTop = Platform.OS === 'android' ? 8 : 13}) => {
+const HeaderWithBackBtn: React.FC<props> = ({children, paddingTop = Platform.OS === 'android' ? 10 : 13}) => {
   const navigation = useNavigation();
 
   const handleBackBtnPress = () => {
-    console.log('Clicled');
     navigation.goBack();
   };
 

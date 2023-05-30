@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   listContainer: {
-    height: responsiveScreenHeight(35),
+    height: responsiveScreenHeight(33),
   },
   onlyListContainer: {
     flex: 1

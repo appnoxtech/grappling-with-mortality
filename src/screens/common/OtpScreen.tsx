@@ -114,7 +114,12 @@ const OTP: React.FC<any> = ({route}) => {
       const localPin = otp[pin];
       return sum + localPin;
     }, '');
-    verifyOTP(userOTP);
+    if(userOTP.length === 4) {
+      verifyOTP(userOTP);
+    } else {
+      return;
+    }
+    
   };
 
   const handleChange = ({val, key}: param) => {

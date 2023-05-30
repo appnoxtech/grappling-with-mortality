@@ -5,6 +5,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {NavigationContainer} from '@react-navigation/native';
 import {persistor, store} from './src/redux/store/store';
 import StackNavigation from './src/routes/StackNavigation';
+
 const App = () => {
   return (
     <Provider store={store}>

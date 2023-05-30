@@ -4,7 +4,7 @@ import {Animated, ImageBackground, StyleSheet, Text} from 'react-native';
 import { responsiveFontSize, responsiveScreenHeight } from 'react-native-responsive-dimensions';
 import { white } from '../../../assests/Styles/GlobalTheme';
 
-const path = '../../../assests/images/bg.jpg';
+const path = '../../../assests/images/newBg.jpg';
 const appName = 'Nobleman Books';
 
 const AppLoadingPage = () => {
@@ -31,17 +31,7 @@ const AppLoadingPage = () => {
       resizeMode="cover"
       source={require(path)}
       style={styles.container}>
-      <Animated.View
-        style={[
-          styles.fadingContainer,
-          {
-            // Bind opacity to animated value
-            opacity: fadeAnim,
-          },
-        ]}>
-        <Text style={styles.fadingText}>{appName}</Text>
-        <Text style={styles.fadingText}>LLC</Text>
-      </Animated.View>
+
     </ImageBackground>
   );
 };

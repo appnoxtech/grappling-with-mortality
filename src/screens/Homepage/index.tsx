@@ -1,20 +1,31 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {colorPrimary} from '../../../assests/Styles/GlobalTheme';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import Profile from '../common/Profile';
-import Discover from '../Discover/index';
-import {useDispatch} from 'react-redux';
-import {UpdateShowEditorOptions} from '../../redux/reducers/commonReducer';
+import Discover from '../discover/index';
+import {getUserDataFromLocalStorage} from '../../utils/helperFunctions/auth';
+import MyBooks from '../myBook';
+import Dashboard from '../dashboard';
 
 const Tab = createBottomTabNavigator();
 
 const Homepages = () => {
+  const [userData, setUserData] = useState<any>({});
+
+  const getUserDetails = async () => {
+    const user = await getUserDataFromLocalStorage();
+    setUserData(user);
+  };
+
+  useEffect(() => {
+    getUserDetails();
+  }, []);
+
   return (
     <Tab.Navigator
       //@ts-ignore
@@ -35,6 +46,24 @@ const Homepages = () => {
                 name="account-circle"
               />
             );
+          } else if (route.name === 'My Books') {
+            return (
+              <Ionicons
+                style={(iconName = focused ? styles.iconFocused : styles.icon)}
+                name={(iconName = focused ? 'book' : 'book-outline')}
+              />
+            );
+          } else if (route.name === 'Dashboard') {
+            return (
+              <MaterialCommunityIcons
+                style={(iconName = focused ? styles.iconFocused : styles.icon)}
+                name={
+                  (iconName = focused
+                    ? 'view-dashboard'
+                    : 'view-dashboard-outline')
+                }
+              />
+            );
           }
         },
         tabBarActiveTintColor: colorPrimary,
@@ -53,6 +82,24 @@ const Homepages = () => {
           tabBarHideOnKeyboard: true,
         }}
       />
+      {userData?.userType === 'AUTHOR' || userData.userType === 'ADMIN' ? (
+        <Tab.Screen
+          name="My Books"
+          component={MyBooks}
+          options={{
+            headerShown: false,
+          }}
+        />
+      ) : null}
+      {userData?.userType === 'ADMIN' ? (
+        <Tab.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{
+            headerShown: false,
+          }}
+        />
+      ) : null}
       <Tab.Screen
         name="Profile"
         component={Profile}

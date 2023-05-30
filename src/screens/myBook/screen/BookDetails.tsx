@@ -10,33 +10,36 @@ import {
 } from 'react-native-responsive-dimensions';
 import BookDetailsNavigation from '../../../components/author/BookDetails/BookDetailsNavigation';
 import useGetSelectedBookDetails from '../../../hooks/AuthorHooks/GetSelectedBookDetailsHook';
+import LoadingScreen from '../../common/LoadingScreen';
 
 const BookDetails = () => {
   const GetSelectedBookDetailsServiceHandler = useGetSelectedBookDetails();
   const {selectedBook} = useSelector((state: any) => state.author);
-  
+
   useEffect(() => {
     GetSelectedBookDetailsServiceHandler(selectedBook._id);
   }, []);
-  
+
   return (
-    <View style={styles.container}>
-      <BookDetailsHeaderComponent />
-      <View style={styles.body}>
-        <View style={styles.bookSection}>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              source={{uri: selectedBook.bookImage}}
-              alt="book"
-            />
+    <LoadingScreen>
+      <View style={styles.container}>
+        <BookDetailsHeaderComponent />
+        <View style={styles.body}>
+          <View style={styles.bookSection}>
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={{uri: selectedBook.bookImage}}
+                alt="book"
+              />
+            </View>
+            <Text style={styles.bookName}>{selectedBook.bookName}</Text>
+            <Text style={styles.authorName}>{selectedBook.authorName}</Text>
           </View>
-          <Text style={styles.bookName}>{selectedBook.bookName}</Text>
-          <Text style={styles.authorName}>{selectedBook.authorName}</Text>
+          <BookDetailsNavigation />
         </View>
-        <BookDetailsNavigation />
       </View>
-    </View>
+    </LoadingScreen>
   );
 };
 
@@ -51,14 +54,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: responsiveScreenHeight(2),
     paddingHorizontal: responsiveScreenWidth(3),
-    alignItems: 'center'
+    alignItems: 'center',
   },
   bookSection: {
     justifyContent: 'center',
     alignItems: 'center',
     gap: 3,
   },
-  imageContainer:{
+  imageContainer: {
     width: responsiveScreenHeight(15),
     height: responsiveScreenHeight(20),
     borderRadius: responsiveScreenHeight(2),
@@ -84,5 +87,4 @@ const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.3)',
     letterSpacing: 0.2,
   },
-
 });

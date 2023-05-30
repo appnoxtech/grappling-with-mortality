@@ -22,6 +22,7 @@ import {ChangePasswordService} from '../../services/user/ChangePasswordService';
 import {TouchableWithoutFeedback} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import useKeyboardVisibleListener from '../../hooks/CommonHooks/isKeyboardVisibleHook';
+import {checkPasswordValidity} from '../../utils/helperFunctions/passwordValidation';
 
 const initialState = {
   oldPassword: '',
@@ -33,6 +34,7 @@ const ResetPassword = () => {
   const [inputs, setInputs] = useState(initialState);
   const [errors, setErrors] = useState(initialState);
   const isKeyboardVisible = useKeyboardVisibleListener();
+
   const HandleInputsTextChange = (text: string, id: string) => {
     setInputs({
       ...inputs,
@@ -48,11 +50,14 @@ const ResetPassword = () => {
         oldPassword: ErrorMessage.REQ,
       });
       return false;
-    } else if (id === 'oldPassword' && value.length < 5) {
-      setErrors({
-        ...initialState,
-        oldPassword: ErrorMessage.PSWD_LENGTH,
-      });
+    } else if (id === 'oldPassword' && checkPasswordValidity(value)) {
+      const msg = checkPasswordValidity(value);
+      if (msg) {
+        setErrors({
+          ...initialState,
+          oldPassword: msg,
+        });
+      }
       return false;
     } else if (id === 'newPassword' && value === '') {
       setErrors({
@@ -60,22 +65,19 @@ const ResetPassword = () => {
         newPassword: ErrorMessage.REQ,
       });
       return false;
-    } else if (id === 'newPassword' && value.length < 5) {
-      setErrors({
-        ...initialState,
-        newPassword: ErrorMessage.PSWD_LENGTH,
-      });
+    } else if (id === 'newPassword' && checkPasswordValidity(value)) {
+      const msg = checkPasswordValidity(value);
+      if (msg) {
+        setErrors({
+          ...initialState,
+          newPassword: msg,
+        });
+      }
       return false;
     } else if (id === 'confirmNewPassword' && value === '') {
       setErrors({
         ...initialState,
         [id]: ErrorMessage.REQ,
-      });
-      return false;
-    } else if (id === 'confirmNewPassword' && value.length < 5) {
-      setErrors({
-        ...initialState,
-        [id]: ErrorMessage.PSWD_LENGTH,
       });
       return false;
     } else if (id === 'confirmNewPassword' && value !== inputs.newPassword) {
@@ -97,11 +99,14 @@ const ResetPassword = () => {
         oldPassword: ErrorMessage.REQ,
       });
       return false;
-    } else if (inputs.oldPassword.length < 5) {
-      setErrors({
-        ...initialState,
-        oldPassword: ErrorMessage.PSWD_LENGTH,
-      });
+    } else if (checkPasswordValidity(inputs.oldPassword)) {
+      const msg = checkPasswordValidity(inputs.oldPassword);
+      if (msg) {
+        setErrors({
+          ...initialState,
+          oldPassword: msg,
+        });
+      }
       return false;
     } else if (inputs.newPassword === '') {
       setErrors({
@@ -109,22 +114,19 @@ const ResetPassword = () => {
         newPassword: ErrorMessage.REQ,
       });
       return false;
-    } else if (inputs.newPassword.length < 5) {
-      setErrors({
-        ...initialState,
-        newPassword: ErrorMessage.PSWD_LENGTH,
-      });
+    } else if (checkPasswordValidity(inputs.newPassword)) {
+      const msg = checkPasswordValidity(inputs.newPassword);
+      if (msg) {
+        setErrors({
+          ...initialState,
+          newPassword: msg,
+        });
+      }
       return false;
     } else if (inputs.confirmNewPassword === '') {
       setErrors({
         ...initialState,
         confirmNewPassword: ErrorMessage.REQ,
-      });
-      return false;
-    } else if (inputs.confirmNewPassword.length < 5) {
-      setErrors({
-        ...initialState,
-        confirmNewPassword: ErrorMessage.PSWD_LENGTH,
       });
       return false;
     } else if (inputs.confirmNewPassword !== inputs.newPassword) {
@@ -206,11 +208,13 @@ const ResetPassword = () => {
             />
           </View>
         </KeyboardAwareScrollView>
-        <View style={styles.center}>
-          <View style={styles.btnContainer}>
-            <ButtonPrimary label="Save" handleBtnPress={onPressHandler} />
+        {isKeyboardVisible ? null : (
+          <View style={styles.center}>
+            <View style={styles.btnContainer}>
+              <ButtonPrimary label="Save" handleBtnPress={onPressHandler} />
+            </View>
           </View>
-        </View>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -228,7 +232,7 @@ const styles = StyleSheet.create({
     top:
       Platform.OS === 'ios'
         ? responsiveScreenHeight(6.5)
-        : responsiveScreenHeight(1.7),
+        : responsiveScreenHeight(2),
     left: responsiveScreenWidth(15),
     alignItems: 'center',
   },
