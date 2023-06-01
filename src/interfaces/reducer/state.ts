@@ -1,3 +1,4 @@
+import { AdminStore } from "./admin.interface";
 import { AudioStore } from "./audioStore.interface";
 import { AuthStoreInterface } from "./authStore.Interface";
 import { AuthorStoreInterface } from "./authorStore.interface";
@@ -13,5 +14,6 @@ export interface store {
     common: CommonStoreInterface,
     chapter: ChapterStoreInterface
     audio: AudioStore,
-    bookReader: BookReaderStore
+    bookReader: BookReaderStore,
+    admin: AdminStore
 }

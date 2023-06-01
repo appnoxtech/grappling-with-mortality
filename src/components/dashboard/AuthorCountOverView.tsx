@@ -8,21 +8,25 @@ import {
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
 import LoadIcon from '../common/LoadIcons';
+import { user } from '../../interfaces/reducer/admin.interface';
 
 interface props {
   title: string,
-  data: Array<{id: string, img: string, name: string}>
+  type: 'AUTHOR' | 'CUSTOMER'
+  data: Array<user>
 };
 
-const UserProfileOverView: React.FC<props> = ({title, data}) => {
+const path = '../../../assests/images/profile.jpg';
+
+const UserProfileOverView: React.FC<props> = ({title, data, type}) => {
   const Navigation = useNavigation();
 
-  const handelUserProfileClick = () => {
-    Navigation.navigate('AuthorProfile' as never)
+  const handelUserProfileClick = (author: user) => {
+    Navigation.navigate('AuthorProfile' as never, {author} as never)
   };
 
   const handelViewAllClick = () => {
-
+    Navigation.navigate('ViewUserList' as never , {type} as never);
   };
 
   return (
@@ -31,15 +35,15 @@ const UserProfileOverView: React.FC<props> = ({title, data}) => {
       <View style={styles.profileListContainer}>
         {data.map(user => {
           return (
-            <TouchableOpacity onPress={handelUserProfileClick} key={user.id} style={styles.profileContainer}>
+            <TouchableOpacity onPress={() => handelUserProfileClick(user)} key={user._id} style={styles.profileContainer}>
               <View style={styles.imgContainer}>
                 <Image
-                  source={{uri: user.img}}
-                  alt={user.name}
+                  source={user.image ? {uri: user.image} : require(path)}
+                  alt={user.fullName}
                   style={styles.img}
                 />
               </View>
-              <Text style={styles.name}>{user.name}</Text>
+              <Text style={styles.name}>{user.fullName.split(" ")[0]}</Text>
             </TouchableOpacity>
           );
         })}

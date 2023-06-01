@@ -5,13 +5,16 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {NavigationContainer} from '@react-navigation/native';
 import {persistor, store} from './src/redux/store/store';
 import StackNavigation from './src/routes/StackNavigation';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
         <NavigationContainer>
-          <StackNavigation />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+           <StackNavigation />
+        </GestureHandlerRootView>
         </NavigationContainer>
       </PersistGate>
     </Provider>

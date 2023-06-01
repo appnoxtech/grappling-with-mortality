@@ -1,16 +1,15 @@
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {white} from '../../../assests/Styles/GlobalTheme';
-import HeaderComponent from '../../components/homepages/Profile/HeaderComponent';
-import HeaderWithBackBtn from '../../components/common/headers/HeaderWithBackBtn';
 import { responsiveFontSize, responsiveScreenHeight, responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import HeaderWithTitle from '../../components/common/headers/HeaderWithTitle';
 import NotificationListContainer from '../../components/homepages/Profile/NotificationListContainer';
 import LoadIcon from '../../components/common/LoadIcons';
 
-const NotificationData = [];
+const NotificationData = [{}];
 
 const Notification = () => {
+
   return (
     <View style={styles.container}>
       <HeaderWithTitle title={'Notification'} />

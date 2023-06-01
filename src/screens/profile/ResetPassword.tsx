@@ -23,6 +23,7 @@ import {TouchableWithoutFeedback} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import useKeyboardVisibleListener from '../../hooks/CommonHooks/isKeyboardVisibleHook';
 import {checkPasswordValidity} from '../../utils/helperFunctions/passwordValidation';
+import HeaderWithTitle from '../../components/common/headers/HeaderWithTitle';
 
 const initialState = {
   oldPassword: '',
@@ -161,11 +162,7 @@ const ResetPassword = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <HeaderWithBackBtn>
-          <View style={styles.pageNameContainer}>
-            <Text style={styles.pageName}>Change Password</Text>
-          </View>
-        </HeaderWithBackBtn>
+        <HeaderWithTitle title='Change Password' />
         <KeyboardAwareScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>

@@ -8,15 +8,12 @@ import {
 } from 'react-native-responsive-dimensions';
 import {white} from '../../../assests/Styles/GlobalTheme';
 import {PrivacyPolicyText} from '../../utils/constants/privacyPolicy';
+import HeaderWithTitle from '../../components/common/headers/HeaderWithTitle';
 
 const PrivacyPolicy = () => {
   return (
     <View style={styles.container}>
-      <HeaderWithBackBtn>
-        <View style={styles.pageNameContainer}>
-          <Text style={styles.pageName}>Privacy Policy</Text>
-        </View>
-      </HeaderWithBackBtn>
+      <HeaderWithTitle title='Privacy Policy' />
       <View style={styles.body}>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
           <Text style={styles.privacyText}>{PrivacyPolicyText}</Text>

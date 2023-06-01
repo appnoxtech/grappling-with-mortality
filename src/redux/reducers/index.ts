@@ -1,3 +1,4 @@
+import AdminReducer from './adminReducer';
 import AudioEbookReducers from './audioEbookReducer';
 import AuthReducer from './authReducer';
 import AuthorReducer from './authorReducer';
@@ -14,7 +15,8 @@ const appReducer = combineReducers({
   common: CommonReducer,
   chapter: ChapterReducer,
   audio: AudioEbookReducers,
-  bookReader: EbookReaderReducer
+  bookReader: EbookReaderReducer,
+  admin: AdminReducer
 });
 
 export const rootReducers = (state: any, action: any) => {

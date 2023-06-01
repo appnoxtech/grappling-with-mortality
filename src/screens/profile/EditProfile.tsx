@@ -27,6 +27,7 @@ import {ImageUploadService} from '../../services/common/ImageUploadService';
 import useUpdateUserProfileHook from '../../hooks/User/UpdateProfileHandler';
 import {TouchableWithoutFeedback} from 'react-native';
 import useKeyboardVisibleListener from '../../hooks/CommonHooks/isKeyboardVisibleHook';
+import HeaderWithTitle from '../../components/common/headers/HeaderWithTitle';
 
 const path = '../../../assests/images/profile.jpg';
 
@@ -175,11 +176,7 @@ const EditProfile = () => {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <HeaderWithBackBtn>
-          <View style={styles.pageNameContainer}>
-            <Text style={styles.pageName}>Edit Profile</Text>
-          </View>
-        </HeaderWithBackBtn>
+        <HeaderWithTitle title='Edit Profile' />
         <View style={styles.body}>
           <View style={styles.profileContainer}>
             <TouchableOpacity

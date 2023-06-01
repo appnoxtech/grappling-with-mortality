@@ -65,7 +65,6 @@ export default OverviewCard;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: responsiveScreenHeight(2),
     borderRadius: responsiveScreenHeight(2),
     paddingHorizontal: responsiveScreenWidth(4),
     paddingVertical: responsiveScreenHeight(2),
