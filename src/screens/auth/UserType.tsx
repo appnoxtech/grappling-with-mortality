@@ -9,7 +9,6 @@ import {
 } from 'react-native-responsive-dimensions';
 import useRegisterHook from '../../hooks/AuthHooks/RegisterHook';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {colorSecondary} from '../../../assests/Styles/GlobalTheme';
 import LoadIcon from '../../components/common/LoadIcons';
 
 const Heading = `Select\nuser type`;

@@ -7,7 +7,11 @@ import {
 } from 'react-native-responsive-dimensions';
 import { colorPrimary, white } from '../../../../assests/Styles/GlobalTheme';
 
-const HeaderComponent = () => {
+interface props {
+  title: string
+}
+
+const HeaderComponent:React.FC<props> = ({title}) => {
   return (
     <View style={styles.container}>
       <StatusBar
@@ -17,7 +21,7 @@ const HeaderComponent = () => {
         showHideTransition={'slide'}
       />
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Profile</Text>
+        <Text style={styles.headerText}>{title}</Text>
       </View>
     </View>
   );

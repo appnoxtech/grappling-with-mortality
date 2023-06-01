@@ -23,6 +23,7 @@ const useLoginHook = () => {
       if(userInfo?.isEmailVerified){
           dispatch(SetIsLoadingState(false));
           saveUserData(userInfo);
+          
           if(userInfo?.image){
               dispatch(updateUserDetails({fullName: userInfo.fullName, email: data.email, userType: userInfo.userType, image: userInfo.image}));
           } else {

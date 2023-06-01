@@ -37,6 +37,10 @@ const ProfileNavData = [
     screenName: 'PrivacyPolicy',
   },
   {
+    name: 'Notification',
+    screenName: 'Notification',
+  },
+  {
     name: 'Logout',
     screenName: 'Logout',
   },
@@ -68,7 +72,7 @@ const Profile = () => {
 
   return (
     <View style={styles.container}>
-      <HeaderComponent />
+      <HeaderComponent title='Profile' />
       <View style={styles.body}>
         <View style={styles.userDetails}>
           <View style={styles.leftContainer}>
