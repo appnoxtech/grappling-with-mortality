@@ -15,6 +15,7 @@ import EBookReader from '../screens/myBook/screen/ReadBookChapter';
 import AuthorProfile from '../screens/common/AuthorProfile';
 import Notification from '../screens/profile/Notification';
 import ViewUserList from '../screens/dashboard/ViewUserList';
+import Search from '../screens/search';
 
 const Stack = createNativeStackNavigator();
 
@@ -94,6 +95,11 @@ const AdminRoutes = () => {
       <Stack.Screen
         name="ViewUserList"
         component={ViewUserList}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="Search"
+        component={Search}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
     </Stack.Navigator>

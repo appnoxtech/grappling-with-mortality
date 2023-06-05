@@ -22,7 +22,7 @@ const UserProfileOverView: React.FC<props> = ({title, data, type}) => {
   const Navigation = useNavigation();
 
   const handelUserProfileClick = (author: user) => {
-    Navigation.navigate('AuthorProfile' as never, {author} as never)
+    Navigation.navigate('AuthorProfile' as never, {author, type} as never)
   };
 
   const handelViewAllClick = () => {

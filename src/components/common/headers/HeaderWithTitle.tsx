@@ -13,6 +13,7 @@ interface props {
 }
 
 const HeaderWithTitle: React.FC<props> = ({title}) => {
+  console.log('title', title);
   return (
     <HeaderWithBackBtn>
       <View style={styles.pageNameContainer}>

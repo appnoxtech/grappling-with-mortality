@@ -11,10 +11,11 @@ import {colorPrimary, white} from '../../../../assests/Styles/GlobalTheme';
 
 interface props {
   children?: ReactNode;
-  paddingTop?: number
+  paddingTop?: number,
+  showSearch?: boolean
 }
 
-const HeaderWithBackBtn: React.FC<props> = ({children, paddingTop = Platform.OS === 'android' ? 10 : 13}) => {
+const HeaderWithBackBtn: React.FC<props> = ({children, paddingTop = Platform.OS === 'android' ? 10 : 13, showSearch = false}) => {
   const navigation = useNavigation();
 
   const handleBackBtnPress = () => {

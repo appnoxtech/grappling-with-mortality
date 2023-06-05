@@ -38,9 +38,10 @@ interface chapter {
 
 interface chapterProps {
   chapter: chapter;
+  index: number
 }
 
-const RenderChapter: React.FC<chapterProps> = ({chapter}) => {
+const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
   const {showEditorOptions} = useSelector((state: store) => state.common);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -58,7 +59,7 @@ const RenderChapter: React.FC<chapterProps> = ({chapter}) => {
 
   return (
     <View style={styles.chapter}>
-      <Text style={styles.chapterNo}>{`${chapter.chapterNo}.`}</Text>
+      <Text style={styles.chapterNo}>{`${index + 1}.`}</Text>
       <View style={styles.chapterBody}>
         <Text style={styles.chapterName}>{chapter.chapterName}</Text>
         {showEditorOptions ? (
@@ -118,7 +119,7 @@ const ChaptersListComponent = () => {
           style={styles.chapterList}
           contentContainerStyle={styles.contentContainerStyle}
           data={selectedBookDetails.chapters}
-          renderItem={({item}) => <RenderChapter chapter={item} />}
+          renderItem={({item, index}) => <RenderChapter index={index} chapter={item} />}
         />
       </View>
       {showEditorOptions ? (

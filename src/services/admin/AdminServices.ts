@@ -21,3 +21,23 @@ export const GetAuthorListServices = async () => {
           },
     })
 }
+
+export const SearchUserService = async(searchStr: string) => {
+    const url = `${URL}account/get-all-user?subStr=${searchStr}`;
+    const user = await getUserDataFromLocalStorage();
+    return axios.get(url, {
+        headers: {
+            'x-auth-token': user.token,
+          },
+    })
+}
+
+export const SearchAuthorService = async(searchStr: string) => {
+    const url = `${URL}account/search-author/${searchStr}`;
+    const user = await getUserDataFromLocalStorage();
+    return axios.get(url, {
+        headers: {
+            'x-auth-token': user.token,
+          },
+    })
+}

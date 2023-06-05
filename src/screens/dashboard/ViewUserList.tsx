@@ -12,6 +12,7 @@ import {white} from '../../../assests/Styles/GlobalTheme';
 import {store} from '../../interfaces/reducer/state';
 import {user} from '../../interfaces/reducer/admin.interface';
 import HeaderWithTitle from '../../components/common/headers/HeaderWithTitle';
+import HeaderWithSearch from '../../components/common/headers/HeaderWithSearch';
 
 const path = '../../../assests/images/profile.jpg';
 
@@ -23,10 +24,16 @@ interface props {
   };
 }
 
-const RenderUserCard: React.FC<{item: user}> = ({item}) => {
+const RenderUserCard: React.FC<{item: user; type: 'AUHTOR' | 'CUSTOMER'}> = ({
+  item,
+  type,
+}) => {
   const Navigation = useNavigation();
   const handelUserProfileClick = () => {
-    Navigation.navigate('AuthorProfile' as never, {author: item} as never);
+    Navigation.navigate(
+      'AuthorProfile' as never,
+      {author: item, type} as never,
+    );
   };
   return (
     <TouchableOpacity
@@ -49,11 +56,12 @@ const ViewUserList: React.FC<any> = ({route}) => {
   const {type} = route.params;
   const {userList, authorList} = useSelector((store: store) => store.admin);
   const data = type === 'AUTHOR' ? authorList : userList;
-  
+
   return (
     <View style={styles.container}>
-      <HeaderWithTitle
+      <HeaderWithSearch
         title={type === 'AUTHOR' ? "Author's List" : 'User List'}
+        type={type}
       />
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -61,7 +69,7 @@ const ViewUserList: React.FC<any> = ({route}) => {
         contentContainerStyle={styles.contentContainer}>
         {data.map(item => (
           <React.Fragment key={item._id}>
-            <RenderUserCard item={item} />
+            <RenderUserCard type={type} item={item} />
           </React.Fragment>
         ))}
       </ScrollView>

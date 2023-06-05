@@ -1,7 +1,5 @@
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {white} from '../../../assests/Styles/GlobalTheme';
-import HeaderWithBackBtn from '../../components/common/headers/HeaderWithBackBtn';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -9,13 +7,8 @@ import {
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
 import {TouchableOpacity} from 'react-native';
-
-const img =
-  'https://harsha-temp.s3.ap-south-1.amazonaws.com/appnox/Grappling_With_Mortality/95BB7359_ADAE_46A9_9203_FD13DE46C97B_1683007757316.jpg';
-const name = 'Robin Sharma';
-const authorDescription = `Robin Sharma is a globally respected humanitarian who, for over a quarter of a century, has been devoted to helping human beings realize their native gifts.
-Widely considered one of the top leadership and personal mastery experts and speakers in the world, his clients include NASA, Microsoft, Nike, Unilever, General Electric, FedEx, HP, Starbucks, Oracle, Yale University, PwC, IBM Watson, and the Young Presidents' Organization. As a presenter, Robin Sharma possesses the rare ability to electrify an audience while delivering uncommonly original and tactical insights that lead to individuals doing their best work, teams providing superb results and organizations becoming unbeatable.
-His #1 international bestsellers such as The Everyday Hero Manifesto, The 5AM Club, The Monk Who Sold His Ferrari, and Who Will Cry When You Die? have sold millions of copies in over ninety-two languages and dialects; making him one of the most widely read authors in the world.`;
+import {colorSecondary, white} from '../../../assests/Styles/GlobalTheme';
+import HeaderWithBackBtn from '../../components/common/headers/HeaderWithBackBtn';
 
 const path = '../../../assests/images/profile.jpg';
 
@@ -35,7 +28,9 @@ const bookList = [
 ];
 
 const AuthorProfile: React.FC<any> = ({route}) => {
-  const {author} = route.params;
+  const {author, type} = route.params;
+  console.log('type', type);
+  
   return (
     <View style={styles.container}>
       <HeaderWithBackBtn />
@@ -56,20 +51,13 @@ const AuthorProfile: React.FC<any> = ({route}) => {
               style={styles.img}
             />
           )}
+          <View style={styles.aboutAuthor}>
+            <Text style={styles.authorName}>{author.fullName}</Text>
 
-          <Text style={styles.authorName}>{author.fullName}</Text>
-        </View>
-        <View style={styles.authorsDescMainContainer}>
-          <Text style={styles.authorsDescHeading}>About Author</Text>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.contentContainer}
-            style={styles.authorDescriptionContainer}>
-            <Text style={styles.authorDescription}>{authorDescription}</Text>
-          </ScrollView>
+          </View>
         </View>
         <View style={styles.authorBookListContainer}>
-          <Text style={styles.authorsDescHeading}>Author's Other Books</Text>
+          <Text style={styles.authorsDescHeading}>{type === 'AUTHOR' ? 'Book List' : 'Watchlist'}</Text>
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.contentContainer}
@@ -101,21 +89,24 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    paddingHorizontal: responsiveScreenWidth(4),
-    paddingVertical: responsiveScreenHeight(2),
   },
   header: {
     flexDirection: 'row',
+    paddingHorizontal: responsiveScreenWidth(4),
+    paddingTop: responsiveScreenHeight(2),
     gap: responsiveScreenWidth(3),
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   img: {
-    width: responsiveHeight(8),
-    height: responsiveHeight(8),
-    borderRadius: responsiveHeight(5),
+    width: responsiveHeight(12),
+    height: responsiveHeight(15),
+    borderRadius: responsiveHeight(2),
+  },
+  aboutAuthor: {
+    paddingTop: responsiveHeight(2)
   },
   authorName: {
-    fontSize: responsiveFontSize(2.5),
+    fontSize: responsiveFontSize(2.8),
     fontWeight: '600',
     color: 'black',
     letterSpacing: 0.5,
@@ -125,12 +116,17 @@ const styles = StyleSheet.create({
     height: responsiveScreenHeight(25),
   },
   authorBookListContainer: {
-    marginTop: responsiveScreenHeight(2),
+    marginTop: responsiveScreenHeight(4),
+    paddingTop: responsiveScreenHeight(2),
+    paddingHorizontal: responsiveScreenWidth(4),
     flex: 1,
+    backgroundColor: "rgba(80, 200, 120, 0.1)",
+    borderTopLeftRadius: responsiveScreenHeight(4),
+    borderTopRightRadius: responsiveScreenHeight(4)
   },
   authorDescriptionContainer: {
     flex: 1,
-    marginTop: responsiveScreenHeight(0.5),
+    marginTop: responsiveScreenHeight(2),
   },
   contentContainer: {
     flexDirection: 'row',
@@ -146,9 +142,10 @@ const styles = StyleSheet.create({
     letterSpacing: 0.7,
   },
   authorsDescHeading: {
-    fontSize: responsiveFontSize(3),
+    fontSize: responsiveFontSize(3.2),
     fontWeight: 'bold',
-    letterSpacing: 0.5,
+    letterSpacing: 0.7,
+    color: colorSecondary
   },
   bookImg: {
     width: responsiveScreenWidth(28),

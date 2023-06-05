@@ -18,6 +18,7 @@ import useRegisterHook from '../../hooks/AuthHooks/RegisterHook';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LoadIcon from '../../components/common/LoadIcons';
 import LoadingScreen from '../common/LoadingScreen';
+import HeaderWithBackBtn from '../../components/common/headers/HeaderWithBackBtn';
 
 const Heading = `Select\nuser type`;
 
@@ -56,79 +57,82 @@ const UserType: React.FC<any> = ({route}) => {
 
   return (
     <LoadingScreen>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.textPrimary}>{Heading}</Text>
+      <View style={styles.container}>
+        <HeaderWithBackBtn />
+        <View style={{paddingHorizontal: responsiveScreenWidth(4)}}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.textPrimary}>{Heading}</Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => handelCardPress('CUSTOMER')}
+            style={userType === 'CUSTOMER' ? styles.selectedCard : styles.card}>
+            <View style={styles.imageContainer}>
+              <Image
+                source={images.user.img}
+                alt={images.user.alt}
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.cardInfoContainer}>
+              <Text
+                style={
+                  userType === 'CUSTOMER'
+                    ? styles.selectedUserType
+                    : styles.userType
+                }>
+                User
+              </Text>
+            </View>
+            {userType === 'CUSTOMER' ? (
+              <TouchableOpacity
+                onPress={RegisterUser}
+                style={styles.btnContainer}>
+                <LoadIcon
+                  iconFamily={icon.iconFamily}
+                  iconName={icon.iconName}
+                  color={white}
+                  style={{}}
+                  size={icon.iconSize}
+                />
+              </TouchableOpacity>
+            ) : null}
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handelCardPress('AUTHOR')}
+            style={userType === 'AUTHOR' ? styles.selectedCard : styles.card}>
+            <View style={styles.imageContainer}>
+              <Image
+                source={images.author.img}
+                alt={images.author.alt}
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.cardInfoContainer}>
+              <Text
+                style={
+                  userType === 'AUTHOR'
+                    ? styles.selectedUserType
+                    : styles.userType
+                }>
+                Author
+              </Text>
+            </View>
+            {userType === 'AUTHOR' ? (
+              <TouchableOpacity
+                onPress={RegisterUser}
+                style={styles.btnContainer}>
+                <LoadIcon
+                  iconFamily={icon.iconFamily}
+                  iconName={icon.iconName}
+                  color={white}
+                  style={{}}
+                  size={icon.iconSize}
+                />
+              </TouchableOpacity>
+            ) : null}
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={() => handelCardPress('CUSTOMER')}
-          style={userType === 'CUSTOMER' ? styles.selectedCard : styles.card}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={images.user.img}
-              alt={images.user.alt}
-              style={styles.image}
-            />
-          </View>
-          <View style={styles.cardInfoContainer}>
-            <Text
-              style={
-                userType === 'CUSTOMER'
-                  ? styles.selectedUserType
-                  : styles.userType
-              }>
-              User
-            </Text>
-          </View>
-          {userType === 'CUSTOMER' ? (
-            <TouchableOpacity
-              onPress={RegisterUser}
-              style={styles.btnContainer}>
-              <LoadIcon
-                iconFamily={icon.iconFamily}
-                iconName={icon.iconName}
-                color={white}
-                style={{}}
-                size={icon.iconSize}
-              />
-            </TouchableOpacity>
-          ) : null}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handelCardPress('AUTHOR')}
-          style={userType === 'AUTHOR' ? styles.selectedCard : styles.card}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={images.author.img}
-              alt={images.author.alt}
-              style={styles.image}
-            />
-          </View>
-          <View style={styles.cardInfoContainer}>
-            <Text
-              style={
-                userType === 'AUTHOR'
-                  ? styles.selectedUserType
-                  : styles.userType
-              }>
-              Author
-            </Text>
-          </View>
-          {userType === 'AUTHOR' ? (
-            <TouchableOpacity
-              onPress={RegisterUser}
-              style={styles.btnContainer}>
-              <LoadIcon
-                iconFamily={icon.iconFamily}
-                iconName={icon.iconName}
-                color={white}
-                style={{}}
-                size={icon.iconSize}
-              />
-            </TouchableOpacity>
-          ) : null}
-        </TouchableOpacity>
-      </SafeAreaView>
+      </View>
     </LoadingScreen>
   );
 };
@@ -138,11 +142,11 @@ export default UserType;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: responsiveScreenWidth(4),
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
   },
   headerContainer: {
     marginVertical: responsiveScreenHeight(4),
+    paddingHorizontal: responsiveScreenWidth(4),
   },
   textPrimary: {
     fontSize: responsiveFontSize(6),

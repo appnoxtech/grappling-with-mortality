@@ -6,27 +6,16 @@ import {
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
 import {colorPrimary, grey, mainColor, white} from '../../../assests/Styles/GlobalTheme';
+import { useSelector } from 'react-redux';
+import { store } from '../../interfaces/reducer/state';
 
 const TextConstant = {
   primaryHeading: 'Overview',
 };
 
-const data = [
-  {
-    id: 'wfefewf',
-    title: 'Customer',
-    count: 1024,
-    bg: 'white'
-  },
-  {
-    id: 'sge4e',
-    title: 'Author',
-    count: 256000,
-    bg: 'rgba(0,0,0,0.05)'
-  },
-];
-
 const OverviewCard = () => {
+  const {userList, authorList} = useSelector((store: store) => store.admin);
+  
   const renderCount = (count: number) => {
      if(count > 9999){
         const num = count / 1000;
@@ -35,6 +24,22 @@ const OverviewCard = () => {
         return `${count}`
      }
   }
+
+  const data = [
+    {
+      id: 'wfefewf',
+      title: "Users",
+      count: userList.length,
+      bg: 'white'
+    },
+    {
+      id: 'sge4e',
+      title: 'Author',
+      count: authorList.length,
+      bg: 'rgba(0,0,0,0.05)'
+    },
+  ];
+
   return (
     <View style={styles.container}>
       <View style={styles.cardheader}>

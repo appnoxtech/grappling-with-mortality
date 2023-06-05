@@ -1,8 +1,9 @@
 import { useDispatch } from "react-redux";
-import { GetAuthorListServices, GetUserListServices } from "../../services/admin/AdminServices";
+import { GetAuthorListServices, GetUserListServices, SearchAuthorService, SearchUserService } from "../../services/admin/AdminServices";
 import { UdateUserList, UpdateAuthorList } from "../../redux/reducers/adminReducer";
 import { SetIsLoadingState } from "../../redux/reducers/commonReducer";
 import { Alert } from "react-native";
+import { ResetSearchResult, UpdateSearchResult } from "../../redux/reducers/search.reducer";
 
 const useAdminServiceHandlers = () => {
     const dispatch = useDispatch();
@@ -39,9 +40,46 @@ const useAdminServiceHandlers = () => {
         }
     }
 
+    const SearchUserServiceHandler = async(searchString: string) => {
+        try {
+            dispatch(SetIsLoadingState(true));
+            const res = await SearchUserService(searchString);
+            const {data} = res.data;
+            dispatch(SetIsLoadingState(false));
+            if(data.length) {
+                dispatch(UpdateSearchResult(data));
+            }else {
+               dispatch(ResetSearchResult()); 
+            }
+        } catch (error: any) {
+            dispatch(SetIsLoadingState(false));
+            Alert.alert("", error.response.data.errors[0].message)
+        }
+    }
+
+    const SearchAuthorServiceHandler = async(searchString: string) => {
+        try {
+            dispatch(SetIsLoadingState(true));
+            const res = await SearchAuthorService(searchString);
+            const {data} = res.data;
+            console.log('DATA', data);
+            dispatch(SetIsLoadingState(false));
+            if(data.length) {
+                dispatch(UpdateSearchResult(data));
+            }else {
+               dispatch(ResetSearchResult()); 
+            }
+        } catch (error: any) {
+            dispatch(SetIsLoadingState(false));
+            Alert.alert("", error.response.data.errors[0].message)
+        }
+    }
+
     return {
         GetUserListServiceHandler,
-        GetAuthorListServiceHandler
+        GetAuthorListServiceHandler,
+        SearchUserServiceHandler,
+        SearchAuthorServiceHandler
     }
 }
 
