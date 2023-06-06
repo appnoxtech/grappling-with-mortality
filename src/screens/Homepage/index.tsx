@@ -11,12 +11,14 @@ import Discover from '../discover/index';
 import {getUserDataFromLocalStorage} from '../../utils/helperFunctions/auth';
 import MyBooks from '../myBook';
 import Dashboard from '../dashboard';
+import { useDispatch } from 'react-redux';
+import { UpdateShowEditorOptions } from '../../redux/reducers/commonReducer';
 
 const Tab = createBottomTabNavigator();
 
 const Homepages = () => {
   const [userData, setUserData] = useState<any>({});
-
+  const dispatch = useDispatch();
   const getUserDetails = async () => {
     const user = await getUserDataFromLocalStorage();
     setUserData(user);
@@ -77,6 +79,16 @@ const Homepages = () => {
       <Tab.Screen
         name="Discover"
         component={Discover}
+        listeners={({ navigation, route }) => ({
+          tabPress: (e) => {
+            // Prevent default action
+            e.preventDefault();
+
+            // Do something with the `navigation` object
+            dispatch(UpdateShowEditorOptions(false));
+            navigation.navigate('Discover');
+          },
+        })}
         options={{
           headerShown: false,
           tabBarHideOnKeyboard: true,
@@ -86,6 +98,16 @@ const Homepages = () => {
         <Tab.Screen
           name="My Books"
           component={MyBooks}
+          listeners={({ navigation, route }) => ({
+            tabPress: (e) => {
+              // Prevent default action
+              e.preventDefault();
+  
+              // Do something with the `navigation` object
+              dispatch(UpdateShowEditorOptions(true));
+              navigation.navigate('My Books');
+            },
+          })}
           options={{
             headerShown: false,
           }}
@@ -95,6 +117,16 @@ const Homepages = () => {
         <Tab.Screen
           name="Dashboard"
           component={Dashboard}
+          listeners={({ navigation, route }) => ({
+            tabPress: (e) => {
+              // Prevent default action
+              e.preventDefault();
+  
+              // Do something with the `navigation` object
+              dispatch(UpdateShowEditorOptions(false));
+              navigation.navigate('Dashboard');
+            },
+          })}
           options={{
             headerShown: false,
           }}

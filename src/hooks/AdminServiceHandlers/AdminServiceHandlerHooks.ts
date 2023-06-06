@@ -1,13 +1,16 @@
 import { useDispatch } from "react-redux";
-import { GetAuthorListServices, GetUserListServices, SearchAuthorService, SearchUserService } from "../../services/admin/AdminServices";
-import { UdateUserList, UpdateAuthorList } from "../../redux/reducers/adminReducer";
+import { GetAuthorListServices, GetPendingVerificationBookListService, GetUserListServices, RepublishBookService, SearchAuthorService, SearchUserService, UpdatePendingBookStatusService } from "../../services/admin/AdminServices";
+import { UdateUserList, UpdateAuthorList, UpdatePendingVerificationBookList } from "../../redux/reducers/adminReducer";
 import { SetIsLoadingState } from "../../redux/reducers/commonReducer";
 import { Alert } from "react-native";
 import { ResetSearchResult, UpdateSearchResult } from "../../redux/reducers/search.reducer";
+import { pendingBookDataInterface } from "../../interfaces/common/common";
+import useGetBookList from "../AuthorHooks/GetBookListHooks";
 
 const useAdminServiceHandlers = () => {
     const dispatch = useDispatch();
-
+    const GetAuthorBookListServiceHandler = useGetBookList();
+    
     const GetUserListServiceHandler = async() => {
         try {
             dispatch(SetIsLoadingState(true));
@@ -53,7 +56,7 @@ const useAdminServiceHandlers = () => {
             }
         } catch (error: any) {
             dispatch(SetIsLoadingState(false));
-            Alert.alert("", error.response.data.errors[0].message)
+            Alert.alert("", error.response.data.errors[0].msg)
         }
     }
 
@@ -62,7 +65,6 @@ const useAdminServiceHandlers = () => {
             dispatch(SetIsLoadingState(true));
             const res = await SearchAuthorService(searchString);
             const {data} = res.data;
-            console.log('DATA', data);
             dispatch(SetIsLoadingState(false));
             if(data.length) {
                 dispatch(UpdateSearchResult(data));
@@ -71,7 +73,51 @@ const useAdminServiceHandlers = () => {
             }
         } catch (error: any) {
             dispatch(SetIsLoadingState(false));
-            Alert.alert("", error.response.data.errors[0].message)
+            Alert.alert("", error.response.data.errors[0].msg)
+        }
+    }
+
+    const GetPendingVerificationBookListServiceHandler = async() => {
+        try {
+            dispatch(SetIsLoadingState(true));
+            const res = await GetPendingVerificationBookListService();
+            const {data} = res.data;
+            dispatch(SetIsLoadingState(false));
+            console.log('DAATA', data);
+            
+            if(data.length) {
+                dispatch(UpdatePendingVerificationBookList(data));
+            }else {
+               dispatch(UpdatePendingVerificationBookList([])); 
+            }
+        } catch (error: any) {
+            dispatch(SetIsLoadingState(false));
+            Alert.alert("", error.response.data.errors[0].msg)
+        }
+    }
+
+    const UpdatePendingBookStatusServiceHandler = async(data: pendingBookDataInterface) => {
+        try {
+            dispatch(SetIsLoadingState(true));
+            await UpdatePendingBookStatusService(data);
+            await GetPendingVerificationBookListServiceHandler();
+            dispatch(SetIsLoadingState(false));
+        } catch (error: any) {
+            dispatch(SetIsLoadingState(false));
+            Alert.alert("", error.response.data.errors[0].msg)
+        }
+    }
+
+    const RepublishBookServiceHandler = async(bookId: string) => {
+        try {
+            dispatch(SetIsLoadingState(true));
+            await RepublishBookService(bookId);
+            await GetAuthorBookListServiceHandler();
+            dispatch(SetIsLoadingState(false));
+            Alert.alert('Congratulations', 'Book Republished Successfully !');
+        } catch (error: any) {
+            dispatch(SetIsLoadingState(false)); 
+            Alert.alert("", error.response.data.errors[0].msg)
         }
     }
 
@@ -79,7 +125,10 @@ const useAdminServiceHandlers = () => {
         GetUserListServiceHandler,
         GetAuthorListServiceHandler,
         SearchUserServiceHandler,
-        SearchAuthorServiceHandler
+        SearchAuthorServiceHandler,
+        GetPendingVerificationBookListServiceHandler,
+        UpdatePendingBookStatusServiceHandler,
+        RepublishBookServiceHandler
     }
 }
 

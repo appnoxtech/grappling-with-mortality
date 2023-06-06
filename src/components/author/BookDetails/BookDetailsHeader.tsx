@@ -8,13 +8,18 @@ import {
 import {useNavigation} from '@react-navigation/core';
 import {TouchableOpacity} from 'react-native';
 import LoadIcon from '../../common/LoadIcons';
-import {colorPrimary, colorSecondary, white} from '../../../../assests/Styles/GlobalTheme';
+import {
+  colorPrimary,
+  colorSecondary,
+  white,
+} from '../../../../assests/Styles/GlobalTheme';
 import {useDispatch, useSelector} from 'react-redux';
 import {EditNewBook} from '../../../redux/reducers/authorReducer';
 import {store} from '../../../interfaces/reducer/state';
 
 const BookDetailsHeaderComponent = () => {
   const {showEditorOptions} = useSelector((state: store) => state.common);
+  const {selectedBook} = useSelector((state: store) => state.author);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -25,6 +30,10 @@ const BookDetailsHeaderComponent = () => {
   const handleBookEdit = () => {
     dispatch(EditNewBook());
     navigation.navigate('AddNewBook' as never);
+  };
+
+  const handleBookSettingPress = () => {
+    navigation.navigate('BookSetting' as never);
   };
 
   return (
@@ -51,10 +60,10 @@ const BookDetailsHeaderComponent = () => {
           />
         </TouchableOpacity>
         {showEditorOptions ? (
-          <TouchableOpacity onPress={handleBookEdit}>
+          <TouchableOpacity style={styles.bookSetting} onPress={handleBookSettingPress}>
             <LoadIcon
-              iconName="book-edit-outline"
-              iconFamily="MaterialCommunityIcons"
+              iconName="gear"
+              iconFamily="FontAwesome"
               style={{}}
               color={white}
               size={30}
@@ -94,7 +103,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: responsiveScreenWidth(5),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   image: {
     width: responsiveScreenWidth(10),
@@ -109,4 +118,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  actionContainer: {},
+  bookSetting: {
+    marginTop: responsiveScreenHeight(0.8)
+  }
 });

@@ -23,7 +23,9 @@ const AddChaptersComponent = () => {
     dispatch(ResetChapterDetails());
     navigation.navigate('AddChaptersForm' as never);
   };
-
+  
+  console.log('showEditorOptions', showEditorOptions);
+  
   return (
     <View style={styles.container}>
       {showEditorOptions ? (

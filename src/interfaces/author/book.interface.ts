@@ -1,7 +1,8 @@
+import { BookStatusEnum } from "../common/common";
 import { Chapter } from "./chapter.interface";
 
 export interface book {
-  id?: string,
+  _id?: string,
   bookName: string;
   bookImage: string;
   description: string;
@@ -10,6 +11,8 @@ export interface book {
   noOfPages: number;
   bookLink: string;
   chapters: any;
+  publishStatus: BookStatusEnum,
+  reason?: string
 }
 
 export interface Audio {

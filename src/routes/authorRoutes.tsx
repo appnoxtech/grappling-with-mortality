@@ -12,6 +12,7 @@ import PrivacyPolicy from '../screens/profile/PrivacyPolicy';
 import ResetPassword from '../screens/profile/ResetPassword';
 import EditProfile from '../screens/profile/EditProfile';
 import EBookReader from '../screens/myBook/screen/ReadBookChapter';
+import BookSetting from '../screens/myBook/screen/BookSetting';
 
 const Stack = createNativeStackNavigator();
 
@@ -76,6 +77,11 @@ const AuthorRoutes = () => {
       <Stack.Screen
         name="EBookReader"
         component={EBookReader}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="BookSetting"
+        component={BookSetting}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
     </Stack.Navigator>

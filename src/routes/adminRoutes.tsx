@@ -16,6 +16,8 @@ import AuthorProfile from '../screens/common/AuthorProfile';
 import Notification from '../screens/profile/Notification';
 import ViewUserList from '../screens/dashboard/ViewUserList';
 import Search from '../screens/search';
+import PendingVerificationBookList from '../screens/dashboard/PendingVerificationBookList';
+import BookSetting from '../screens/myBook/screen/BookSetting';
 
 const Stack = createNativeStackNavigator();
 
@@ -100,6 +102,16 @@ const AdminRoutes = () => {
       <Stack.Screen
         name="Search"
         component={Search}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="PendingVerificationBookList"
+        component={PendingVerificationBookList}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="BookSetting"
+        component={BookSetting}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
     </Stack.Navigator>

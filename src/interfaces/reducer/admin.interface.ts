@@ -1,3 +1,5 @@
+import { book } from "../author/book.interface"
+
 export interface user {
    _id: string,
    fullName: string,
@@ -9,5 +11,6 @@ export interface user {
 
 export interface AdminStore {
     userList: Array<user>,
-    authorList: Array<user>
+    authorList: Array<user>,
+    pendingVerificationBookList: Array<book>
 }
