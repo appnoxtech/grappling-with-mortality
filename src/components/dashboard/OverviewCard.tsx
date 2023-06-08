@@ -36,7 +36,7 @@ const OverviewCard = () => {
       id: 'sge4e',
       title: 'Author',
       count: authorList.length,
-      bg: 'rgba(0,0,0,0.05)'
+      bg: 'white'
     },
   ];
 

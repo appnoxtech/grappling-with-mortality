@@ -47,30 +47,28 @@ const BookDetailsHeaderComponent = () => {
         barStyle={'default'}
         showHideTransition={'slide'}
       />
-      <View style={styles.body}>
+      <TouchableOpacity onPress={handleBackEvent} style={styles.iconContainer}>
+        <LoadIcon
+          iconName="arrow-back"
+          iconFamily="Ionicons"
+          style={{}}
+          color={white}
+          size={30}
+        />
+      </TouchableOpacity>
+      {showEditorOptions ? (
         <TouchableOpacity
-          onPress={handleBackEvent}
-          style={styles.iconContainer}>
+          style={styles.bookSetting}
+          onPress={handleBookSettingPress}>
           <LoadIcon
-            iconName="arrow-back"
-            iconFamily="Ionicons"
+            iconName="gear"
+            iconFamily="FontAwesome"
             style={{}}
             color={white}
             size={30}
           />
         </TouchableOpacity>
-        {showEditorOptions ? (
-          <TouchableOpacity style={styles.bookSetting} onPress={handleBookSettingPress}>
-            <LoadIcon
-              iconName="gear"
-              iconFamily="FontAwesome"
-              style={{}}
-              color={white}
-              size={30}
-            />
-          </TouchableOpacity>
-        ) : null}
-      </View>
+      ) : null}
     </View>
   );
 };
@@ -81,17 +79,14 @@ const styles = StyleSheet.create({
   container: {
     borderBottomLeftRadius: responsiveScreenWidth(6),
     borderBottomRightRadius: responsiveScreenWidth(6),
-    height: responsiveScreenHeight(15),
-    paddingTop: responsiveScreenHeight(3),
+    height: responsiveScreenHeight(12),
     justifyContent: 'center',
     backgroundColor: colorPrimary,
   },
   androidContainer: {
     borderBottomLeftRadius: responsiveScreenWidth(6),
     borderBottomRightRadius: responsiveScreenWidth(6),
-    height: responsiveScreenHeight(8),
-    paddingTop: responsiveScreenHeight(1),
-    justifyContent: 'center',
+    height: responsiveScreenHeight(10),
     backgroundColor: colorPrimary,
   },
   userName: {
@@ -111,7 +106,11 @@ const styles = StyleSheet.create({
     borderRadius: responsiveScreenWidth(7),
     resizeMode: 'cover',
   },
-  iconContainer: {},
+  iconContainer: {
+    position: 'absolute',
+    bottom: Platform.OS === 'android' ? responsiveScreenHeight(2.7) : responsiveScreenHeight(2),
+    left: responsiveScreenWidth(3) 
+  },
   rightContainer: {
     width: responsiveScreenWidth(20),
     flexDirection: 'row',
@@ -120,6 +119,8 @@ const styles = StyleSheet.create({
   },
   actionContainer: {},
   bookSetting: {
-    marginTop: responsiveScreenHeight(0.8)
-  }
+    position: 'absolute',
+    bottom: Platform.OS === 'android' ? responsiveScreenHeight(2.7) : responsiveScreenHeight(2),
+    right: responsiveScreenWidth(3) 
+  },
 });

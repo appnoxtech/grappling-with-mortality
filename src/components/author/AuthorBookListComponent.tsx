@@ -61,7 +61,7 @@ const RenderItem: React.FC<ItemProps> = ({book}) => {
             },
           ]}>
           <Text style={[styles.bookStatusText, {color:  book.publishStatus === 'PENDING'
-                  ? 'rgba(255, 225, 53, 1)'
+                  ? '#F29339'
                   : book.publishStatus === 'REJECTED'
                   ? 'rgba(255, 76, 20, 1)'
                   : '"rgba(80, 200, 120, 0.8)"',}]}>{book.publishStatus}</Text>
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     width: responsiveScreenWidth(25),
     height: responsiveScreenHeight(5),
     borderRadius: responsiveScreenHeight(2),
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   bookStatusText: {

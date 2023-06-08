@@ -115,7 +115,9 @@ export default function AudioChaptersListComponent() {
           showEditorOptions ? styles.listContainer : styles.onlyListContainer
         }>
         <FlatList
+          showsVerticalScrollIndicator={false}
           style={styles.chapterList}
+          contentContainerStyle={styles.contentContainerStyle}
           data={selectedBookDetails.audio}
           renderItem={({item, index}) => (
             <RenderChapter chapter={item} index={index} />
@@ -138,7 +140,8 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   listContainer: {
-    height: responsiveScreenHeight(33),
+    // height: responsiveScreenHeight(31),
+    flex:1
   },
   onlyListContainer: {
     flex: 1,
@@ -178,6 +181,8 @@ const styles = StyleSheet.create({
     backgroundColor: colorSecondary,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    bottom: responsiveScreenHeight(8)
   },
   actionContainer: {
     flexDirection: 'row',
@@ -187,5 +192,8 @@ const styles = StyleSheet.create({
   },
   listBtnContainer: {
     paddingHorizontal: responsiveScreenWidth(1.5),
+  },
+  contentContainerStyle: {
+    paddingBottom: responsiveScreenHeight(15),
   },
 });

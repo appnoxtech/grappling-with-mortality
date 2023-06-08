@@ -1,7 +1,15 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+project 'grappling_with_mortality',
+    'Debug' => :debug,
+    'Release' => :release,
+    'FooDebug' => :debug,
+    'FooRelease' => :release
+
 $RNFirebaseAsStaticFramework = true
 use_frameworks! :linkage => :static
+
+
 
 # platform :ios, min_ios_version_supported
 prepare_react_native_project!

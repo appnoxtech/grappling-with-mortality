@@ -13,7 +13,6 @@ interface props {
 }
 
 const HeaderWithTitle: React.FC<props> = ({title}) => {
-  console.log('title', title);
   return (
     <HeaderWithBackBtn>
       <View style={styles.pageNameContainer}>
@@ -28,11 +27,11 @@ export default HeaderWithTitle;
 const styles = StyleSheet.create({
   pageNameContainer: {
     position: 'absolute',
-    top:
+    bottom:
       Platform.OS === 'ios'
-        ? responsiveScreenHeight(8.5)
+        ? responsiveScreenHeight(2.3)
         : responsiveScreenHeight(2.7),
-    left: responsiveScreenWidth(15),
+    left: responsiveScreenWidth(13),
     alignItems: 'center',
   },
   pageName: {

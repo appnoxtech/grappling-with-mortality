@@ -58,7 +58,7 @@ const PendingVerificationBookListComponent:React.FC<props> = ({setShowDialog}) =
                   alt="book"
                   style={styles.bookImg}
                 />
-                <View style={{flex: 1}}>
+                <View style={{width: responsiveScreenWidth(50)}}>
                   <Text style={styles.bookName}>{item.bookName}</Text>
                   <Text style={styles.authorName}>{item.authorName}</Text>
                   <View style={styles.actionsContainer}>
@@ -125,9 +125,10 @@ const styles = StyleSheet.create({
   },
   bookContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     gap: responsiveScreenWidth(2),
     minHeight: responsiveScreenHeight(22),
-    marginBottom: responsiveScreenHeight(2),
+    marginBottom: responsiveScreenHeight(3),
   },
   bookImg: {
     height: responsiveScreenHeight(22),

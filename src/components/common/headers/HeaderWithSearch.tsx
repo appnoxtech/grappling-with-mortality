@@ -53,11 +53,11 @@ export default HeaderWithSearch;
 const styles = StyleSheet.create({
   pageNameContainer: {
     position: 'absolute',
-    top:
+    bottom:
       Platform.OS === 'ios'
-        ? responsiveScreenHeight(8.5)
-        : responsiveScreenHeight(2.7),
-    left: responsiveScreenWidth(15),
+        ? responsiveScreenHeight(2.2)
+        : responsiveScreenHeight(2.8),
+    left: responsiveScreenWidth(13),
     alignItems: 'center',
   },
   pageName: {
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   androidBtnContainer: {
     position: 'absolute',
     width: responsiveScreenWidth(10),
-    bottom: responsiveScreenHeight(2.5),
+    bottom: responsiveScreenHeight(2.8),
     right: responsiveScreenWidth(3),
   },
 });

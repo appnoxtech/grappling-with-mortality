@@ -52,13 +52,13 @@ const styles = StyleSheet.create({
   btnContainer: {
     position: 'absolute',
     width: responsiveScreenWidth(10),
-    top: responsiveScreenHeight(8),
+    bottom: responsiveScreenHeight(1.7),
     left: responsiveScreenWidth(4),
   },
   androidBtnContainer: {
     position: 'absolute',
     width: responsiveScreenWidth(10),
-    top: responsiveScreenHeight(2.5),
+    bottom: responsiveScreenHeight(2.5),
     left: responsiveScreenWidth(3),
   }
 });

@@ -1,6 +1,12 @@
+interface notification {
+  message: string,
+  createdAt: number
+}
+
 interface user {
   isLogin: boolean,
   userDetails: any,
+  notificationList: Array<notification>
 }
 
 interface item {_id: string, isLiked: boolean, likeCount: number, messageCount: number};
@@ -8,6 +14,7 @@ interface item {_id: string, isLiked: boolean, likeCount: number, messageCount: 
 const initialState:user  = {
   isLogin: true,
   userDetails: {},
+  notificationList: []
 };
 
 interface UpdateAction {
@@ -20,8 +27,13 @@ interface updateUserDetails {
   payload: user
 }
 
+interface updateNotificationList {
+  type: 'UPDATE_NOTIFICATION_LIST',
+  payload: Array<notification>
+}
 
-type action = UpdateAction | updateUserDetails;
+
+type action = UpdateAction | updateUserDetails | updateNotificationList;
 
 const UserReducer = (state = initialState, action: action) => {
   switch (action.type) {
@@ -36,6 +48,13 @@ const UserReducer = (state = initialState, action: action) => {
       return {
         ...state,
         userDetails: {...action.payload}
+      }
+    }
+
+    case 'UPDATE_NOTIFICATION_LIST': {
+      return {
+        ...state,
+        notificationList: [...action.payload]
       }
     }
 
@@ -63,6 +82,13 @@ export const updateUserDetails = (data: any): updateUserDetails => {
 export const updateLocalActivityList = (data: any) => {
   return {
     type: 'UPDATE_LOCAL_ACTIVITY_LIST',
+    payload: data
+  }
+}
+
+export const UpdateNotificationList = (data: Array<notification>):updateNotificationList => {
+  return {
+    type: 'UPDATE_NOTIFICATION_LIST',
     payload: data
   }
 }

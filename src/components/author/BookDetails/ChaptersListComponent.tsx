@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   listContainer: {
-    height: responsiveScreenHeight(33),
+    flex:1
   },
   onlyListContainer: {
     flex: 1
@@ -177,6 +177,8 @@ const styles = StyleSheet.create({
     backgroundColor: colorSecondary,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    bottom: responsiveScreenHeight(8)
   },
   actionContainer: {
     width: responsiveScreenWidth(20),
@@ -186,7 +188,7 @@ const styles = StyleSheet.create({
     marginRight: responsiveScreenWidth(2),
   },
   contentContainerStyle: {
-    paddingBottom: responsiveScreenHeight(5),
+    paddingBottom: responsiveScreenHeight(15),
   },
   readBookContain: {
     paddingHorizontal: responsiveScreenWidth(1)

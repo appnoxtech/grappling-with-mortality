@@ -62,9 +62,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   btnContainer: {
-    width: responsiveScreenWidth(50),
-    height: responsiveScreenWidth(50),
-    borderRadius: responsiveScreenWidth(25),
+    width: responsiveScreenWidth(40),
+    height: responsiveScreenWidth(40),
+    borderRadius: responsiveScreenWidth(20),
     backgroundColor: white,
     borderColor: 'rgba(0,0,0,0.4)',
     borderWidth: 2,

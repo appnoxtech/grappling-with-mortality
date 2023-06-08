@@ -37,7 +37,6 @@ const useAdminServiceHandlers = () => {
                 dispatch(UpdateAuthorList(data));
             }
         } catch (error: any) {
-            console.log('error.response.data', error.response.data);
             Alert.alert("", error.response.data.errors[0].message)
             dispatch(SetIsLoadingState(false));
         }
@@ -114,7 +113,7 @@ const useAdminServiceHandlers = () => {
             await RepublishBookService(bookId);
             await GetAuthorBookListServiceHandler();
             dispatch(SetIsLoadingState(false));
-            Alert.alert('Congratulations', 'Book Republished Successfully !');
+            Alert.alert('Congratulations', 'Book Sent For Approval !');
         } catch (error: any) {
             dispatch(SetIsLoadingState(false)); 
             Alert.alert("", error.response.data.errors[0].msg)

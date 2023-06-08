@@ -1,4 +1,11 @@
-import {FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {
   responsiveFontSize,
@@ -9,37 +16,40 @@ import {
 import LoadIcon from '../../common/LoadIcons';
 import {colorSecondary} from '../../../../assests/Styles/GlobalTheme';
 import {Swipeable} from 'react-native-gesture-handler';
-
-const data = [
-  {
-    id: 'qqweqwe3',
-    message: 'Robin Sharma raised an book approval request.',
-    date: '2 days ago',
-  },
-  {
-    id: 'zcver4fw',
-    message:
-      'You have not listen a new book from the last 5 days. Get new launched collection.',
-    date: '3 days ago',
-  },
-];
-
-const RenderDeleteActionContainer:React.FC<any> = () => {
-    return (
-       <View style={styles.deleteContainer}>
-          <TouchableOpacity style={styles.deleteBtn}>
-            <LoadIcon iconFamily='MaterialIcons' iconName='delete' size={30} color='white' style={{}} />
-          </TouchableOpacity>
-       </View>
-    )
-}
+import {useSelector} from 'react-redux';
+import {store} from '../../../interfaces/reducer/state';
+import {notification} from '../../../interfaces/reducer/user.interface';
+import useHandelNotificationServices from '../../../hooks/CommonHooks/GetNotificationListServiceHandler';
 
 const RenderNotification: React.FC<{
-  item: {id: string; message: string; date: string};
+  item: notification;
 }> = ({item}) => {
+  const {RemoveNotificationItemServiceHandler} = useHandelNotificationServices();
+  
+  const RenderDeleteActionContainer: React.FC<any> = () => {
+    const handleDeleteNotification = async () => {
+      RemoveNotificationItemServiceHandler(item._id);
+    };
+    return (
+      <View style={styles.deleteContainer}>
+        <TouchableOpacity
+          onPress={handleDeleteNotification}
+          style={styles.deleteBtn}>
+          <LoadIcon
+            iconFamily="MaterialIcons"
+            iconName="delete"
+            size={30}
+            color="white"
+            style={{}}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <Swipeable renderRightActions={RenderDeleteActionContainer}>
-      <View key={item.id} style={styles.notificationContainer}>
+      <View key={item._id} style={styles.notificationContainer}>
         <LoadIcon
           iconFamily="MaterialIcons"
           iconName="circle-notifications"
@@ -50,7 +60,7 @@ const RenderNotification: React.FC<{
         <View style={styles.notificationTextContainer}>
           <Text style={styles.notification}>{item.message}</Text>
           <View style={styles.dateContainer}>
-            <Text style={styles.date}>{item.date}</Text>
+            <Text style={styles.date}>{item.createdAt}</Text>
           </View>
         </View>
       </View>
@@ -59,13 +69,15 @@ const RenderNotification: React.FC<{
 };
 
 const NotificationListContainer = () => {
+  const {notificationList} = useSelector((store: store) => store.user);
+
   return (
     <View style={styles.container}>
       <FlatList
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
         style={styles.notificationListContainer}
-        data={data}
+        data={notificationList}
         renderItem={({item}) => <RenderNotification item={item} />}
       />
     </View>
@@ -110,7 +122,12 @@ const styles = StyleSheet.create({
   deleteContainer: {
     backgroundColor: 'red',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  deleteBtn: {width: 80, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red'}
+  deleteBtn: {
+    width: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+  },
 });

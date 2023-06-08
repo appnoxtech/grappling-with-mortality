@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import HeaderComponent from '../../components/homepages/Profile/HeaderComponent';
 import {
@@ -64,7 +64,8 @@ const Dashboard = () => {
   return (
     <>
       {showDialog ? (
-        <View style={styles.dialogContainer}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.dialogContainer}>
           <View style={styles.dialogBox}>
             <Text style={styles.textPrimary}>Reason</Text>
             <TextInput
@@ -99,12 +100,13 @@ const Dashboard = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+          </View>
+        </TouchableWithoutFeedback>
       ) : (
         <LoadingScreen>
           <View style={styles.container}>
             <HeaderComponent title="Dashboard" />
-            <ScrollView style={styles.body}>
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.body}>
               <OverviewCard />
               <UserProfileOverView
                 type={'CUSTOMER'}
@@ -175,6 +177,7 @@ const styles = StyleSheet.create({
   },
   actionBtn: {
     width: '100%',
+    height: responsiveScreenHeight(5),
     paddingHorizontal: responsiveScreenWidth(11),
     paddingVertical: responsiveScreenHeight(1.5),
     borderRadius: responsiveScreenHeight(1),
