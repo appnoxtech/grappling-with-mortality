@@ -11,13 +11,16 @@ import Discover from '../discover/index';
 import {getUserDataFromLocalStorage} from '../../utils/helperFunctions/auth';
 import MyBooks from '../myBook';
 import Dashboard from '../dashboard';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { UpdateShowEditorOptions } from '../../redux/reducers/commonReducer';
+import { store } from '../../interfaces/reducer/state';
 
 const Tab = createBottomTabNavigator();
 
 const Homepages = () => {
   const [userData, setUserData] = useState<any>({});
+  const {bottomNavigationDisplayProperty} = useSelector((store: store) => store.common);
+
   const dispatch = useDispatch();
   const getUserDetails = async () => {
     const user = await getUserDataFromLocalStorage();
@@ -67,6 +70,9 @@ const Homepages = () => {
               />
             );
           }
+        },
+        tabBarStyle: {
+          display: bottomNavigationDisplayProperty
         },
         tabBarActiveTintColor: colorPrimary,
         tabBarInactiveTintColor: 'gray',

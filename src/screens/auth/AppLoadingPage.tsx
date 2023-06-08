@@ -4,7 +4,7 @@ import {Animated, ImageBackground, StyleSheet, Text} from 'react-native';
 import { responsiveFontSize, responsiveScreenHeight } from 'react-native-responsive-dimensions';
 import { white } from '../../../assests/Styles/GlobalTheme';
 
-const path = '../../../assests/images/newBg.jpg';
+const path = '../../../assests/images/nobelman_logo.png';
 const appName = 'Nobleman Books';
 
 const AppLoadingPage = () => {

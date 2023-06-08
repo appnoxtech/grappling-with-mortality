@@ -15,6 +15,7 @@ import useAdminServiceHandlers from '../../hooks/AdminServiceHandlers/AdminServi
 import {pendingBookDataInterface} from '../../interfaces/common/common';
 import {UpdateSelectedBook} from '../../redux/reducers/authorReducer';
 import {book} from '../../interfaces/author/book.interface';
+import { UpdateBottomNavigationDisplayProperty } from '../../redux/reducers/commonReducer';
 
 const title = {
   main: 'Verification Request',
@@ -77,6 +78,7 @@ const PendingVerificationBookListComponent:React.FC<props> = ({setShowDialog}) =
                     <TouchableOpacity
                       style={[styles.actionBtn, {backgroundColor: 'red'}]}
                       onPress={() => {
+                        dispatch(UpdateBottomNavigationDisplayProperty('none'));
                         dispatch(UpdateSelectedBook(item))
                         setShowDialog(true);
                       }}>

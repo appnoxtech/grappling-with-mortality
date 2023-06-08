@@ -3,7 +3,8 @@ import { book } from "../../interfaces/author/book.interface";
 const initialState = {
     isLoading: false,
     bookList: [],
-    showEditorOptions: false
+    showEditorOptions: false,
+    bottomNavigationDisplayProperty: 'flex'
 }
 
 interface setIsLoading {
@@ -21,7 +22,12 @@ interface updateShowEditorOptions {
     payload: boolean,
 }
 
-type action = setIsLoading | updateBookList | updateShowEditorOptions;
+interface updateBottomNavigationDisplayProperty {
+    type: 'UPDATE_BOTTOM_NAVIGATION_DISPLAY_PROPERTY',
+    payload: 'flex' | 'none'
+}
+
+type action = setIsLoading | updateBookList | updateShowEditorOptions | updateBottomNavigationDisplayProperty;
 
 const CommonReducer = (state = initialState, action: action) => {
    switch (action.type) {
@@ -43,6 +49,13 @@ const CommonReducer = (state = initialState, action: action) => {
         return {
             ...state,
             showEditorOptions: action.payload
+        }
+    }
+
+    case 'UPDATE_BOTTOM_NAVIGATION_DISPLAY_PROPERTY': {
+        return {
+            ...state,
+            bottomNavigationDisplayProperty: action.payload
         }
     }
    
@@ -71,5 +84,12 @@ export const UpdateShowEditorOptions = (state: boolean): updateShowEditorOptions
     return {
         type: 'UPDATE_SHOW_EDITOR_OPTIONS',
         payload: state
+    }
+}
+
+export const UpdateBottomNavigationDisplayProperty = (property: 'flex' | 'none'): updateBottomNavigationDisplayProperty => {
+    return {
+        type: 'UPDATE_BOTTOM_NAVIGATION_DISPLAY_PROPERTY',
+        payload: property
     }
 }

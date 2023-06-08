@@ -1,4 +1,12 @@
-import {Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  Keyboard,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import HeaderComponent from '../../components/homepages/Profile/HeaderComponent';
 import {
@@ -9,13 +17,14 @@ import {
 import OverviewCard from '../../components/dashboard/OverviewCard';
 import UserProfileOverView from '../../components/dashboard/AuthorCountOverView';
 import useAdminServiceHandlers from '../../hooks/AdminServiceHandlers/AdminServiceHandlerHooks';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {store} from '../../interfaces/reducer/state';
 import PendingVerificationBookListComponent from '../../components/dashboard/PendingVerificationBookList';
 import {TextInput} from 'react-native';
 import ButtonPrimary from '../../components/common/buttons/ButtonPrimary';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LoadingScreen from '../common/LoadingScreen';
+import { UpdateBottomNavigationDisplayProperty } from '../../redux/reducers/commonReducer';
 
 const Dashboard = () => {
   const {
@@ -29,6 +38,7 @@ const Dashboard = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [reason, setReason] = useState('');
   const [errMsg, setErrorMsg] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     GetUserListServiceHandler();
@@ -44,7 +54,9 @@ const Dashboard = () => {
           publishStatus: 'REJECTED',
           reason,
         });
+        dispatch(UpdateBottomNavigationDisplayProperty('flex'));
         setShowDialog(false);
+        setReason('');
       }
     } else {
       setErrorMsg('Required !');
@@ -66,47 +78,59 @@ const Dashboard = () => {
       {showDialog ? (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.dialogContainer}>
-          <View style={styles.dialogBox}>
-            <Text style={styles.textPrimary}>Reason</Text>
-            <TextInput
-              value={reason}
-              onChangeText={text => handelTextChange(text)}
-              style={[
-                styles.reasonInput,
-                {borderColor: errMsg ? 'red' : 'rgba(0,0,0,0.5)'},
-              ]}
-              multiline={true}
-            />
-            {errMsg ? (
-              <Text
-                style={{
-                  color: 'red',
-                  marginTop: responsiveScreenHeight(0.5),
-                  textAlign: 'right',
-                }}>
-                {errMsg}
-              </Text>
-            ) : null}
-            <View style={styles.actionsContainer}>
-              <TouchableOpacity
-                onPress={handelBookRejectBtnPress}
-                style={[styles.actionBtn, {backgroundColor: 'green'}]}>
-                <Text style={styles.actionBtnText}>Submit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setShowDialog(false)}
-                style={[styles.actionBtn, {backgroundColor: 'red'}]}>
-                <Text style={styles.actionBtnText}>Cancel</Text>
-              </TouchableOpacity>
+          <StatusBar
+            animated={true}
+            backgroundColor={'rgba(0,0,0,0.7)'}
+            barStyle={'default'}
+            showHideTransition={'slide'}
+          />
+            <View style={styles.dialogBox}>
+              <Text style={styles.textPrimary}>Reason</Text>
+              <TextInput
+                value={reason}
+                onChangeText={text => handelTextChange(text)}
+                style={[
+                  styles.reasonInput,
+                  {borderColor: errMsg ? 'red' : 'rgba(0,0,0,0.5)'},
+                ]}
+                multiline={true}
+              />
+              {errMsg ? (
+                <Text
+                  style={{
+                    color: 'red',
+                    marginTop: responsiveScreenHeight(0.5),
+                    textAlign: 'right',
+                  }}>
+                  {errMsg}
+                </Text>
+              ) : null}
+              <View style={styles.actionsContainer}>
+                <TouchableOpacity
+                  onPress={handelBookRejectBtnPress}
+                  style={[styles.actionBtn, {backgroundColor: 'green'}]}>
+                  <Text style={styles.actionBtnText}>Submit</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    dispatch(UpdateBottomNavigationDisplayProperty('flex'));
+                    setShowDialog(false);
+                    setReason('');
+                  }}
+                  style={[styles.actionBtn, {backgroundColor: 'red'}]}>
+                  <Text style={styles.actionBtnText}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
           </View>
         </TouchableWithoutFeedback>
       ) : (
         <LoadingScreen>
           <View style={styles.container}>
             <HeaderComponent title="Dashboard" />
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.body}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={styles.body}>
               <OverviewCard />
               <UserProfileOverView
                 type={'CUSTOMER'}
@@ -177,7 +201,7 @@ const styles = StyleSheet.create({
   },
   actionBtn: {
     width: '100%',
-    height: responsiveScreenHeight(5),
+    height: responsiveScreenHeight(5.5),
     paddingHorizontal: responsiveScreenWidth(11),
     paddingVertical: responsiveScreenHeight(1.5),
     borderRadius: responsiveScreenHeight(1),
