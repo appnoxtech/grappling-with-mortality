@@ -34,7 +34,7 @@ const OverviewCard = () => {
     },
     {
       id: 'sge4e',
-      title: 'Author',
+      title: 'Authors',
       count: authorList.length,
       bg: 'white'
     },
@@ -111,10 +111,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: responsiveScreenWidth(5),
   },
   countTitle: {
-    fontSize: responsiveFontSize(2),
+    fontSize: responsiveFontSize(2.5),
     color: 'black',
-    opacity: 0.8,
-    fontWeight: '500',
+    opacity: 0.9,
+    fontWeight: '600',
     letterSpacing: 0.5
   },
   cardCountContainer: {

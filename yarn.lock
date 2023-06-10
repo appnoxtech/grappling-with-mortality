@@ -4452,6 +4452,11 @@ isarray@~1.0.0, isarray@1.0.0:
   resolved "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz"
   integrity sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==
 
+isbnjs@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.npmjs.org/isbnjs/-/isbnjs-0.2.2.tgz"
+  integrity sha512-Nnw2LqWiChNXPv88GSFGiEc/mEGTBE60+HjYVVN6cuWEcVUlDuM7pacBAOd8fm6fTNsNFtTQp1sURTIJYPLaSQ==
+
 isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz"

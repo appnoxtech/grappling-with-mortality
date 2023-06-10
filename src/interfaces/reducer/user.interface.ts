@@ -1,3 +1,5 @@
+import { book } from "../author/book.interface"
+
 export interface notification {
     _id: string,
     message: string,
@@ -9,5 +11,6 @@ export interface notification {
 export interface userStore {
     isLogin: boolean,
     userDetails: any,
-    notificationList: Array<notification>
+    notificationList: Array<notification>,
+    bookHistories: Array<book>
 }

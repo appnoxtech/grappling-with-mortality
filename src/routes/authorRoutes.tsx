@@ -14,6 +14,7 @@ import EditProfile from '../screens/profile/EditProfile';
 import EBookReader from '../screens/myBook/screen/ReadBookChapter';
 import BookSetting from '../screens/myBook/screen/BookSetting';
 import Notification from '../screens/profile/Notification';
+import VerifyBookISBN from '../screens/myBook/screen/VerifyBookISBN';
 
 const Stack = createNativeStackNavigator();
 
@@ -85,9 +86,14 @@ const AuthorRoutes = () => {
         component={BookSetting}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
-     <Stack.Screen
+      <Stack.Screen
         name="Notification"
         component={Notification}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="VerifyISBN"
+        component={VerifyBookISBN}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
     </Stack.Navigator>

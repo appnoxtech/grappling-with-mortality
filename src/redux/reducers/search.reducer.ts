@@ -1,3 +1,4 @@
+import { book } from "../../interfaces/author/book.interface"
 import { user } from "../../interfaces/reducer/admin.interface"
 
 const initialState = {
@@ -6,7 +7,7 @@ const initialState = {
 
 interface updateSearchResult {
     type: 'UPDATE_SEARCH_RESULT',
-    payload: Array<user>
+    payload: Array<any>
 }
 
 interface resetSearchResult {
@@ -39,7 +40,7 @@ const SearchReducer = (state = initialState, action: action) => {
 
 export default SearchReducer;
 
-export const UpdateSearchResult = (searchResult: Array<user>):updateSearchResult => {
+export const UpdateSearchResult = (searchResult: Array<user | book>):updateSearchResult => {
    return {
     type: 'UPDATE_SEARCH_RESULT',
     payload: searchResult

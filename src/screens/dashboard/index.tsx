@@ -21,10 +21,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {store} from '../../interfaces/reducer/state';
 import PendingVerificationBookListComponent from '../../components/dashboard/PendingVerificationBookList';
 import {TextInput} from 'react-native';
-import ButtonPrimary from '../../components/common/buttons/ButtonPrimary';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LoadingScreen from '../common/LoadingScreen';
-import { UpdateBottomNavigationDisplayProperty } from '../../redux/reducers/commonReducer';
+import {UpdateBottomNavigationDisplayProperty} from '../../redux/reducers/commonReducer';
+import {RefreshControl} from 'react-native';
 
 const Dashboard = () => {
   const {
@@ -33,18 +33,25 @@ const Dashboard = () => {
     GetPendingVerificationBookListServiceHandler,
     UpdatePendingBookStatusServiceHandler,
   } = useAdminServiceHandlers();
+  const dispatch = useDispatch();
   const {selectedBook} = useSelector((state: store) => state.author);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const {userList, authorList} = useSelector((store: store) => store.admin);
   const [showDialog, setShowDialog] = useState(false);
   const [reason, setReason] = useState('');
   const [errMsg, setErrorMsg] = useState('');
-  const dispatch = useDispatch();
 
   useEffect(() => {
     GetUserListServiceHandler();
     GetAuthorListServiceHandler();
     GetPendingVerificationBookListServiceHandler();
   }, []);
+
+  const onRefresh = async () => {
+    setIsRefreshing(true);
+    await GetPendingVerificationBookListServiceHandler();
+    setIsRefreshing(false);
+  };
 
   const handelBookRejectBtnPress = async () => {
     if (reason) {
@@ -78,12 +85,12 @@ const Dashboard = () => {
       {showDialog ? (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.dialogContainer}>
-          <StatusBar
-            animated={true}
-            backgroundColor={'rgba(0,0,0,0.7)'}
-            barStyle={'default'}
-            showHideTransition={'slide'}
-          />
+            <StatusBar
+              animated={true}
+              backgroundColor={'rgba(0,0,0,0.7)'}
+              barStyle={'default'}
+              showHideTransition={'slide'}
+            />
             <View style={styles.dialogBox}>
               <Text style={styles.textPrimary}>Reason</Text>
               <TextInput
@@ -130,6 +137,9 @@ const Dashboard = () => {
             <HeaderComponent title="Dashboard" />
             <ScrollView
               showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+              }
               style={styles.body}>
               <OverviewCard />
               <UserProfileOverView

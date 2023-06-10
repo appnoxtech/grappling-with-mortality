@@ -3,6 +3,8 @@ import { Platform } from 'react-native';
 import { URL } from '@env';
 import { GetFCMToken } from '../../utils/PushNotification.helper';
 import { loginData, resetPassword, signupData, ssoData } from '../../interfaces/auth/authServiceInterface';
+import { getUserDataFromLocalStorage } from '../../utils/helperFunctions/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
  export const SsoService = async (data: ssoData) => {
@@ -17,13 +19,7 @@ import { loginData, resetPassword, signupData, ssoData } from '../../interfaces/
   export const LoginServices = async (data: loginData) => {
     const url = `${URL}account/login`;
     const FCMToken = await GetFCMToken();
-    console.log('FCMToken', FCMToken);
-    
-    // const newData = Platform.OS === 'android' ? 
-    // {...data, notificationToken: FCMToken} : data;
-
     const newData = {...data, notificationToken: FCMToken};
-
     return axios.post(url, newData, {
       headers: {
         'Content-Type': 'application/json',
@@ -38,7 +34,17 @@ import { loginData, resetPassword, signupData, ssoData } from '../../interfaces/
   
   export const ResetPasswordServices = async (data: resetPassword) => {
     const url = `${URL}account/reset-password`;
-    console.log('data', data);
-    
     return axios.post(url, data);
   };
+
+  export const LogoutService = async() => {
+    const url = `${URL}account/log-out`;
+    const user = await getUserDataFromLocalStorage();
+    let notificationToken = await AsyncStorage.getItem('fcmToken');
+
+    return axios.post(url, {notificationToken}, {
+      headers: {
+        'x-auth-token': user.token,
+      },
+    });
+  }

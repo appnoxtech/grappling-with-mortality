@@ -121,6 +121,6 @@ const styles = StyleSheet.create({
   bookSetting: {
     position: 'absolute',
     bottom: Platform.OS === 'android' ? responsiveScreenHeight(2.7) : responsiveScreenHeight(2),
-    right: responsiveScreenWidth(3) 
+    right: responsiveScreenWidth(4.2) 
   },
 });

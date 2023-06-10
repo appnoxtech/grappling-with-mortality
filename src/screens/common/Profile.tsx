@@ -64,6 +64,7 @@ const Profile = () => {
   const handleLogout = async () => {
     await deleteUserData();
     dispatch(updateUserData(false));
+    
   };
 
   const handleProfileEdit = () => {

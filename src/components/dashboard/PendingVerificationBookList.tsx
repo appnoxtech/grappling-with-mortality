@@ -68,7 +68,7 @@ const PendingVerificationBookListComponent:React.FC<props> = ({setShowDialog}) =
                         if (item._id) {
                           handleAcceptBtnClick({
                             bookId: item._id,
-                            publishStatus: 'PUBLISHED',
+                            publishStatus: 'ISBN-PENDING',
                           });
                         }
                       }}

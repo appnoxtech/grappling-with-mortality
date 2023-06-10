@@ -1,10 +1,6 @@
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
-import {
-  colorPrimary,
-  colorSecondary,
-  white,
-} from '../../../../assests/Styles/GlobalTheme';
+import {white} from '../../../../assests/Styles/GlobalTheme';
 import {useNavigation} from '@react-navigation/core';
 import HeaderWithTitle from '../../../components/common/headers/HeaderWithTitle';
 import {
@@ -18,13 +14,15 @@ import {useDispatch, useSelector} from 'react-redux';
 import {EditNewBook} from '../../../redux/reducers/authorReducer';
 import {store} from '../../../interfaces/reducer/state';
 import useAdminServiceHandlers from '../../../hooks/AdminServiceHandlers/AdminServiceHandlerHooks';
+import useAuthorServicesHandler from '../../../hooks/AuthorHooks/AuthorServiceHandlers';
 
 const BookSetting = () => {
   const dispatch = useDispatch();
   const Navigation = useNavigation();
-  const {selectedBook} = useSelector((state: store) => state.author);
+  const {selectedBookDetails} = useSelector((state: store) => state.author);
   const [isOpen, setIsOpen] = useState(false);
   const {RepublishBookServiceHandler} = useAdminServiceHandlers();
+  const {PublishBookServiceHandler} = useAuthorServicesHandler();
 
   const handleBookEdit = () => {
     dispatch(EditNewBook());
@@ -32,9 +30,14 @@ const BookSetting = () => {
   };
 
   const handelRepublishBtnPress = () => {
-    if (selectedBook._id) {
-      RepublishBookServiceHandler(selectedBook._id);
+    if (selectedBookDetails._id) {
+      RepublishBookServiceHandler(selectedBookDetails._id);
     }
+  };
+
+  const handleBookPublish = () => {
+    if (selectedBookDetails._id)
+      PublishBookServiceHandler(selectedBookDetails._id);
   };
 
   const promptConfirmation = () => {
@@ -48,8 +51,9 @@ const BookSetting = () => {
     ]);
   };
 
-  console.log('selectedBook',selectedBook);
-  
+  const handleISBNBtnPress = () => {
+    Navigation.navigate('VerifyISBN' as never);
+  };
 
   return (
     <View style={styles.container}>
@@ -59,21 +63,21 @@ const BookSetting = () => {
           showsVerticalScrollIndicator={false}
           style={styles.scrollContainer}
           contentContainerStyle={styles.contentContainer}>
-          {selectedBook.publishStatus === 'REJECTED' ? (
+          {selectedBookDetails.publishStatus === 'REJECTED' ? (
             <TouchableOpacity
               onPress={() => setIsOpen(!isOpen)}
               style={[
                 styles.bookStatusCard,
                 {
                   height:
-                    isOpen && selectedBook.publishStatus === 'REJECTED'
+                    isOpen && selectedBookDetails.publishStatus === 'REJECTED'
                       ? responsiveScreenHeight(15)
                       : responsiveScreenHeight(10),
                 },
               ]}>
               <View style={styles.tempContainer}>
                 <Text style={styles.cardText}>
-                  {selectedBook.publishStatus}
+                  {selectedBookDetails.publishStatus}
                 </Text>
                 <LoadIcon
                   iconName={isOpen ? 'downcircleo' : 'upcircleo'}
@@ -83,40 +87,49 @@ const BookSetting = () => {
                   size={responsiveFontSize(4)}
                 />
               </View>
-              {isOpen && selectedBook.publishStatus === 'REJECTED' ? (
+              {isOpen && selectedBookDetails.publishStatus === 'REJECTED' ? (
                 <View style={styles.reasonContainer}>
-                  <Text style={styles.reason}>{selectedBook.reason}</Text>
+                  <Text style={styles.reason}>
+                    {selectedBookDetails.reason}
+                  </Text>
                 </View>
               ) : null}
+            </TouchableOpacity>
+          ) : selectedBookDetails.publishStatus === 'ISBN-PENDING' ? (
+            <TouchableOpacity onPress={handleISBNBtnPress} style={styles.card}>
+              <View style={styles.tempContainer}>
+                <Text style={styles.cardText}>Update ISBN</Text>
+              </View>
+            </TouchableOpacity>
+          ) : selectedBookDetails.publishStatus === 'ISBN-VERIFIED' ? (
+            <TouchableOpacity onPress={handleBookPublish} style={styles.card}>
+              <View style={styles.tempContainer}>
+                <Text style={styles.cardText}>Publish Book</Text>
+              </View>
             </TouchableOpacity>
           ) : (
             <View style={styles.card}>
               <View style={styles.tempContainer}>
                 <Text style={styles.cardText}>
-                  {selectedBook.publishStatus}
+                  {selectedBookDetails.publishStatus}
                 </Text>
-                <LoadIcon
-                  iconName={isOpen ? 'downcircleo' : 'upcircleo'}
-                  iconFamily="AntDesign"
-                  style={{fontWeight: 'bold'}}
-                  color={'rgb(80, 200, 120)'}
-                  size={responsiveFontSize(4)}
-                />
               </View>
             </View>
           )}
-          <TouchableOpacity
-            onPress={promptConfirmation}
-            style={styles.card}>
-            <LoadIcon
-              iconName="reload1"
-              iconFamily="AntDesign"
-              style={{fontWeight: 'bold'}}
-              color={'rgb(80, 200, 120)'}
-              size={responsiveFontSize(4)}
-            />
-            <Text style={styles.cardText}>Republish</Text>
-          </TouchableOpacity>
+          {selectedBookDetails.publishStatus === 'PENDING' ||
+          selectedBookDetails.publishStatus === 'REJECTED' ? (
+            <TouchableOpacity onPress={promptConfirmation} style={styles.card}>
+              <LoadIcon
+                iconName="reload1"
+                iconFamily="AntDesign"
+                style={{fontWeight: 'bold'}}
+                color={'rgb(80, 200, 120)'}
+                size={responsiveFontSize(4)}
+              />
+              <Text style={styles.cardText}>Republish</Text>
+            </TouchableOpacity>
+          ) : null}
+
           <TouchableOpacity onPress={handleBookEdit} style={styles.card}>
             <LoadIcon
               iconName="book-edit-outline"
@@ -188,6 +201,6 @@ const styles = StyleSheet.create({
   },
   reason: {
     fontSize: responsiveFontSize(2.3),
-    fontWeight: '600'
-  }
+    fontWeight: '600',
+  },
 });

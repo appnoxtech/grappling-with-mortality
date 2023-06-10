@@ -14,6 +14,7 @@ import Dashboard from '../dashboard';
 import { useDispatch, useSelector } from 'react-redux';
 import { UpdateShowEditorOptions } from '../../redux/reducers/commonReducer';
 import { store } from '../../interfaces/reducer/state';
+import Search from './Search';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,6 +43,13 @@ const Homepages = () => {
               <Ionicons
                 style={(iconName = focused ? styles.iconFocused : styles.icon)}
                 name={(iconName = focused ? 'compass' : 'compass-outline')}
+              />
+            );
+          } else if (route.name === 'Search') {
+            return (
+              <MaterialCommunityIcons
+                style={(iconName = focused ? styles.iconFocused : styles.icon)}
+                name={(iconName = focused ? 'book-search' : 'book-search-outline')}
               />
             );
           } else if (route.name === 'Profile') {
@@ -100,6 +108,25 @@ const Homepages = () => {
           tabBarHideOnKeyboard: true,
         }}
       />
+      {userData.userType !== 'ADMIN' ? (
+        <Tab.Screen
+          name="Search"
+          component={Search}
+          listeners={({ navigation, route }) => ({
+            tabPress: (e) => {
+              // Prevent default action
+              e.preventDefault();
+  
+              // Do something with the `navigation` object
+              dispatch(UpdateShowEditorOptions(true));
+              navigation.navigate('Search');
+            },
+          })}
+          options={{
+            headerShown: false,
+          }}
+        />
+      ) : null}
       {userData?.userType === 'AUTHOR' || userData.userType === 'ADMIN' ? (
         <Tab.Screen
           name="My Books"

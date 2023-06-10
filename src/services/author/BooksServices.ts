@@ -73,3 +73,33 @@ export const UpdateChaptersService = async(data: any) => {
     },
   });
 }
+
+export const SearchBookService = async(bookName: string) => {
+  const url = `${URL}book/search-book/${bookName}`;
+  const user = await getUserDataFromLocalStorage();
+  return axios.get(url, {
+    headers: {
+      'x-auth-token': user.token,
+    },
+  });
+}
+
+export const VerifyBookISBNService = async(data: {bookId: string, ISBN: string}) => {
+  const url = `${URL}book/isbn-verification`;
+  const user = await getUserDataFromLocalStorage();
+  return axios.post(url, data, {
+    headers: {
+      'x-auth-token': user.token,
+    },
+  });
+}
+
+export const PublishBookService = async(bookId: string) => {
+  const url = `${URL}book/publish-book/${bookId}`;
+  const user = await getUserDataFromLocalStorage();
+  return axios.put(url,{}, {
+    headers: {
+      'x-auth-token': user.token,
+    },
+  });
+}

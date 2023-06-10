@@ -1,22 +1,27 @@
 import {FlatList, Image, Platform, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {book} from '../../interfaces/author/book.interface';
+import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-import {colorPrimary, colorSecondary, white} from '../../../assests/Styles/GlobalTheme';
 import {
   responsiveFontSize,
   responsiveScreenHeight,
   responsiveScreenWidth,
-  responsiveWidth,
 } from 'react-native-responsive-dimensions';
+import {
+  colorPrimary,
+  colorSecondary,
+  white,
+} from '../../../assests/Styles/GlobalTheme';
+import {book} from '../../interfaces/author/book.interface';
+
 import CommonHeader from '../common/headers/CommonHeader';
 import LoadIcon from '../common/LoadIcons';
-import {TouchableOpacity} from 'react-native';
 import {
   ClearNewBookDetails,
   UpdateSelectedBook,
 } from '../../redux/reducers/authorReducer';
+import useGetBookList from '../../hooks/AuthorHooks/GetBookListHooks';
 
 interface ItemProps {
   book: book;
@@ -57,14 +62,25 @@ const RenderItem: React.FC<ItemProps> = ({book}) => {
           style={[
             styles.bookStatus,
             {
-              backgroundColor: white
+              backgroundColor: white,
             },
           ]}>
-          <Text style={[styles.bookStatusText, {color:  book.publishStatus === 'PENDING'
-                  ? '#F29339'
-                  : book.publishStatus === 'REJECTED'
-                  ? 'rgba(255, 76, 20, 1)'
-                  : '"rgba(80, 200, 120, 0.8)"',}]}>{book.publishStatus}</Text>
+          <Text
+            style={[
+              styles.bookStatusText,
+              {
+                color:
+                  book.publishStatus === 'PENDING'
+                    ? '#F29339'
+                    : book.publishStatus === 'REJECTED'
+                    ? 'rgba(255, 76, 20, 1)'
+                    :  book.publishStatus === 'ISBN-PENDING'
+                    ?  colorPrimary
+                    : "rgba(80, 200, 120, 0.8)",
+              },
+            ]}>
+            {book.publishStatus}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -72,12 +88,21 @@ const RenderItem: React.FC<ItemProps> = ({book}) => {
 };
 const AuthorBookListComponent = () => {
   const navigation = useNavigation();
+  const [isRefresh, setIsRefresh] = useState(false);
+  const GetAuthorBookListServiceHandler = useGetBookList();
+
   const dispatch = useDispatch();
   const {bookList} = useSelector((state: any) => state.author);
   const handlePress = () => {
     dispatch(ClearNewBookDetails());
     navigation.navigate('AddNewBook' as never);
   };
+
+  const RefreshList = async() => {
+    setIsRefresh(true);
+    await GetAuthorBookListServiceHandler();
+    setIsRefresh(false);
+  }
 
   return (
     <View style={styles.container}>
@@ -87,6 +112,8 @@ const AuthorBookListComponent = () => {
         </View>
       </CommonHeader>
       <FlatList
+        onRefresh={RefreshList}
+        refreshing={isRefresh}
         contentContainerStyle={styles.contentContainer}
         style={styles.listContainer}
         data={bookList}
@@ -194,5 +221,5 @@ const styles = StyleSheet.create({
   },
   bookDetails: {
     width: '50%',
-  }
+  },
 });

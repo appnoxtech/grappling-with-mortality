@@ -6,6 +6,7 @@ import { Alert } from "react-native";
 import { ResetSearchResult, UpdateSearchResult } from "../../redux/reducers/search.reducer";
 import { pendingBookDataInterface } from "../../interfaces/common/common";
 import useGetBookList from "../AuthorHooks/GetBookListHooks";
+import { SearchBookService } from "../../services/author/BooksServices";
 
 const useAdminServiceHandlers = () => {
     const dispatch = useDispatch();
@@ -120,6 +121,23 @@ const useAdminServiceHandlers = () => {
         }
     }
 
+    const SearchBookServiceHandler = async(bookName: string) => {
+        try {
+            dispatch(SetIsLoadingState(true));
+            const res = await SearchBookService(bookName);
+            dispatch(SetIsLoadingState(false));
+            const {data} = res.data;
+            if(data.length){
+              dispatch(UpdateSearchResult(data));
+            }else {
+              dispatch(UpdateSearchResult([]));
+            }
+        } catch (error:any) {
+            dispatch(SetIsLoadingState(false));
+            Alert.alert("", error.response.data.errors[0].msg)
+        }
+    }
+
     return {
         GetUserListServiceHandler,
         GetAuthorListServiceHandler,
@@ -127,7 +145,8 @@ const useAdminServiceHandlers = () => {
         SearchAuthorServiceHandler,
         GetPendingVerificationBookListServiceHandler,
         UpdatePendingBookStatusServiceHandler,
-        RepublishBookServiceHandler
+        RepublishBookServiceHandler,
+        SearchBookServiceHandler
     }
 }
 

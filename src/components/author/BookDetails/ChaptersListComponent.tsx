@@ -27,6 +27,7 @@ import {
 import ButtonPrimary from '../../common/buttons/ButtonPrimary';
 import {SetStartingPageNumber} from '../../../redux/reducers/eBookReaderReducer';
 import {store} from '../../../interfaces/reducer/state';
+import useUpdateChaptersHook from '../../../hooks/AuthorHooks/UpdateChaptersHook';
 
 interface chapter {
   _id: string;
@@ -43,6 +44,7 @@ interface chapterProps {
 
 const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
   const {showEditorOptions} = useSelector((state: store) => state.common);
+  const {DeleteChapterServiceHandler} = useUpdateChaptersHook()
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -57,6 +59,10 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
     navigation.navigate('EBookReader' as never);
   };
 
+  const handelChapterDelete = () => {
+    DeleteChapterServiceHandler(chapter);
+  }
+
   return (
     <View style={styles.chapter}>
       <Text style={styles.chapterNo}>{`${index + 1}.`}</Text>
@@ -64,7 +70,7 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
         <Text style={styles.chapterName}>{chapter.chapterName}</Text>
         {showEditorOptions ? (
           <View style={styles.actionContainer}>
-            <TouchableOpacity onPress={handleChapterRead}>
+            <TouchableOpacity style={{marginRight: 5}} onPress={handleChapterRead}>
               <LoadIcon
                 iconFamily="FontAwesome5"
                 iconName="book-reader"
@@ -80,6 +86,15 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
                 style={{}}
                 size={25}
                 color={colorSecondary}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handelChapterDelete}>
+              <LoadIcon
+                iconFamily="MaterialIcons"
+                iconName="delete"
+                style={{}}
+                size={25}
+                color={'red'}
               />
             </TouchableOpacity>
           </View>
@@ -181,11 +196,12 @@ const styles = StyleSheet.create({
     bottom: responsiveScreenHeight(8)
   },
   actionContainer: {
-    width: responsiveScreenWidth(20),
+    width: responsiveScreenWidth(25),
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     marginRight: responsiveScreenWidth(2),
+    gap: responsiveScreenWidth(2),
   },
   contentContainerStyle: {
     paddingBottom: responsiveScreenHeight(15),

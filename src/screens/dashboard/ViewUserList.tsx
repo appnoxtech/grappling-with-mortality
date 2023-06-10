@@ -60,7 +60,7 @@ const ViewUserList: React.FC<any> = ({route}) => {
   return (
     <View style={styles.container}>
       <HeaderWithSearch
-        title={type === 'AUTHOR' ? "Author's List" : 'User List'}
+        title={type === 'AUTHOR' ? "Authors List" : 'Users List'}
         type={type}
       />
       <ScrollView

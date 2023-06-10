@@ -1,3 +1,5 @@
+import { book } from "../../interfaces/author/book.interface";
+
 interface notification {
   message: string,
   createdAt: number
@@ -6,7 +8,8 @@ interface notification {
 interface user {
   isLogin: boolean,
   userDetails: any,
-  notificationList: Array<notification>
+  notificationList: Array<notification>,
+  bookHistories: Array<book>
 }
 
 interface item {_id: string, isLiked: boolean, likeCount: number, messageCount: number};
@@ -14,7 +17,8 @@ interface item {_id: string, isLiked: boolean, likeCount: number, messageCount: 
 const initialState:user  = {
   isLogin: true,
   userDetails: {},
-  notificationList: []
+  notificationList: [],
+  bookHistories: []
 };
 
 interface UpdateAction {
@@ -32,8 +36,13 @@ interface updateNotificationList {
   payload: Array<notification>
 }
 
+interface updateBookHistoryList {
+  type: 'UPDATE_USER_BOOK_HISTORY',
+  payload: Array<book>
+}
 
-type action = UpdateAction | updateUserDetails | updateNotificationList;
+
+type action = UpdateAction | updateUserDetails | updateNotificationList | updateBookHistoryList;
 
 const UserReducer = (state = initialState, action: action) => {
   switch (action.type) {
@@ -55,6 +64,13 @@ const UserReducer = (state = initialState, action: action) => {
       return {
         ...state,
         notificationList: [...action.payload]
+      }
+    }
+
+    case 'UPDATE_USER_BOOK_HISTORY': {
+      return {
+        ...state,
+        bookHistories: [...action.payload]
       }
     }
 
@@ -89,6 +105,13 @@ export const updateLocalActivityList = (data: any) => {
 export const UpdateNotificationList = (data: Array<notification>):updateNotificationList => {
   return {
     type: 'UPDATE_NOTIFICATION_LIST',
+    payload: data
+  }
+}
+
+export const UpdateUserBookHistory = (data: Array<book>):updateBookHistoryList => {
+  return {
+    type: 'UPDATE_USER_BOOK_HISTORY',
     payload: data
   }
 }

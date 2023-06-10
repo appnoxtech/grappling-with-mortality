@@ -55,8 +55,6 @@ const Search: React.FC<any> = ({route}) => {
   const {searchResult} = useSelector((state: store) => state.search);
 
   useEffect(() => {
-    console.log('Type', type);
-    
     if (value) {
       if (type === 'AUTHOR') {
         SearchAuthorServiceHandler(value);
@@ -66,9 +64,7 @@ const Search: React.FC<any> = ({route}) => {
     } else {
       dispatch(ResetSearchResult());
     }
-  }, [value]);
-
-  console.log('searchResult', searchResult);
+  }, [value]);  
 
   return (
     <View style={styles.container}>
@@ -78,7 +74,7 @@ const Search: React.FC<any> = ({route}) => {
           <TextInput
             style={styles.textInput}
             placeholderTextColor={'rgba(0,0,0,0.7)'}
-            placeholder="Search Screen"
+            placeholder={type === 'AUTHOR' ? 'Search Author' : 'Search User'}
             value={value}
             onChangeText={text => setValue(text)}
           />

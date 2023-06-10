@@ -6,8 +6,6 @@ import { colorSecondary } from '../../../../assests/Styles/GlobalTheme';
 
 const BookDescription = () => {
   const {selectedBookDetails} = useSelector((state: any) => state.author);
-
-  console.log('selectedBookDetails.authorImage',selectedBookDetails.authorImage);
   
   return (
     <View style={styles.container}>

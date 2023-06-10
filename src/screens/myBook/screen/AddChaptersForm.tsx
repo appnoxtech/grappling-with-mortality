@@ -149,7 +149,7 @@ const AddChaptersForm = () => {
 
   return (
     <View style={styles.container}>
-      <HeaderWithBackBtn paddingTop={Platform.OS === 'android' ? 8 : 13} />
+      <HeaderWithBackBtn paddingTop={Platform.OS === 'android' ? 10 : 13} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.mainBody}>
         <View style={styles.inputsContainer}>

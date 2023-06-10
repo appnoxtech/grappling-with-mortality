@@ -20,24 +20,40 @@ const useLoginHook = () => {
       dispatch(SetIsLoadingState(true));
       const res = await LoginServices(data);
       const userInfo = res.data.data;
-      if(userInfo?.isEmailVerified){
-          dispatch(SetIsLoadingState(false));
-          saveUserData(userInfo);
-          
-          if(userInfo?.image){
-              dispatch(updateUserDetails({fullName: userInfo.fullName, email: data.email, userType: userInfo.userType, image: userInfo.image}));
-          } else {
-              dispatch(updateUserDetails({fullName: userInfo.fullName, email: data.email, userType: userInfo.userType}));
-          }
-          dispatch(updateUserData(true));
-      } else {
-          const params = {
+      if (userInfo?.isEmailVerified) {
+        dispatch(SetIsLoadingState(false));
+        saveUserData(userInfo);
+        console.log('userInfo', userInfo);
+        if (userInfo?.image) {
+          dispatch(
+            updateUserDetails({
+              fullName: userInfo.fullName,
               email: data.email,
-              type: 'GENERATE',
-          }
-          await generateOTPService(params);
-          dispatch(SetIsLoadingState(false));
-          Navigation.navigate('VerifyOtp' as never, {email: data.email, type: 'VERIFY', flow: 'Signup'} as never)
+              userType: userInfo.userType,
+              image: userInfo.image,
+            }),
+          );
+        } else {
+          dispatch(
+            updateUserDetails({
+              fullName: userInfo.fullName,
+              email: data.email,
+              userType: userInfo.userType,
+            }),
+          );
+        }
+        dispatch(updateUserData(true));
+      } else {
+        const params = {
+          email: data.email,
+          type: 'GENERATE',
+        };
+        await generateOTPService(params);
+        dispatch(SetIsLoadingState(false));
+        Navigation.navigate(
+          'VerifyOtp' as never,
+          {email: data.email, type: 'VERIFY', flow: 'Signup'} as never,
+        );
       }
     } catch (error: any) {
       dispatch(SetIsLoadingState(false));
