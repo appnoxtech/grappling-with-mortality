@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Platform,
   StyleSheet,
@@ -60,7 +61,15 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
   };
 
   const handelChapterDelete = () => {
-    DeleteChapterServiceHandler(chapter);
+    Alert.alert('', 'Sure you want delete this chapter ?', [
+      {text: 'Yes', onPress: () => DeleteChapterServiceHandler(chapter)},
+      {
+        text: 'No',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+    ]);
+    ;
   }
 
   return (

@@ -32,16 +32,16 @@ const RenderUserCard: React.FC<{item: user; type: 'AUHTOR' | 'CUSTOMER'}> = ({
   return (
     <TouchableOpacity
       onPress={handelUserProfileClick}
-      key={item._id}
+      key={item?._id}
       style={styles.profileContainer}>
       <View style={styles.imgContainer}>
         <Image
-          source={item.image ? {uri: item.image} : require(path)}
+          source={item.image ? {uri: item?.image} : require(path)}
           alt={item.fullName}
           style={styles.img}
         />
       </View>
-      <Text style={styles.name}>{item.fullName.split(' ')[0]}</Text>
+      <Text style={styles.name}>{item?.fullName?.split(' ')[0]}</Text>
     </TouchableOpacity>
   );
 };
@@ -79,8 +79,8 @@ const Search: React.FC<any> = ({route}) => {
             onChangeText={text => setValue(text)}
           />
         </View>
-        <View style={{flex: 1,}}>
-          {searchResult.length ? (
+        <View style={{flex: 1}}>
+          {searchResult?.length ? (
             <ScrollView
               showsVerticalScrollIndicator={false}
               style={styles.userListContainer}

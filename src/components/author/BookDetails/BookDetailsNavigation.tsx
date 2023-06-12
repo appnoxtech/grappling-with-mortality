@@ -9,6 +9,9 @@ import {white} from '../../../../assests/Styles/GlobalTheme';
 import BookDescription from './BookDescription';
 import BookChaptersDeatils from './BookChaptersDeatils';
 import AudioBook from './AudioBook';
+import {useDispatch, useSelector} from 'react-redux';
+import {store} from '../../../interfaces/reducer/state';
+import { UpdateBookDetailPageNavItem } from '../../../redux/reducers/commonReducer';
 
 const navList = ['About', 'Chapters', 'Audio'];
 
@@ -33,6 +36,11 @@ const NavItemComponent: React.FC<NavItemProps> = ({
 };
 const BookDetailsNavigation = () => {
   const [selectedNavItem, setSelectedNavItem] = useState('About');
+  const dispatch = useDispatch();
+  const {bookDetailsPageNavItem} = useSelector((store: store) => store.common);
+  const setSelected = (crrNav: 'About' | 'Chapters' | 'Audio') => {
+    dispatch(UpdateBookDetailPageNavItem(crrNav));
+  }
   return (
     <View style={styles.container}>
       <View style={styles.navigation}>
@@ -40,16 +48,16 @@ const BookDetailsNavigation = () => {
           <React.Fragment key={index}>
             <NavItemComponent
               nav={nav}
-              crrState={selectedNavItem}
-              setSelected={setSelectedNavItem}
+              crrState={bookDetailsPageNavItem}
+              setSelected={setSelected}
             />
           </React.Fragment>
         ))}
       </View>
       <View style={styles.navItemBody}>
-        {selectedNavItem === navList[0] ? (
+        {bookDetailsPageNavItem === navList[0] ? (
           <BookDescription />
-        ) : selectedNavItem === navList[1] ? (
+        ) : bookDetailsPageNavItem === navList[1] ? (
           <BookChaptersDeatils />
         ) : (
           <AudioBook />

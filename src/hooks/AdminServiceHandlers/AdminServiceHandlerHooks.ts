@@ -22,9 +22,8 @@ const useAdminServiceHandlers = () => {
               dispatch(UdateUserList(data));
             }
         } catch (error: any) {
-            console.log('error.response.data', error.response.data);
-            Alert.alert("", error.response.data.errors[0].message)
             dispatch(SetIsLoadingState(false));
+            Alert.alert("", error.response.data.errors[0].message)
         }
     }
 
@@ -82,9 +81,7 @@ const useAdminServiceHandlers = () => {
             dispatch(SetIsLoadingState(true));
             const res = await GetPendingVerificationBookListService();
             const {data} = res.data;
-            dispatch(SetIsLoadingState(false));
-            console.log('DAATA', data);
-            
+            dispatch(SetIsLoadingState(false));            
             if(data.length) {
                 dispatch(UpdatePendingVerificationBookList(data));
             }else {

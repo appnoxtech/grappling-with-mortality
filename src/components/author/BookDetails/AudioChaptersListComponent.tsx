@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Platform,
   StyleSheet,
@@ -27,6 +28,7 @@ import {
 import TrackPlayer from 'react-native-track-player';
 import {store} from '../../../interfaces/reducer/state';
 import ButtonPrimary from '../../common/buttons/ButtonPrimary';
+import useAddAudioChapterHook from '../../../hooks/AuthorHooks/AddAudioChapterHook';
 
 interface audio {
   _id: string;
@@ -40,6 +42,7 @@ interface chapterProps {
 
 const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
   const {showEditorOptions} = useSelector((state: store) => state.common);
+  const {DeleteAudioChapterServiceHandler} = useAddAudioChapterHook();
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -53,6 +56,17 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
     const data = {...chapter, index};
     dispatch(UpdateSelectedAudioBook(data));
     navigation.navigate('AudioEbookPlayer' as never);
+  };
+
+  const handelChapterDelete = () => {
+    Alert.alert('', 'Sure you want delete this audio chapter ?', [
+      {text: 'Yes', onPress: () => DeleteAudioChapterServiceHandler(chapter)},
+      {
+        text: 'No',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+    ]);
   };
   return (
     <View style={styles.chapter}>
@@ -77,6 +91,15 @@ const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
                 style={{}}
                 size={30}
                 color={colorSecondary}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handelChapterDelete}>
+              <LoadIcon
+                iconFamily="MaterialIcons"
+                iconName="delete"
+                style={{}}
+                size={25}
+                color={'red'}
               />
             </TouchableOpacity>
           </View>
@@ -127,7 +150,10 @@ export default function AudioChaptersListComponent() {
 
       {showEditorOptions ? (
         <View style={styles.btnContainer}>
-          <ButtonPrimary label="Add Audio Chapter" handleBtnPress={handlePress} />
+          <ButtonPrimary
+            label="Add Audio Chapter"
+            handleBtnPress={handlePress}
+          />
         </View>
       ) : null}
     </View>
@@ -141,7 +167,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     // height: responsiveScreenHeight(31),
-    flex:1
+    flex: 1,
   },
   onlyListContainer: {
     flex: 1,
@@ -182,13 +208,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: responsiveScreenHeight(8)
+    bottom: responsiveScreenHeight(8),
   },
   actionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: responsiveScreenWidth(2),
-    gap: responsiveScreenWidth(3),
+    gap: responsiveScreenWidth(2),
   },
   listBtnContainer: {
     paddingHorizontal: responsiveScreenWidth(1.5),

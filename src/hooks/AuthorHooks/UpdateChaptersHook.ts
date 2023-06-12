@@ -72,10 +72,11 @@ const useUpdateChaptersHook = () => {
                 bookId: selectedBookDetails._id
             };
             await UpdateChaptersService(newChapterObj);
-            if(selectedBookDetails._id)
-            await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
+            if(selectedBookDetails._id){
+                await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
+            }
         } catch (error: any) {
-            Alert.alert('Error', error.response.data[0].msg)
+            Alert.alert('Error', error.response.data.errors[0].msg)
         }
     }
 

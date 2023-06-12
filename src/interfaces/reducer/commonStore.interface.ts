@@ -4,5 +4,6 @@ export interface CommonStoreInterface {
     isLoading: boolean,
     bookList: Array<book>
     showEditorOptions: boolean,
-    bottomNavigationDisplayProperty: 'flex' | 'none'
+    bottomNavigationDisplayProperty: 'flex' | 'none',
+    bookDetailsPageNavItem: 'About' | 'Chapters' | 'Audio',
 }

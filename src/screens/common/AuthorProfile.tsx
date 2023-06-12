@@ -21,12 +21,13 @@ import {
   UpdateSelectedBook,
 } from '../../redux/reducers/authorReducer';
 import LoadingScreen from './LoadingScreen';
+import useCommonServiceHandler from '../../hooks/CommonHooks/GetAuthorBookList';
 
 const AuthorProfile: React.FC<any> = ({route}) => {
   const {author, type} = route.params;
   const dispatch = useDispatch();
   const Navigation = useNavigation();
-  const GetAuthorBookListServiceHandler = useGetBookList();
+  const {GetAuthorBookListByIdServiceHandler} = useCommonServiceHandler();
   const {GetUserBookHistoryServiceHandler} = useUserServiceHandler();
   const {bookHistories} = useSelector((store: store) => store.user);
   const {bookList} = useSelector((state: any) => state.author);
@@ -34,7 +35,7 @@ const AuthorProfile: React.FC<any> = ({route}) => {
 
   useEffect(() => {
     if (type === 'AUTHOR') {
-      GetAuthorBookListServiceHandler();
+      GetAuthorBookListByIdServiceHandler(author._id);
     } else {
       GetUserBookHistoryServiceHandler(author._id);
     }

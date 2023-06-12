@@ -15,7 +15,7 @@ import {
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
-import {useNavigation} from '@react-navigation/core'
+import {useNavigation} from '@react-navigation/core';
 import HeaderWithBackBtn from '../../../components/common/headers/HeaderWithBackBtn';
 import InputComponent from '../../../components/common/Inputs/InputComponent';
 import {initialState} from '../../../utils/constants/authors/addNewBook';
@@ -24,9 +24,9 @@ import ButtonPrimary from '../../../components/common/buttons/ButtonPrimary';
 import useKeyboardVisibleListener from '../../../hooks/CommonHooks/isKeyboardVisibleHook';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {white} from '../../../../assests/Styles/GlobalTheme';
-import { useDispatch, useSelector } from 'react-redux';
-import { UpdateNewBookDetails } from '../../../redux/reducers/authorReducer';
-import { NewBookUpdateKey } from '../../../interfaces/author/book.interface';
+import {useDispatch, useSelector} from 'react-redux';
+import {UpdateNewBookDetails} from '../../../redux/reducers/authorReducer';
+import {NewBookUpdateKey} from '../../../interfaces/author/book.interface';
 
 const placeHolder = {
   BookName: 'Book Name',
@@ -53,7 +53,7 @@ const imagePickerInputContant = {
   iconSize: responsiveScreenHeight(10),
 };
 
-const AddNewBook:React.FC<any> = () => {
+const AddNewBook: React.FC<any> = () => {
   const dispatch = useDispatch();
   const {newBook} = useSelector((state: any) => state.author);
   const [errors, setErrors] = useState(initialState);
@@ -61,40 +61,46 @@ const AddNewBook:React.FC<any> = () => {
   const isKeyboardVisible = useKeyboardVisibleListener();
 
   const onChangeHandler = (text: string, id: NewBookUpdateKey) => {
-    dispatch(UpdateNewBookDetails({key: id, value: text}))
+    dispatch(UpdateNewBookDetails({key: id, value: text}));
     onChangeValidation(id, text);
   };
 
   const handelBtnPress = () => {
     const isValid = validation();
-    if(isValid) {
-      Navigation.navigate('AddAuthorDetails' as never)
+    if (isValid) {
+      Navigation.navigate('AddAuthorDetails' as never);
     }
   };
 
   const validation = () => {
-    if(!newBook.bookImage){
+    if (!newBook.bookImage) {
       setErrors({
         ...initialState,
-        bookImage: 'Required !'
+        bookImage: 'Required !',
       });
       return false;
-    } else if(!newBook.bookName) {
+    } else if (!newBook.bookName) {
       setErrors({
         ...initialState,
-        bookName: 'Required !'
+        bookName: 'Required !',
       });
       return false;
-    } else if(!newBook.noOfPages) {
+    } else if (newBook.noOfPages === 0) {
       setErrors({
         ...initialState,
-        noOfPages: 'Required !'
+        noOfPages: 'No. of pages must be greater than 0.',
       });
       return false;
-    } else if(!newBook.description) {
+    } else if (!newBook.noOfPages) {
       setErrors({
         ...initialState,
-        description: 'Required !'
+        noOfPages: 'Required !',
+      });
+      return false;
+    } else if (!newBook.description) {
+      setErrors({
+        ...initialState,
+        description: 'Required !',
       });
       return false;
     } else {
@@ -104,40 +110,46 @@ const AddNewBook:React.FC<any> = () => {
   };
 
   const onChangeValidation = (id: string, value: string | number) => {
-    if(id === 'bookImage' && value === ''){
+    if (id === 'bookImage' && value === '') {
       setErrors({
         ...initialState,
-        bookImage: 'Required !'
+        bookImage: 'Required !',
       });
       return false;
-    } else if(id === 'bookName' && value === '') {
+    } else if (id === 'bookName' && value === '') {
       setErrors({
         ...initialState,
-        bookName: 'Required !'
+        bookName: 'Required !',
       });
       return false;
-    } else if(id === 'noOfPages' && !value) {
+    } else if (id === 'noOfPages' && value === 0) {
       setErrors({
         ...initialState,
-        noOfPages: 'Required !'
+        noOfPages: 'No. of pages must be greater than 0',
       });
       return false;
-    } else if(id === 'description' &&  !value) {
+    } else if (id === 'noOfPages' && !value) {
       setErrors({
         ...initialState,
-        description: 'Required !'
+        noOfPages: 'Required !',
+      });
+      return false;
+    } else if (id === 'description' && !value) {
+      setErrors({
+        ...initialState,
+        description: 'Required !',
       });
       return false;
     } else {
       setErrors(initialState);
       return true;
     }
-  }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <HeaderWithBackBtn paddingTop={ Platform.OS === 'android' ? 8 : 13} />
+        <HeaderWithBackBtn paddingTop={Platform.OS === 'android' ? 8 : 13} />
         <KeyboardAwareScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
@@ -169,7 +181,7 @@ const AddNewBook:React.FC<any> = () => {
               containerStyle={styles.inputContainer}
               id={inputsId.nmbrofPages}
               onChangeHandler={onChangeHandler}
-              keyboardType='numeric'
+              keyboardType="numeric"
             />
             <InputComponent
               placeholder={placeHolder.description}
@@ -182,15 +194,14 @@ const AddNewBook:React.FC<any> = () => {
             />
           </View>
           {!isKeyboardVisible ? (
-          <View style={styles.btnContainer}>
-            <ButtonPrimary
-              label={placeHolder.btn}
-              handleBtnPress={handelBtnPress}
-            />
-          </View>
-        ) : null}
+            <View style={styles.btnContainer}>
+              <ButtonPrimary
+                label={placeHolder.btn}
+                handleBtnPress={handelBtnPress}
+              />
+            </View>
+          ) : null}
         </KeyboardAwareScrollView>
-       
       </View>
     </TouchableWithoutFeedback>
   );

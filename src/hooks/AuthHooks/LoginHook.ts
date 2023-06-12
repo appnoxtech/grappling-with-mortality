@@ -20,10 +20,9 @@ const useLoginHook = () => {
       dispatch(SetIsLoadingState(true));
       const res = await LoginServices(data);
       const userInfo = res.data.data;
+      dispatch(SetIsLoadingState(false));
       if (userInfo?.isEmailVerified) {
-        dispatch(SetIsLoadingState(false));
         saveUserData(userInfo);
-        console.log('userInfo', userInfo);
         if (userInfo?.image) {
           dispatch(
             updateUserDetails({

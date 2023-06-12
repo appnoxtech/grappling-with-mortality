@@ -20,6 +20,7 @@ import {useSelector} from 'react-redux';
 import {store} from '../../../interfaces/reducer/state';
 import {notification} from '../../../interfaces/reducer/user.interface';
 import useHandelNotificationServices from '../../../hooks/CommonHooks/GetNotificationListServiceHandler';
+import { getDateRefrenceByTimeStamp } from '../../../utils/common';
 
 const RenderNotification: React.FC<{
   item: notification;
@@ -60,7 +61,7 @@ const RenderNotification: React.FC<{
         <View style={styles.notificationTextContainer}>
           <Text style={styles.notification}>{item.message}</Text>
           <View style={styles.dateContainer}>
-            <Text style={styles.date}>{item.createdAt}</Text>
+            <Text style={styles.date}>{getDateRefrenceByTimeStamp(item.createdAt)}</Text>
           </View>
         </View>
       </View>
@@ -95,7 +96,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: responsiveScreenHeight(2),
   },
-  contentContainer: {},
+  contentContainer: {
+    marginBottom: responsiveScreenHeight(10)
+  },
   notificationContainer: {
     width: '100%',
     flexDirection: 'row',

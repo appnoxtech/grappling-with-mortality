@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: responsiveScreenWidth(6),
     borderBottomRightRadius: responsiveScreenWidth(6),
     height: Platform.OS === 'android' ? responsiveScreenHeight(10) : responsiveScreenHeight(15),
-    backgroundColor: colorSecondary,
+    backgroundColor: colorPrimary,
   },
   userName: {
     fontSize: responsiveFontSize(2.5),
