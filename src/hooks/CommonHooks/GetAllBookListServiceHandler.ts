@@ -13,7 +13,7 @@ const useGetAllBookListServiceHandler = () => {
             dispatch(UpdateGetAllBookList(data));
         }
       } catch (error: any) {
-        console.log('Error', error.response.data.errors[0]);
+        console.log('Error', error.response.data.errors[0].msg);
          Alert.alert('Notification', 'Something went wrong try again later !')
       }
    }

@@ -28,8 +28,6 @@ import {
 import LoadIcon from '../../LoadIcons';
 import {store} from '../../../../interfaces/reducer/state';
 import {UpdateSelectedAudioBook} from '../../../../redux/reducers/audioEbookReducer';
-import LoadingScreen from '../../../../screens/common/LoadingScreen';
-import {SetIsLoadingState} from '../../../../redux/reducers/commonReducer';
 
 const PlayerControls = () => {
   const [trackTitle, setTrackTitle] = useState<string>();

@@ -1,5 +1,6 @@
 import { user } from '../../interfaces/auth/loginInterface';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LogoutService } from '../../services/auth/AuthService';
 
 export const saveUserData = async (data: user) => {
   try {
@@ -26,6 +27,7 @@ export const getUserDataFromLocalStorage = async () => {
 export const deleteUserData = async () => {
   try {
     await AsyncStorage.removeItem('userDetails');
+    await LogoutService();
   } catch (error) {
     console.log('Error', error);
   }

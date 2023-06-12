@@ -68,32 +68,52 @@ const useAddAudioChapterHook = () => {
   const UpdateAudioChapterItemServiceHandler = async (audioData: Audio) => {
     try {
       const NewChapterList = [...selectedBookDetails.audio];
-      const index = NewChapterList.findIndex((item: Audio) => item._id === audioData._id);
-      
+      const index = NewChapterList.findIndex(
+        (item: Audio) => item._id === audioData._id,
+      );
+
       NewChapterList[index] = audioData;
       const newChapterObj = {
-          audio: [...NewChapterList],
-          bookId: selectedBookDetails._id
+        audio: [...NewChapterList],
+        bookId: selectedBookDetails._id,
       };
-      
-      await UpdateAudioChapterService(newChapterObj);
-      if(selectedBookDetails._id){
-          await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
-          Alert.alert('', UpdateMsg);
-          setTimeout(() => {
-              navigation.goBack();
-          }, 1000);
-        }
-  } catch (error: any) {
-      Alert.alert('Error', error.response.data[0].msg)
-  }
-  }
 
-  
+      await UpdateAudioChapterService(newChapterObj);
+      if (selectedBookDetails._id) {
+        await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
+        Alert.alert('', UpdateMsg);
+        setTimeout(() => {
+          navigation.goBack();
+        }, 1000);
+      }
+    } catch (error: any) {
+      Alert.alert('Error', error.response.data[0].msg);
+    }
+  };
+
+  const DeleteAudioChapterServiceHandler = async (selectedChapter: Audio) => {
+    try {
+      const NewChapterList = selectedBookDetails.audio.filter(
+        (audio: Audio) => audio._id !== selectedChapter._id,
+      );
+      const newChapterObj = {
+        audio: [...NewChapterList],
+        bookId: selectedBookDetails._id,
+      };
+      await UpdateAudioChapterService(newChapterObj);
+      if (selectedBookDetails._id) {
+        await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
+      }
+    } catch (error: any) {
+      Alert.alert('Error', error.response.data.errors[0].msg);
+    }
+  };
+
   return {
     AddAudioChapterServiceHandler,
     UpdateAudioChapterServiceHandler,
-    UpdateAudioChapterItemServiceHandler
+    UpdateAudioChapterItemServiceHandler,
+    DeleteAudioChapterServiceHandler
   };
 };
 

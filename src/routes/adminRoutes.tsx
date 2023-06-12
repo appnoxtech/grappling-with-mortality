@@ -12,6 +12,13 @@ import PrivacyPolicy from '../screens/profile/PrivacyPolicy';
 import ResetPassword from '../screens/profile/ResetPassword';
 import EditProfile from '../screens/profile/EditProfile';
 import EBookReader from '../screens/myBook/screen/ReadBookChapter';
+import AuthorProfile from '../screens/common/AuthorProfile';
+import Notification from '../screens/profile/Notification';
+import ViewUserList from '../screens/dashboard/ViewUserList';
+import Search from '../screens/search';
+import PendingVerificationBookList from '../screens/dashboard/PendingVerificationBookList';
+import BookSetting from '../screens/myBook/screen/BookSetting';
+import VerifyBookISBN from '../screens/myBook/screen/VerifyBookISBN';
 
 const Stack = createNativeStackNavigator();
 
@@ -76,6 +83,41 @@ const AdminRoutes = () => {
       <Stack.Screen
         name="EBookReader"
         component={EBookReader}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="AuthorProfile"
+        component={AuthorProfile}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="Notification"
+        component={Notification}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="ViewUserList"
+        component={ViewUserList}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="Search"
+        component={Search}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="PendingVerificationBookList"
+        component={PendingVerificationBookList}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="BookSetting"
+        component={BookSetting}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="VerifyISBN"
+        component={VerifyBookISBN}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
     </Stack.Navigator>

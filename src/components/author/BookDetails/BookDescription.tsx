@@ -6,6 +6,7 @@ import { colorSecondary } from '../../../../assests/Styles/GlobalTheme';
 
 const BookDescription = () => {
   const {selectedBookDetails} = useSelector((state: any) => state.author);
+  
   return (
     <View style={styles.container}>
       <Text style={styles.textPrimary}>Description</Text>

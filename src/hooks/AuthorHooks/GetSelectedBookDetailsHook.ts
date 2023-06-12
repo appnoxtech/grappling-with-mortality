@@ -11,11 +11,13 @@ const useGetSelectedBookDetails = () => {
             dispatch(SetIsLoadingState(true));
             const res = await GetBookDetailsByIdService(bookId);
             const {data} = res.data;
+            console.log('data===>', data);
+            
             dispatch(UpdateSelectedBookDetails(data));
             dispatch(SetIsLoadingState(false));
         } catch (error: any) {
             dispatch(SetIsLoadingState(false));
-            Alert.alert('Error', error.response.data);
+            Alert.alert('Error', error.response.errors[0].msg)
         }
     }
     return GetSelectedBookDetailsServiceHandler;

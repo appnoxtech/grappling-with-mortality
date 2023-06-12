@@ -8,13 +8,18 @@ import {
 import {useNavigation} from '@react-navigation/core';
 import {TouchableOpacity} from 'react-native';
 import LoadIcon from '../../common/LoadIcons';
-import {colorPrimary, colorSecondary, white} from '../../../../assests/Styles/GlobalTheme';
+import {
+  colorPrimary,
+  colorSecondary,
+  white,
+} from '../../../../assests/Styles/GlobalTheme';
 import {useDispatch, useSelector} from 'react-redux';
 import {EditNewBook} from '../../../redux/reducers/authorReducer';
 import {store} from '../../../interfaces/reducer/state';
 
 const BookDetailsHeaderComponent = () => {
   const {showEditorOptions} = useSelector((state: store) => state.common);
+  const {selectedBook} = useSelector((state: store) => state.author);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -25,6 +30,10 @@ const BookDetailsHeaderComponent = () => {
   const handleBookEdit = () => {
     dispatch(EditNewBook());
     navigation.navigate('AddNewBook' as never);
+  };
+
+  const handleBookSettingPress = () => {
+    navigation.navigate('BookSetting' as never);
   };
 
   return (
@@ -38,30 +47,28 @@ const BookDetailsHeaderComponent = () => {
         barStyle={'default'}
         showHideTransition={'slide'}
       />
-      <View style={styles.body}>
+      <TouchableOpacity onPress={handleBackEvent} style={styles.iconContainer}>
+        <LoadIcon
+          iconName="arrow-back"
+          iconFamily="Ionicons"
+          style={{}}
+          color={white}
+          size={30}
+        />
+      </TouchableOpacity>
+      {showEditorOptions ? (
         <TouchableOpacity
-          onPress={handleBackEvent}
-          style={styles.iconContainer}>
+          style={styles.bookSetting}
+          onPress={handleBookSettingPress}>
           <LoadIcon
-            iconName="arrow-back"
-            iconFamily="Ionicons"
+            iconName="gear"
+            iconFamily="FontAwesome"
             style={{}}
             color={white}
             size={30}
           />
         </TouchableOpacity>
-        {showEditorOptions ? (
-          <TouchableOpacity onPress={handleBookEdit}>
-            <LoadIcon
-              iconName="book-edit-outline"
-              iconFamily="MaterialCommunityIcons"
-              style={{}}
-              color={white}
-              size={30}
-            />
-          </TouchableOpacity>
-        ) : null}
-      </View>
+      ) : null}
     </View>
   );
 };
@@ -72,17 +79,14 @@ const styles = StyleSheet.create({
   container: {
     borderBottomLeftRadius: responsiveScreenWidth(6),
     borderBottomRightRadius: responsiveScreenWidth(6),
-    height: responsiveScreenHeight(15),
-    paddingTop: responsiveScreenHeight(3),
+    height: responsiveScreenHeight(12),
     justifyContent: 'center',
     backgroundColor: colorPrimary,
   },
   androidContainer: {
     borderBottomLeftRadius: responsiveScreenWidth(6),
     borderBottomRightRadius: responsiveScreenWidth(6),
-    height: responsiveScreenHeight(8),
-    paddingTop: responsiveScreenHeight(1),
-    justifyContent: 'center',
+    height: responsiveScreenHeight(10),
     backgroundColor: colorPrimary,
   },
   userName: {
@@ -94,7 +98,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: responsiveScreenWidth(5),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   image: {
     width: responsiveScreenWidth(10),
@@ -102,11 +106,21 @@ const styles = StyleSheet.create({
     borderRadius: responsiveScreenWidth(7),
     resizeMode: 'cover',
   },
-  iconContainer: {},
+  iconContainer: {
+    position: 'absolute',
+    bottom: Platform.OS === 'android' ? responsiveScreenHeight(2.7) : responsiveScreenHeight(2),
+    left: responsiveScreenWidth(3) 
+  },
   rightContainer: {
     width: responsiveScreenWidth(20),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  actionContainer: {},
+  bookSetting: {
+    position: 'absolute',
+    bottom: Platform.OS === 'android' ? responsiveScreenHeight(2.7) : responsiveScreenHeight(2),
+    right: responsiveScreenWidth(4.2) 
   },
 });

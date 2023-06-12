@@ -5,6 +5,7 @@ import OTP from '../screens/common/OtpScreen';
 import AppLoadingPage from '../screens/auth/AppLoadingPage';
 import ResetPassword from '../screens/auth/ForgetPassword';
 import ChangePassword from '../screens/auth/ChangePassword';
+import UserType from '../screens/auth/UserType';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,11 @@ const UnAuthRoutes = () => {
       <Stack.Screen
         name="ChangePassword"
         component={ChangePassword}
+        options={{headerShown: false, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="UserType"
+        component={UserType}
         options={{headerShown: false, animation: 'slide_from_bottom'}}
       />
       

@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Platform,
   StyleSheet,
@@ -27,6 +28,7 @@ import {
 import ButtonPrimary from '../../common/buttons/ButtonPrimary';
 import {SetStartingPageNumber} from '../../../redux/reducers/eBookReaderReducer';
 import {store} from '../../../interfaces/reducer/state';
+import useUpdateChaptersHook from '../../../hooks/AuthorHooks/UpdateChaptersHook';
 
 interface chapter {
   _id: string;
@@ -38,10 +40,12 @@ interface chapter {
 
 interface chapterProps {
   chapter: chapter;
+  index: number
 }
 
-const RenderChapter: React.FC<chapterProps> = ({chapter}) => {
+const RenderChapter: React.FC<chapterProps> = ({chapter, index}) => {
   const {showEditorOptions} = useSelector((state: store) => state.common);
+  const {DeleteChapterServiceHandler} = useUpdateChaptersHook()
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -56,14 +60,26 @@ const RenderChapter: React.FC<chapterProps> = ({chapter}) => {
     navigation.navigate('EBookReader' as never);
   };
 
+  const handelChapterDelete = () => {
+    Alert.alert('', 'Sure you want delete this chapter ?', [
+      {text: 'Yes', onPress: () => DeleteChapterServiceHandler(chapter)},
+      {
+        text: 'No',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+    ]);
+    ;
+  }
+
   return (
     <View style={styles.chapter}>
-      <Text style={styles.chapterNo}>{`${chapter.chapterNo}.`}</Text>
+      <Text style={styles.chapterNo}>{`${index + 1}.`}</Text>
       <View style={styles.chapterBody}>
         <Text style={styles.chapterName}>{chapter.chapterName}</Text>
         {showEditorOptions ? (
           <View style={styles.actionContainer}>
-            <TouchableOpacity onPress={handleChapterRead}>
+            <TouchableOpacity style={{marginRight: 5}} onPress={handleChapterRead}>
               <LoadIcon
                 iconFamily="FontAwesome5"
                 iconName="book-reader"
@@ -79,6 +95,15 @@ const RenderChapter: React.FC<chapterProps> = ({chapter}) => {
                 style={{}}
                 size={25}
                 color={colorSecondary}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handelChapterDelete}>
+              <LoadIcon
+                iconFamily="MaterialIcons"
+                iconName="delete"
+                style={{}}
+                size={25}
+                color={'red'}
               />
             </TouchableOpacity>
           </View>
@@ -118,7 +143,7 @@ const ChaptersListComponent = () => {
           style={styles.chapterList}
           contentContainerStyle={styles.contentContainerStyle}
           data={selectedBookDetails.chapters}
-          renderItem={({item}) => <RenderChapter chapter={item} />}
+          renderItem={({item, index}) => <RenderChapter index={index} chapter={item} />}
         />
       </View>
       {showEditorOptions ? (
@@ -138,7 +163,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   listContainer: {
-    height: responsiveScreenHeight(33),
+    flex:1
   },
   onlyListContainer: {
     flex: 1
@@ -176,16 +201,19 @@ const styles = StyleSheet.create({
     backgroundColor: colorSecondary,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    bottom: responsiveScreenHeight(8)
   },
   actionContainer: {
-    width: responsiveScreenWidth(20),
+    width: responsiveScreenWidth(25),
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     marginRight: responsiveScreenWidth(2),
+    gap: responsiveScreenWidth(2),
   },
   contentContainerStyle: {
-    paddingBottom: responsiveScreenHeight(5),
+    paddingBottom: responsiveScreenHeight(15),
   },
   readBookContain: {
     paddingHorizontal: responsiveScreenWidth(1)

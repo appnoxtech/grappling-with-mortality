@@ -11,10 +11,11 @@ import {colorPrimary, white} from '../../../../assests/Styles/GlobalTheme';
 
 interface props {
   children?: ReactNode;
-  paddingTop?: number
+  paddingTop?: number,
+  showSearch?: boolean
 }
 
-const HeaderWithBackBtn: React.FC<props> = ({children, paddingTop = Platform.OS === 'android' ? 10 : 13}) => {
+const HeaderWithBackBtn: React.FC<props> = ({children, paddingTop = Platform.OS === 'android' ? 10 : 13, showSearch = false}) => {
   const navigation = useNavigation();
 
   const handleBackBtnPress = () => {
@@ -51,13 +52,13 @@ const styles = StyleSheet.create({
   btnContainer: {
     position: 'absolute',
     width: responsiveScreenWidth(10),
-    top: responsiveScreenHeight(6),
+    bottom: responsiveScreenHeight(1.7),
     left: responsiveScreenWidth(4),
   },
   androidBtnContainer: {
     position: 'absolute',
     width: responsiveScreenWidth(10),
-    top: responsiveScreenHeight(1.5),
+    bottom: responsiveScreenHeight(2.5),
     left: responsiveScreenWidth(3),
   }
 });

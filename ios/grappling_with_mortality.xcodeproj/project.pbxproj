@@ -26,6 +26,7 @@
 		040EC28129EFECC900A4EFC4 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 040EC27129EFECC800A4EFC4 /* SimpleLineIcons.ttf */; };
 		040EC28229EFECC900A4EFC4 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 040EC27229EFECC800A4EFC4 /* MaterialIcons.ttf */; };
 		04989BF52A038B5F007DB069 /* dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04989BF42A038B5F007DB069 /* dummy.swift */; };
+		04BD18EF2A31DCF2002B014D /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 04BD18EE2A31DCF2002B014D /* main.jsbundle */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -69,6 +70,7 @@
 		040EC27229EFECC800A4EFC4 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		04989BF12A0381B3007DB069 /* grappling_with_mortality-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "grappling_with_mortality-Bridging-Header.h"; sourceTree = "<group>"; };
 		04989BF42A038B5F007DB069 /* dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummy.swift; sourceTree = "<group>"; };
+		04BD18EE2A31DCF2002B014D /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* grappling_with_mortality.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = grappling_with_mortality.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = grappling_with_mortality/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = grappling_with_mortality/AppDelegate.mm; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				04BD18EE2A31DCF2002B014D /* main.jsbundle */,
 				04989BF42A038B5F007DB069 /* dummy.swift */,
 				040D44FB29F114380060632A /* GoogleService-Info.plist */,
 				040EC26229EFECC800A4EFC4 /* Fonts */,
@@ -308,6 +311,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04BD18EF2A31DCF2002B014D /* main.jsbundle in Resources */,
 				040EC27329EFECC800A4EFC4 /* Fontisto.ttf in Resources */,
 				040EC27E29EFECC900A4EFC4 /* FontAwesome.ttf in Resources */,
 				040EC27A29EFECC900A4EFC4 /* Foundation.ttf in Resources */,
@@ -553,7 +557,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = grappling_with_mortality/grappling_with_mortality.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RL9K5ZW8NX;
+				DEVELOPMENT_TEAM = LR5FBG87MD;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = grappling_with_mortality/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -583,7 +587,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = grappling_with_mortality/grappling_with_mortality.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RL9K5ZW8NX;
+				DEVELOPMENT_TEAM = LR5FBG87MD;
 				INFOPLIST_FILE = grappling_with_mortality/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

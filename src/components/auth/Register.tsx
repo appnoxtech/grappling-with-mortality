@@ -49,8 +49,7 @@ interface props {
 }
 
 const Register: React.FC<props> = ({handleLabelClick}) => {
-  const navigation = useNavigation();
-  const handleRegisterService = useRegisterHook();
+  const Navigation = useNavigation();
   const [inputs, setInputs] = useState(RegisterInitialState);
   const [inputsError, setInputsError] = useState(RegisterInitialState);
   const isKeyboardVisible = useKeyboardVisibleListener();
@@ -174,10 +173,11 @@ const Register: React.FC<props> = ({handleLabelClick}) => {
   const handleRegisterBtnClick = async () => {
     const isValid = validation();
     if (isValid) {
-      // login service api call
+      // // login service api call
       const {fullName, email, password} = inputs;
-      const userType = 'CUSTOMER';
-      handleRegisterService({fullName, email, password, userType});
+      // const userType = 'CUSTOMER';
+      // handleRegisterService({fullName, email, password, userType});
+      Navigation.navigate('UserType' as never, {fullName, email, password} as never);
     }
   };
 

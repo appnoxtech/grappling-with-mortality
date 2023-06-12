@@ -12,6 +12,7 @@ import HeaderWithBackBtn from '../../../components/common/headers/HeaderWithBack
 import {store} from '../../../interfaces/reducer/state';
 import {UpdateSelectedChapter} from '../../../redux/reducers/chaptersReducer';
 import { SetStartingPageNumber } from '../../../redux/reducers/eBookReaderReducer';
+import HeaderWithTitle from '../../../components/common/headers/HeaderWithTitle';
 
 const EBookReader = () => {
   const dispatch = useDispatch();
@@ -23,11 +24,7 @@ const EBookReader = () => {
   
   return (
     <View style={styles.container}>
-      <HeaderWithBackBtn>
-        <View style={styles.chapterNameContainer}>
-          <Text style={styles.chapterName}>{selectedChapter.chapterName}</Text>
-        </View>
-      </HeaderWithBackBtn>
+      <HeaderWithTitle title={selectedChapter.chapterName} />
       <View style={styles.chapterContainer}>
         <Pdf
           source={source}

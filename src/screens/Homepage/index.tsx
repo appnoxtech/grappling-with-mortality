@@ -11,12 +11,18 @@ import Discover from '../discover/index';
 import {getUserDataFromLocalStorage} from '../../utils/helperFunctions/auth';
 import MyBooks from '../myBook';
 import Dashboard from '../dashboard';
+import { useDispatch, useSelector } from 'react-redux';
+import { UpdateShowEditorOptions } from '../../redux/reducers/commonReducer';
+import { store } from '../../interfaces/reducer/state';
+import Search from './Search';
 
 const Tab = createBottomTabNavigator();
 
 const Homepages = () => {
   const [userData, setUserData] = useState<any>({});
+  const {bottomNavigationDisplayProperty} = useSelector((store: store) => store.common);
 
+  const dispatch = useDispatch();
   const getUserDetails = async () => {
     const user = await getUserDataFromLocalStorage();
     setUserData(user);
@@ -37,6 +43,13 @@ const Homepages = () => {
               <Ionicons
                 style={(iconName = focused ? styles.iconFocused : styles.icon)}
                 name={(iconName = focused ? 'compass' : 'compass-outline')}
+              />
+            );
+          } else if (route.name === 'Search') {
+            return (
+              <MaterialCommunityIcons
+                style={(iconName = focused ? styles.iconFocused : styles.icon)}
+                name={(iconName = focused ? 'book-search' : 'book-search-outline')}
               />
             );
           } else if (route.name === 'Profile') {
@@ -66,6 +79,9 @@ const Homepages = () => {
             );
           }
         },
+        tabBarStyle: {
+          display: bottomNavigationDisplayProperty
+        },
         tabBarActiveTintColor: colorPrimary,
         tabBarInactiveTintColor: 'gray',
         tabBarLabelStyle: {
@@ -77,15 +93,54 @@ const Homepages = () => {
       <Tab.Screen
         name="Discover"
         component={Discover}
+        listeners={({ navigation, route }) => ({
+          tabPress: (e) => {
+            // Prevent default action
+            e.preventDefault();
+
+            // Do something with the `navigation` object
+            dispatch(UpdateShowEditorOptions(false));
+            navigation.navigate('Discover');
+          },
+        })}
         options={{
           headerShown: false,
           tabBarHideOnKeyboard: true,
         }}
       />
+      {userData.userType !== 'ADMIN' ? (
+        <Tab.Screen
+          name="Search"
+          component={Search}
+          listeners={({ navigation, route }) => ({
+            tabPress: (e) => {
+              // Prevent default action
+              e.preventDefault();
+  
+              // Do something with the `navigation` object
+              dispatch(UpdateShowEditorOptions(true));
+              navigation.navigate('Search');
+            },
+          })}
+          options={{
+            headerShown: false,
+          }}
+        />
+      ) : null}
       {userData?.userType === 'AUTHOR' || userData.userType === 'ADMIN' ? (
         <Tab.Screen
           name="My Books"
           component={MyBooks}
+          listeners={({ navigation, route }) => ({
+            tabPress: (e) => {
+              // Prevent default action
+              e.preventDefault();
+  
+              // Do something with the `navigation` object
+              dispatch(UpdateShowEditorOptions(true));
+              navigation.navigate('My Books');
+            },
+          })}
           options={{
             headerShown: false,
           }}
@@ -95,6 +150,16 @@ const Homepages = () => {
         <Tab.Screen
           name="Dashboard"
           component={Dashboard}
+          listeners={({ navigation, route }) => ({
+            tabPress: (e) => {
+              // Prevent default action
+              e.preventDefault();
+  
+              // Do something with the `navigation` object
+              dispatch(UpdateShowEditorOptions(false));
+              navigation.navigate('Dashboard');
+            },
+          })}
           options={{
             headerShown: false,
           }}

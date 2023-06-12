@@ -64,7 +64,23 @@ const useUpdateChaptersHook = () => {
         }
     }
 
-    return {UpdateChapterServiceHandler, UpdateSingleChapterServiceHandler};
+    const DeleteChapterServiceHandler = async(selectedChapter: Chapter) => {
+        try {
+            const NewChapterList = selectedBookDetails.chapters.filter((chapter) => chapter._id !== selectedChapter._id);
+            const newChapterObj = {
+                chapters: [...NewChapterList],
+                bookId: selectedBookDetails._id
+            };
+            await UpdateChaptersService(newChapterObj);
+            if(selectedBookDetails._id){
+                await GetSelectedBookDetailsServiceHandler(selectedBookDetails._id);
+            }
+        } catch (error: any) {
+            Alert.alert('Error', error.response.data.errors[0].msg)
+        }
+    }
+
+    return {UpdateChapterServiceHandler, UpdateSingleChapterServiceHandler, DeleteChapterServiceHandler};
 }
 
 export default useUpdateChaptersHook;
